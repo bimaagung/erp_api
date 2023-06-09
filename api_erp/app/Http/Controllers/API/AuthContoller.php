@@ -7,9 +7,46 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
+use Illuminate\Support\Facades\Auth;
 
 class AuthContoller extends Controller
 {
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => ['required', 'email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+            'password' => ['required', 'min:8', 'regex:/^[a-zA-Z0-9]{8,}$/'],
+        ]);
+
+        if ($validator->fails()) {
+            return ResponseBuilder::asError()
+                ->withMessage($validator->errors())
+                ->build();
+        }
+
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+            $user = Auth::user();
+            if ($user instanceof \App\Models\User) {
+                $token = $user->createToken('auth_token')->plainTextToken;
+            } else {
+                return ResponseBuilder::asError()
+                    ->withHttpCode(404)
+                    ->withMessage(__('auth.invalid_account'))
+                    ->build();
+            }
+            return ResponseBuilder::success([
+                'token' => $token,
+                'type' => 'bearer'
+            ]);
+        } else {
+            return ResponseBuilder::asError()
+                ->withHttpCode(404)
+                ->withMessage(__('auth.invalid_account'))
+                ->build();
+        }
+    }
+
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
