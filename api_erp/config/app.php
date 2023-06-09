@@ -185,6 +185,7 @@ return [
         /*
          * Package Service Providers...
          */
+        MilanTarami\ApiResponseBuilder\ResponseBuilderServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -210,6 +211,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
+        'ResponseBuilder' => MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder::class,
     ])->toArray(),
 
 ];

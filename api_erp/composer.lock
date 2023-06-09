@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe33f98a750b8c5a51b30c78bd3fab21",
+    "content-hash": "189f7cab8eab0e3ce7347279e7099e8d",
     "packages": [
         {
             "name": "brick/math",
@@ -1805,6 +1805,54 @@
                 }
             ],
             "time": "2022-04-17T13:12:02+00:00"
+        },
+        {
+            "name": "milantarami/laravel-api-response-builder",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/milantarami/laravel-api-response-builder.git",
+                "reference": "715907eede7f89cf60932e5f85f054aaf52ff56c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/milantarami/laravel-api-response-builder/zipball/715907eede7f89cf60932e5f85f054aaf52ff56c",
+                "reference": "715907eede7f89cf60932e5f85f054aaf52ff56c",
+                "shasum": ""
+            },
+            "require-dev": {
+                "orchestra/testbench": "^4.0",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "MilanTarami\\ApiResponseBuilder\\ResponseBuilderServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "MilanTarami\\ApiResponseBuilder\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Milan Tarami",
+                    "email": "milantarami.dev@gmail.com"
+                }
+            ],
+            "description": "Helps building nice, normalized and easy to consume Laravel REST API",
+            "support": {
+                "issues": "https://github.com/milantarami/laravel-api-response-builder/issues",
+                "source": "https://github.com/milantarami/laravel-api-response-builder/tree/v1.0.0"
+            },
+            "time": "2023-01-19T10:23:29+00:00"
         },
         {
             "name": "monolog/monolog",
