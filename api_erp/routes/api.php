@@ -22,9 +22,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::controller(AuthContoller::class)->group(function () {
     Route::post('/signup', 'register');
-    Route::post('/signin', 'login');
+    Route::post('/signin', 'login')->name('login');;
 });
 
-Route::controller(KaryawanController::class)->group(function () {
-    Route::post('/karyawan', 'create');
+Route::middleware('auth:sanctum')->group(function () {
+    Route::controller(KaryawanController::class)->group(function () {
+        Route::post('/karyawan', 'create');
+    });
 });
