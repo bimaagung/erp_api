@@ -14,7 +14,7 @@ class KantorCabang extends Model
     protected $fillable = [
         'nama',
         'alamat',
-        'phone',
+        'phone1',
         'phone2',
         'masuk_senin_jumat',
         'keluar_senin_jumat',

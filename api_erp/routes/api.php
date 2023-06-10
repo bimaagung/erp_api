@@ -31,6 +31,8 @@ Route::controller(KaryawanController::class)->group(function () {
 });
 
 
-Route::controller(KantorCabangController::class)->group(function () {
-    Route::get('/kantor-cabang', 'index');
+Route::group(['prefix' => 'kantor-cabang'], function () {
+    Route::get('/', [KantorCabangController::class, 'index']);
+    Route::get('/{id}', [KantorCabangController::class, 'show']);
+    Route::post('/', [KantorCabangController::class, 'create']);
 });
