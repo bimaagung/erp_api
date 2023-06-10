@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthContoller;
+use App\Http\Controllers\API\KantorCabangController;
 use App\Http\Controllers\API\KaryawanController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,4 +28,9 @@ Route::controller(AuthContoller::class)->group(function () {
 
 Route::controller(KaryawanController::class)->group(function () {
     Route::post('/karyawan', 'create');
+});
+
+
+Route::controller(KantorCabangController::class)->group(function () {
+    Route::get('/kantor-cabang', 'index');
 });
