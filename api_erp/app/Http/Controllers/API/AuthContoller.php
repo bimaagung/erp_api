@@ -21,7 +21,7 @@ class AuthContoller extends Controller
 
         if ($validator->fails()) {
             return ResponseBuilder::asError()
-                ->withMessage($validator->errors())
+                ->withMessage($validator->errors()->first())
                 ->build();
         }
 
@@ -58,7 +58,7 @@ class AuthContoller extends Controller
 
         if ($validator->fails()) {
             return ResponseBuilder::asError()
-                ->withMessage($validator->errors())
+                ->withMessage($validator->errors()->first())
                 ->build();
         }
 
