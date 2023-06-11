@@ -8,8 +8,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
-use Illuminate\Support\Facades\Auth;
-use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthContoller extends Controller
 {
@@ -61,6 +59,10 @@ class AuthContoller extends Controller
             'email' => ['required', 'email:rfc,dns', 'unique:users,email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'password' => ['required', 'min:8', 'regex:/^[a-zA-Z0-9]{8,}$/'],
             'retype_password' => 'required|same:password'
+        ]);
+
+        $validator->setCustomMessages([
+            'email.unique' => __('auth.unique_email'),
         ]);
 
         if ($validator->fails()) {

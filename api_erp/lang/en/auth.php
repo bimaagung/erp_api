@@ -19,5 +19,6 @@ return [
     'invalid_account' => 'Invalid username or password.',
     'not_logged_in' => 'Not logged in or guard did not return a User object',
     'unauthorized' => 'Unauthorized.',
+    'unique_email' => 'User not available.',
 
 ];
