@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Helpers\UploadFile;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\KaryawanResource;
 use App\Models\Karyawan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -13,8 +14,11 @@ use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
 class KaryawanController extends Controller
 {
 
-    public function __construct()
+    protected Karyawan $karyawan;
+
+    public function __construct(Karyawan $karyawan)
     {
+        $this->karyawan = $karyawan;
     }
 
     public function create(Request $request)
@@ -59,7 +63,7 @@ class KaryawanController extends Controller
             return 'default.jpg';
         }
 
-        $karyawan = Karyawan::create([
+        $karyawan = $this->karyawan->create([
             'nama' => $request->nama,
             'nik' => $request->nik,
             'ttl' => $request->ttl,
@@ -74,6 +78,6 @@ class KaryawanController extends Controller
             'foto' => $upload,
         ]);
 
-        return ResponseBuilder::success($karyawan);
+        return ResponseBuilder::success(new KaryawanResource($karyawan));
     }
 }

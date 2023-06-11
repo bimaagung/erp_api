@@ -25,7 +25,7 @@ Route::controller(AuthContoller::class)->group(function () {
     Route::post('/signin', 'login')->name('login');;
 });
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:api')->group(function () {
     Route::controller(KaryawanController::class)->group(function () {
         Route::post('/karyawan', 'create');
     });
