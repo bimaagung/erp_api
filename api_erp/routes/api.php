@@ -3,7 +3,9 @@
 use App\Http\Controllers\API\AuthContoller;
 use App\Http\Controllers\API\KantorCabangController;
 use App\Http\Controllers\API\KaryawanController;
+use App\Http\Controllers\API\PersonalInformationController;
 use Illuminate\Http\Request;
+use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,8 +29,13 @@ Route::controller(AuthContoller::class)->group(function () {
 });
 
 Route::middleware('auth:api')->group(function () {
-    Route::controller(KaryawanController::class)->group(function () {
-        Route::post('/karyawan', 'create');
+    Route::group(['prefix' => 'karyawan'], function () {
+        Route::controller(KaryawanController::class)->group(function () {
+            Route::post('/', 'create');
+        });
+        Route::controller(PersonalInformationController::class)->group(function () {
+            Route::post('/informasi-personal/{karyawan_id}', 'save');
+        });
     });
 });
 
