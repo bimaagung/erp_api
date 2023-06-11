@@ -18,5 +18,6 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'invalid_account' => 'Invalid username or password.',
     'not_logged_in' => 'Not logged in or guard did not return a User object',
+    'unauthorized' => 'Unauthorized.',
 
 ];

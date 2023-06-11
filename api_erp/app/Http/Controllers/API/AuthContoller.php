@@ -3,14 +3,22 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
 use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 
 class AuthContoller extends Controller
 {
+    protected User $user;
+
+    public function __construct(User $user)
+    {
+        $this->user = $user;
+    }
 
     public function login(Request $request)
     {
@@ -25,26 +33,25 @@ class AuthContoller extends Controller
                 ->build();
         }
 
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-            $user = Auth::user();
-            if ($user instanceof \App\Models\User) {
-                $token = $user->createToken('auth_token')->plainTextToken;
-            } else {
-                return ResponseBuilder::asError()
-                    ->withHttpCode(404)
-                    ->withMessage(__('auth.invalid_account'))
-                    ->build();
-            }
-            return ResponseBuilder::success([
-                'token' => $token,
-                'type' => 'bearer'
-            ]);
-        } else {
+        $credentials = $request->only('email', 'password');
+
+        $token = auth()->attempt($credentials);
+        if (!$token) {
             return ResponseBuilder::asError()
-                ->withHttpCode(404)
-                ->withMessage(__('auth.invalid_account'))
+                ->withHttpCode(401)
+                ->withMessage(__('auth.unauthorized'))
                 ->build();
         }
+
+        $user = auth()->user();
+
+        return ResponseBuilder::success([
+            'user' => new UserResource($user),
+            'token' => [
+                'token' => $token,
+                'type' => 'bearer'
+            ]
+        ]);
     }
 
     public function register(Request $request)
@@ -62,17 +69,16 @@ class AuthContoller extends Controller
                 ->build();
         }
 
-        $user = User::create([
+        $user = $this->user->create([
             "name" => $request->name,
             "email" => $request->email,
             "password" => $request->password,
         ]);
 
-
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = auth()->login($user);
 
         return ResponseBuilder::success([ //Response Builder: https://milantarami.github.io/laravel-api-response-builder/#/
-            'user' => $user,
+            'user' => new UserResource($user),
             'token' => [
                 'token' => $token,
                 'type' => 'bearer'
