@@ -52,7 +52,7 @@ class PersonalInformationController extends Controller
         if (!$checkExist->count() > 0) {
             $user = $this->store($request->all());
         } else {
-            $user = $this->update($request->all(), $checkExist->id);
+            $user = $this->update($request->all(), $checkExist[0]['id']);
         }
 
         return ResponseBuilder::success(new PersonalInformationResource($user));
@@ -66,6 +66,8 @@ class PersonalInformationController extends Controller
 
     public function update($karyawan, $id)
     {
-        return $this->personalInformation->where('id', $id)->update($karyawan);
+
+        $this->personalInformation->where('id', $id)->update($karyawan);
+        return $this->personalInformation->find($id);
     }
 }
