@@ -35,6 +35,7 @@ class PersonalInformationController extends Controller
         ]);
 
         $validator->setCustomMessages([
+            'karyawan_id.exists' => __('karyawan.not_found'),
             'npwp.unique' => __('personal_information.unique_npwp'),
             'nomor_akun_bank.unique' => __('personal_information.unique_nomor_akun_bank'),
             'bpjs_ketenagakerjaan.unique' => __('personal_information.unique_bpjs_ketenagakerjaan'),
@@ -42,9 +43,18 @@ class PersonalInformationController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return ResponseBuilder::asError()
-                ->withMessage($validator->errors()->first())
-                ->build();
+            $errors = $validator->errors();
+
+            if ($errors->has('karyawan_id')) {
+                return ResponseBuilder::asError()
+                    ->withHttpCode(404)
+                    ->withMessage($errors->first('karyawan_id'))
+                    ->build();
+            } else {
+                return ResponseBuilder::asError()
+                    ->withMessage($validator->errors()->first())
+                    ->build();
+            }
         }
 
         $checkExist = $this->personalInformation->where('karyawan_id', $request->karyawan_id)->get();

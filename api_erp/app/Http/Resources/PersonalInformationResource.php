@@ -15,15 +15,16 @@ class PersonalInformationResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'karyawan_id' => $this->karyawan_id,
+            'id' => $this->id,
+            'karyawan_id' => (int)$this->karyawan_id,
             'npwp' => $this->npwp,
             'tipe_pajak' => $this->tipe_pajak,
-            'potongan_pajak' => $this->potongan_pajak,
-            'tunjangan_pajak' => $this->tunjangan_pajak,
+            'potongan_pajak' => (int)$this->potongan_pajak,
+            'tunjangan_pajak' => (int)$this->tunjangan_pajak,
             'nama_bank' => $this->nama_bank,
-            'nomor_akun_bank' => $this->nomor_akun_bank,
-            'bpjs_ketenagakerjaan' => $this->bpjs_ketenagakerjaan,
-            'bpjs_kesehatan' => $this->bpjs_kesehatan,
+            'nomor_akun_bank' => (int)$this->nomor_akun_bank,
+            'bpjs_ketenagakerjaan' => (int)$this->bpjs_ketenagakerjaan,
+            'bpjs_kesehatan' => (int)$this->bpjs_kesehatan,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];
