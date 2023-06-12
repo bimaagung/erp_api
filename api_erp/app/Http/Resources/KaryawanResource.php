@@ -15,8 +15,9 @@ class KaryawanResource extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $request->id,
             'nama' => $this->nama,
-            'nik' => $this->nik,
+            'nik' => (int)$this->nik,
             'ttl' => $this->ttl,
             'jenis_kelamin' => $this->jenis_kelamin,
             'email' => $this->email,
