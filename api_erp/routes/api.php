@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthContoller;
+use App\Http\Controllers\API\FamilyController;
 use App\Http\Controllers\API\JobInformationController;
 use App\Http\Controllers\API\KantorCabangController;
 use App\Http\Controllers\API\KaryawanController;
@@ -39,6 +40,9 @@ Route::middleware('auth:api')->group(function () {
         });
         Route::controller(JobInformationController::class)->group(function () {
             Route::post('/informasi-pekerjaan/{karyawan_id}', 'save');
+        });
+        Route::controller(FamilyController::class)->group(function () {
+            Route::post('/keluarga/{karyawan_id}', 'store');
         });
     });
 });
