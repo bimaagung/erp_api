@@ -14,6 +14,15 @@ class FamilyResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'karyawan_id' => (int)$this->karyawan_id,
+            'status' => $this->status,
+            'nik' => (int)$this->nik,
+            'nama' => $this->jabatan,
+            'pekerjaan' => $this->pekerjaan,
+            'created_at' => (string) $this->created_at,
+            'updated_at' => (string) $this->updated_at,
+        ];
     }
 }
