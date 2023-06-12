@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\AuthContoller;
+use App\Http\Controllers\API\JobInformationController;
 use App\Http\Controllers\API\KantorCabangController;
 use App\Http\Controllers\API\KaryawanController;
 use App\Http\Controllers\API\PersonalInformationController;
@@ -35,6 +36,9 @@ Route::middleware('auth:api')->group(function () {
         });
         Route::controller(PersonalInformationController::class)->group(function () {
             Route::post('/informasi-personal/{karyawan_id}', 'save');
+        });
+        Route::controller(JobInformationController::class)->group(function () {
+            Route::post('/informasi-pekerjaan/{karyawan_id}', 'save');
         });
     });
 });
