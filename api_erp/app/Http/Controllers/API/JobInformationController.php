@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\JobInformationResource;
 use App\Models\JobInformation;
+use App\Models\KantorCabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
@@ -12,9 +13,9 @@ use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
 class JobInformationController extends Controller
 {
     protected JobInformation $jobInformation;
-    protected KantorCabangController $branchOffice;
+    protected KantorCabang $branchOffice;
 
-    public function __construct(JobInformation $jobInformation, KantorCabangController $branchOffice)
+    public function __construct(JobInformation $jobInformation, KantorCabang $branchOffice)
     {
         $this->jobInformation = $jobInformation;
         $this->branchOffice = $branchOffice;
@@ -43,14 +44,21 @@ class JobInformationController extends Controller
                 ->build();
         }
 
-        $this->branchOffice->show($request->kantor_cabang);
+        $checkBranchOffice = $this->branchOffice->find($request->kantor_cabang_id);
+
+        if (!$checkBranchOffice) {
+            return ResponseBuilder::asError()
+                ->withHttpCode(404)
+                ->withMessage(__('branchOffice.not_found'))
+                ->build();
+        }
 
         $checkExist = $this->jobInformation->where('karyawan_id', $request->karyawan_id)->get();
 
         if (!$checkExist->count() > 0) {
             $job = $this->store($request->all());
         } else {
-            $job = $this->update($request->all(), $checkExist->id);
+            $job = $this->update($request->all(), $checkExist[0]['id']);
         }
 
         return ResponseBuilder::success(new JobInformationResource($job));
@@ -64,6 +72,7 @@ class JobInformationController extends Controller
 
     public function update($karyawan, $id)
     {
-        return $this->jobInformation->where('id', $id)->update($karyawan);
+        $this->jobInformation->where('id', $id)->update($karyawan);
+        return $this->jobInformation->find($id);
     }
 }
