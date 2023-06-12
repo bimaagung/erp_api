@@ -25,7 +25,7 @@ class JobInformationController extends Controller
     {
         $request->merge(['karyawan_id' => $request->route('karyawan_id')]);
         $validator = Validator::make($request->all(), [
-            'karyawan_id' => ['required', 'integer'],
+            'karyawan_id' => ['required', 'integer', 'exists:karyawans,id'],
             'kantor_cabang_id' => ['required', 'integer',],
             'department' => ['required'],
             'jabatan' => ['required'],
@@ -38,10 +38,24 @@ class JobInformationController extends Controller
             'absen_diluar_kantor' => ['boolean'],
         ]);
 
+        $validator->setCustomMessages([
+            'karyawan_id.exists' => __('karyawan.not_found'),
+            'nik.unique' => __('family.unique_nik'),
+        ]);
+
         if ($validator->fails()) {
-            return ResponseBuilder::asError()
-                ->withMessage($validator->errors()->first())
-                ->build();
+            $errors = $validator->errors();
+
+            if ($errors->has('karyawan_id')) {
+                return ResponseBuilder::asError()
+                    ->withHttpCode(404)
+                    ->withMessage($errors->first('karyawan_id'))
+                    ->build();
+            } else {
+                return ResponseBuilder::asError()
+                    ->withMessage($validator->errors()->first())
+                    ->build();
+            }
         }
 
         $checkBranchOffice = $this->branchOffice->find($request->kantor_cabang_id);
