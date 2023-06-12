@@ -60,7 +60,7 @@ class KaryawanController extends Controller
                     ->build();
             }
         } else {
-            return 'default.jpg';
+            $upload = 'default.jpg';
         }
 
         $karyawan = $this->karyawan->create([
