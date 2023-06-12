@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\FamilyResource;
 use App\Models\Family;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -49,14 +50,8 @@ class FamilyController extends Controller
             }
         }
 
-        // if ($validator->fails()) {
-        //     return ResponseBuilder::asError()
-        //         ->withMessage($validator->errors()->first())
-        //         ->build();
-        // }
-
         $result = $this->family->create($request->all());
 
-        return ResponseBuilder::success($result);
+        return ResponseBuilder::success(new FamilyResource($result));
     }
 }
