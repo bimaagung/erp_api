@@ -31,7 +31,7 @@ class FamilyController extends Controller
         ]);
 
         $validator->setCustomMessages([
-            'karyawan_id.exists' => 'karyawan not found',
+            'karyawan_id.exists' => __('karyawan.not_found'),
             'nik.unique' => __('family.unique_nik'),
         ]);
 
