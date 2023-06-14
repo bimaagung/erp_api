@@ -62,117 +62,17 @@ const SideBar = () => {
                   <li className="nav-item">
                     <a href="./index.html" className="nav-link active">
                       <i className="far fa-circle nav-icon" />
-                      <p>Dashboard v1</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="./index2.html" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>Dashboard v2</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="./index3.html" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>Dashboard v3</p>
+                      <p>Dashboard</p>
                     </a>
                   </li>
                 </ul>
               </li>
-              <li className="nav-item">
-                <a href="pages/widgets.html" className="nav-link">
-                  <i className="nav-icon fas fa-th" />
-                  <p>
-                    Widgets
-                    <span className="right badge badge-danger">New</span>
-                  </p>
-                </a>
-              </li>
-              <li className="nav-item">
-                <a href="#" className="nav-link">
-                  <i className="nav-icon fas fa-copy" />
-                  <p>
-                    Layout Options
-                    <i className="fas fa-angle-left right" />
-                    <span className="badge badge-info right">6</span>
-                  </p>
-                </a>
-                <ul className="nav nav-treeview">
-                  <li className="nav-item">
-                    <a href="pages/layout/top-nav.html" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>Top Navigation</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="pages/layout/top-nav-sidebar.html"
-                      className="nav-link"
-                    >
-                      <i className="far fa-circle nav-icon" />
-                      <p>Top Navigation + Sidebar</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a href="pages/layout/boxed.html" className="nav-link">
-                      <i className="far fa-circle nav-icon" />
-                      <p>Boxed</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="pages/layout/fixed-sidebar.html"
-                      className="nav-link"
-                    >
-                      <i className="far fa-circle nav-icon" />
-                      <p>Fixed Sidebar</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="pages/layout/fixed-sidebar-custom.html"
-                      className="nav-link"
-                    >
-                      <i className="far fa-circle nav-icon" />
-                      <p>
-                        Fixed Sidebar <small>+ Custom Area</small>
-                      </p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="pages/layout/fixed-topnav.html"
-                      className="nav-link"
-                    >
-                      <i className="far fa-circle nav-icon" />
-                      <p>Fixed Navbar</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="pages/layout/fixed-footer.html"
-                      className="nav-link"
-                    >
-                      <i className="far fa-circle nav-icon" />
-                      <p>Fixed Footer</p>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a
-                      href="pages/layout/collapsed-sidebar.html"
-                      className="nav-link"
-                    >
-                      <i className="far fa-circle nav-icon" />
-                      <p>Collapsed Sidebar</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
+
               <li className="nav-item">
                 <a href="#" className="nav-link">
                   <i className="nav-icon fas fa-chart-pie" />
                   <p>
-                    Charts
+                    Master Data
                     <i className="right fas fa-angle-left" />
                   </p>
                 </a>
@@ -180,25 +80,43 @@ const SideBar = () => {
                   <li className="nav-item">
                     <a href="pages/charts/chartjs.html" className="nav-link">
                       <i className="far fa-circle nav-icon" />
-                      <p>ChartJS</p>
+                      <p>Kantor Cabang</p>
                     </a>
                   </li>
                   <li className="nav-item">
                     <a href="pages/charts/flot.html" className="nav-link">
                       <i className="far fa-circle nav-icon" />
-                      <p>Flot</p>
+                      <p>karyawan</p>
                     </a>
                   </li>
                   <li className="nav-item">
                     <a href="pages/charts/inline.html" className="nav-link">
                       <i className="far fa-circle nav-icon" />
-                      <p>Inline</p>
+                      <p>Gaji</p>
                     </a>
                   </li>
                   <li className="nav-item">
                     <a href="pages/charts/uplot.html" className="nav-link">
                       <i className="far fa-circle nav-icon" />
-                      <p>uPlot</p>
+                      <p>Track Record</p>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="pages/charts/uplot.html" className="nav-link">
+                      <i className="far fa-circle nav-icon" />
+                      <p>Master KPI</p>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="pages/charts/uplot.html" className="nav-link">
+                      <i className="far fa-circle nav-icon" />
+                      <p>Jadwal</p>
+                    </a>
+                  </li>
+                  <li className="nav-item">
+                    <a href="pages/charts/uplot.html" className="nav-link">
+                      <i className="far fa-circle nav-icon" />
+                      <p>Lembur</p>
                     </a>
                   </li>
                 </ul>
