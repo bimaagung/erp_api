@@ -32,11 +32,10 @@ class KantorCabangController extends Controller
         $data = $this->kantorCabang->where('id', $id)->first();
 
         if (!$data) {
-            return ResponseBuilder::asError()
-                ->withMessage('Data not found')
-                ->build();
+            return $this->fail(__('branchOffice.not_found')); 
         }
-        return ResponseBuilder::success($data);
+
+        return $this->success($data);
     }
 
     public function create(Request $request)
@@ -52,9 +51,7 @@ class KantorCabangController extends Controller
             'keluar_sabtu_minggu' => ['required'],
         ]);
         if ($validator->fails()) {
-            return ResponseBuilder::asError()
-                ->withMessage($validator->errors()->first())
-                ->build();
+            return $this->fail($validator->errors()->first()); 
         }
 
         $data = $request->only([
@@ -69,6 +66,6 @@ class KantorCabangController extends Controller
         ]);
 
         $result = $this->kantorCabang->create($data);
-        return ResponseBuilder::success($result);
+        return $this->success($result);
     }
 }
