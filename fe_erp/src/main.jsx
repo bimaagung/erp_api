@@ -11,7 +11,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <CookiesProvider>
       <Provider store={store}>
+        <div className='wrapper'>
+
         <IndexRoutes />
+        </div>
       </Provider>
     </CookiesProvider>
   </React.StrictMode>,
