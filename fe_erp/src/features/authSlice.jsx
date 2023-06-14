@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-// import config from '../config'
+import config from '../config'
 
-// const apiUrl = config.apiBaseUrl
-//       console.log(apiUrl)
+
+      
 
 const initialState = {
   token: null,
@@ -14,10 +14,11 @@ const initialState = {
 export const signin = createAsyncThunk(
   "user/signin",
   async (params = {}, { rejectWithValue }) => {
+    const apiUrl = config.apiBaseUrl
     try {
   
       
-      const response = await axios.post("http://localhost:8000/api/signin", params);
+      const response = await axios.post(apiUrl + "signin", params);
       return response.data;
     } catch (err) {
       if (!err.response) {
