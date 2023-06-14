@@ -16,3 +16,6 @@ api_erpyarn-error.log
 api_erp/.fleet
 api_erp/.idea
 api_erp/.vscode
+bootstrap
+storage
+vendor
