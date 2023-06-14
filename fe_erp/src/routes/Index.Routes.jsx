@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import  SigninPage  from "../pages/auth/signin/SigninPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
+import Test from "../pages/dashboard/Test";
 
 const IndexRoutes = () => {
   return (
@@ -9,6 +10,7 @@ const IndexRoutes = () => {
       <Routes>
         <Route path="/" element={<SigninPage />} />
         <Route path="/dashboard" element={<DashboardPage />} />
+        <Route path="/test" element={<Test />} />
       </Routes>
     </Router>
   );
