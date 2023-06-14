@@ -38,12 +38,38 @@ class KaryawanController extends Controller
             'foto' => [
                 File::types(['jpg', 'png'])
                     ->max(5 * 1024)
-            ]
+            ],
+
+            // Personal Information
+            'npwp' => ['required', 'integer', 'unique:informasi_personal'],
+            'tipe_pajak',
+            'potongan_pajak' => ['integer'],
+            'tunjangan_pajak' => ['integer'],
+            'nama_bank' => ['required'],
+            'nomor_akun_bank' => ['integer', 'unique:informasi_personal'],
+            'bpjs_ketenagakerjaan' => ['integer', 'unique:informasi_personal'],
+            'bpjs_kesehatan' => ['integer', 'unique:informasi_personal'],
+
+            // Job Information
+            'kantor_cabang_id' => ['required', 'integer',],
+            'department' => ['required'],
+            'jabatan' => ['required'],
+            'tanggal_masuk' => ['required', 'date'],
+            'status' => ['required'],
+            'periode_kontrak' => ['integer'],
+            'potongan_terlambat' => ['boolean'],
+            'toleransi_keterlambatan' => ['integer'],
+            'mode_absensi' => ['required'],
+            'absen_diluar_kantor' => ['boolean'],
         ]);
 
         $validator->setCustomMessages([
             'nik.unique' => __('karyawan.unique_nik'),
             'email.unique' => __('karyawan.unique_email'),
+            'npwp.unique' => __('personal_information.unique_npwp'),
+            'nomor_akun_bank.unique' => __('personal_information.unique_nomor_akun_bank'),
+            'bpjs_ketenagakerjaan.unique' => __('personal_information.unique_bpjs_ketenagakerjaan'),
+            'bpjs_kesehatan.unique' => __('personal_information.unique_bpjs_kesehatan'),
         ]);
 
         if ($validator->fails()) {

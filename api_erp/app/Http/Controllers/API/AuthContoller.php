@@ -36,8 +36,8 @@ class AuthContoller extends Controller
         $token = auth()->attempt($credentials);
         if (!$token) {
             return ResponseBuilder::asError()
-                ->withHttpCode(401)
-                ->withMessage(__('auth.unauthorized'))
+                ->withHttpCode(400)
+                ->withMessage(__('auth.incorrect'))
                 ->build();
         }
 
