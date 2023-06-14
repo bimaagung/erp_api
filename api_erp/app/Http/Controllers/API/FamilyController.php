@@ -54,4 +54,5 @@ class FamilyController extends Controller
 
         return ResponseBuilder::success(new FamilyResource($result));
     }
+
 }
