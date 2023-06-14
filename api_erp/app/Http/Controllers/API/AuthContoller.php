@@ -26,24 +26,19 @@ class AuthContoller extends Controller
         ]);
 
         if ($validator->fails()) {
-            return ResponseBuilder::asError()
-                ->withMessage($validator->errors()->first())
-                ->build();
+            return $this->fail($validator->errors()->first());
         }
 
         $credentials = $request->only('email', 'password');
 
         $token = auth()->attempt($credentials);
         if (!$token) {
-            return ResponseBuilder::asError()
-                ->withHttpCode(400)
-                ->withMessage(__('auth.incorrect'))
-                ->build();
+            return $this->fail(__('auth.incorrect'));
         }
 
         $user = auth()->user();
 
-        return ResponseBuilder::success([
+        return $this->success([
             'user' => new UserResource($user),
             'token' => [
                 'token' => $token,
@@ -66,9 +61,7 @@ class AuthContoller extends Controller
         ]);
 
         if ($validator->fails()) {
-            return ResponseBuilder::asError()
-                ->withMessage($validator->errors()->first())
-                ->build();
+            return $this->fail($validator->errors()->first());
         }
 
         $user = $this->user->create([
@@ -79,7 +72,7 @@ class AuthContoller extends Controller
 
         $token = auth()->login($user);
 
-        return ResponseBuilder::success([ //Response Builder: https://milantarami.github.io/laravel-api-response-builder/#/
+        return $this->success([
             'user' => new UserResource($user),
             'token' => [
                 'token' => $token,
