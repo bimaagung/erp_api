@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {Button, Form} from 'react-bootstrap'
 import {Link} from 'react-router-dom'
-import example from '../../../../assets/img/example.jpg'
+import example from '../../../../assets/img/example.webp'
 import '../styles/FormLogin.css'
 
 const FormSignin = (props) => {
