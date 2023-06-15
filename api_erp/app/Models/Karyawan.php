@@ -22,5 +22,6 @@ class Karyawan extends Model
         'tanggal_lahir',
         'telp',
         'foto',
+        'admin'
     ];
 }
