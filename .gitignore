@@ -16,7 +16,6 @@ api_erpyarn-error.log
 api_erp/.fleet
 api_erp/.idea
 api_erp/.vscode
-api_erp/composer.lock
 bootstrap
 storage
 vendor
