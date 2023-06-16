@@ -16,8 +16,6 @@ export const signin = createAsyncThunk(
   async (params = {}, { rejectWithValue }) => {
     const apiUrl = config.apiBaseUrl
     try {
-  
-      
       const response = await axios.post(apiUrl + "signin", params);
       return response.data;
     } catch (err) {
@@ -37,22 +35,25 @@ const authSlice = createSlice({
     builder
       .addCase(signin.pending, (state) => {
         state.loading = true;
-        state.errorMessage = null;
+        state.token = null
       })
       .addCase(signin.fulfilled, (state, action) => {
         state.loading = false;
-        state.token = action.payload;
+        state.token = action.payload.data.token;
         state.errorMessage = null;
       })
       .addCase(signin.rejected, (state, action) => {
         state.loading = true;
         state.errorMessage = action.payload;
+        state.token = null
       })
   }
 });
 
 export const authSelector = {
-  selectRefreshToken : (state) => state.auth.token
+  selectToken : (state) => state.auth.token,
+  loading : (state) => state.auth.loading,
+  errorMessage : (state) => state.auth.errorMessage
 }
 
 export default authSlice.reducer;
