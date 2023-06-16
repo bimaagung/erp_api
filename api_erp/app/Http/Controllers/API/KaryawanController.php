@@ -164,16 +164,20 @@ class KaryawanController extends Controller
 
     public function findById($id)
     {
-        $karyawan = $this->karyawan
-            ->join('informasi_personal', 'karyawans.id', '=', 'informasi_personal.karyawan_id')
-            ->join('informasi_pekerjaan', 'karyawans.id', '=', 'informasi_pekerjaan.karyawan_id')
-            ->select('karyawans.*', 'informasi_personal.*', 'informasi_pekerjaan.*')
-            ->find($id);
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'required|numeric',
+        ]);
 
-        if (!$karyawan) {
-            return null;
+        if ($validator->fails()) {
+            return $this->fail($validator->errors()->first());
         }
 
-        return $karyawan;
+        $karyawan = $this->karyawan->with(['personalInformation', 'jobInformation'])->find($id);
+
+        if (!$karyawan) {
+            return $this->fail(__('karyawan.not_found'));
+        }
+
+        return $this->success($karyawan);
     }
 }
