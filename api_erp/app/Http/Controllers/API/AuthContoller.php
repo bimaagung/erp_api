@@ -50,7 +50,8 @@ class AuthContoller extends Controller
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
+            'name' => ['required', 'max:112'],
+            'role' => ['required', 'max:50'],
             'email' => ['required', 'email:rfc,dns', 'unique:users,email', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'password' => ['required', 'min:8', 'regex:/^[a-zA-Z0-9]{8,}$/'],
             'retype_password' => 'required|same:password'
@@ -66,6 +67,7 @@ class AuthContoller extends Controller
 
         $user = $this->user->create([
             "name" => $request->name,
+            "role" => $request->role,
             "email" => $request->email,
             "password" => $request->password,
         ]);

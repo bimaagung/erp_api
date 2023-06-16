@@ -23,7 +23,7 @@ class Controller extends BaseController
             'data' => $data,
         ];
 
-        return response()->json($response);
+        return response()->json($response, 200);
     }
 
     protected function fail($message)
@@ -36,7 +36,7 @@ class Controller extends BaseController
             ]
         ];
 
-        return response()->json($response);
+        return response()->json($response, 400);
     }
 
     protected function notFound($message)
@@ -49,7 +49,7 @@ class Controller extends BaseController
             ]
         ];
 
-        return response()->json($response);
+        return response()->json($response, 404);
     }
 
     protected function unauthorized()
@@ -62,6 +62,6 @@ class Controller extends BaseController
             ]
         ];
 
-        return response()->json($response);
+        return response()->json($response, 401);
     }
 }

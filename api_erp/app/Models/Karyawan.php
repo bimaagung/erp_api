@@ -25,12 +25,12 @@ class Karyawan extends Model
         'admin'
     ];
 
-    public function personalInformation()
+    public function informasiPersonal()
     {
         return $this->hasOne(PersonalInformation::class, 'karyawan_id', 'id');
     }
 
-    public function jobInformation()
+    public function informasiPekerjaan()
     {
         return $this->hasOne(JobInformation::class, 'karyawan_id', 'id');
     }
