@@ -34,6 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'karyawan'], function () {
         Route::controller(KaryawanController::class)->group(function () {
             Route::post('/', 'create');
+            Route::get('/{id}', 'findById');
         });
         Route::controller(PersonalInformationController::class)->group(function () {
             Route::post('/informasi-personal/{karyawan_id}', 'save');

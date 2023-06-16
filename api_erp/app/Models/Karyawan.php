@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Karyawan extends Model
 {
@@ -24,4 +24,14 @@ class Karyawan extends Model
         'foto',
         'admin'
     ];
+
+    public function personalInformation()
+    {
+        return $this->hasOne(PersonalInformation::class, 'karyawan_id', 'id');
+    }
+
+    public function jobInformation()
+    {
+        return $this->hasOne(JobInformation::class, 'karyawan_id', 'id');
+    }
 }
