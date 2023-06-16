@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import {Button, Form} from 'react-bootstrap'
-import {Link} from 'react-router-dom'
-import example from '../../../../assets/img/example.webp'
-import '../styles/FormLogin.css'
+import { Button, Form } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import example from "../../../../assets/img/example.webp";
+import "../styles/FormLogin.css";
+import { useSelector } from "react-redux";
+import { authSelector } from "../../../../features/authSlice";
 
 const FormSignin = (props) => {
+  const errorMessage = useSelector(authSelector.errorMessage);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -25,6 +29,11 @@ const FormSignin = (props) => {
             }}
           >
             <Form.Group className="mb-3" controlId="email">
+              {errorMessage ? (
+                <div className="alert alert-danger" role="alert">
+                  {errorMessage.meta.message}
+                </div>
+              ) : null}
               <Form.Label>Email</Form.Label>
               <Form.Control
                 type="email"
