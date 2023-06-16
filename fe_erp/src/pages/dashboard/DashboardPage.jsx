@@ -5,8 +5,9 @@ import Sidebar from "../../components/layouts/Sidebar";
 const DashboardPage = () => {
   return (
     <>
-    <Sidebar />
+    <Sidebar>
       <h1>example content</h1>
+      </Sidebar>
     </>
   )
 }
