@@ -1,72 +1,180 @@
-import React, { useState } from 'react';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
-import { SidebarData } from './SidebarData';
-import SubMenu from './SubMenu';
-import { IconContext } from 'react-icons/lib';
+import { NavLink } from "react-router-dom";
+import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
+import { MdMessage } from "react-icons/md";
+import { BiSearch } from "react-icons/bi";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import SidebarMenu from "./SubMenu";
+import '../styles/layout.css'
 
-const Nav = styled.div`
-  background: #15171c;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
+const routes = [
+  {
+    path: "/admin/home",
+    name: "Home",
+    icon: <FaHome />,
+  },
+  {
+    path: "/admin/dashboard",
+    name: "Dashboard",
+    icon: <FaUser />,
+  },
+  {
+    path: "/admin/master/data",
+    name: "Master Data",
+    icon: <MdMessage />,
+    subRoutes: [
+      {
+        path: "/admin/kantor-cabang",
+        name: "Kantor Cabang",
+        icon: <FaUser />,
+      },
+      {
+        path: "/admin/karyawan",
+        name: "Karyawan",
+        icon: <FaLock />,
+      },
+      {
+        path: "/admin/Gaji",
+        name: "Gaji",
+        icon: <FaMoneyBill />,
+      },
+    ],
+  },
+  
+];
 
-const NavIcon = styled(Link)`
-  margin-left: 2rem;
-  font-size: 2rem;
-  height: 80px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-`;
+const SideBar = ({ children }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggle = () => setIsOpen(!isOpen);
+  const inputAnimation = {
+    hidden: {
+      width: 0,
+      padding: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+    show: {
+      width: "140px",
+      padding: "5px 15px",
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
-const SidebarNav = styled.nav`
-  background: #15171c;
-  width: 250px;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: ${({ sidebar }) => (sidebar ? '0' : '-100%')};
-  transition: 350ms;
-  z-index: 10;
-`;
-
-const SidebarWrap = styled.div`
-  width: 100%;
-`;
-
-const Sidebar = () => {
-  const [sidebar, setSidebar] = useState('');
-
-  const showSidebar = () => setSidebar(sidebar === '' ? 'true' : '');
+  const showAnimation = {
+    hidden: {
+      width: 0,
+      opacity: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+    show: {
+      opacity: 1,
+      width: "auto",
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   return (
     <>
-      <IconContext.Provider value={{ color: '#fff' }}>
-        <Nav>
-          <NavIcon to='#'>
-            <FaIcons.FaBars onClick={showSidebar} />
-          </NavIcon>
-        </Nav>
-        <SidebarNav sidebar={sidebar}>
-          <SidebarWrap>
-            <NavIcon to='#'>
-              <AiIcons.AiOutlineClose onClick={showSidebar} />
-            </NavIcon>
-            {SidebarData.map((item, index) => {
-              return <SubMenu item={item} key={index} />;
+      <div className="main-container">
+        <motion.div
+          animate={{
+            width: isOpen ? "200px" : "45px",
+
+            transition: {
+              duration: 0.5,
+              type: "spring",
+              damping: 10,
+            },
+          }}
+          className={`sidebar `}
+        >
+          <div className="top_section">
+            <AnimatePresence>
+              {isOpen && (
+                <motion.h1
+                  variants={showAnimation}
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  className="logo"
+                >
+                  DoSomeCoding
+                </motion.h1>
+              )}
+            </AnimatePresence>
+
+            <div className="bars">
+              <FaBars onClick={toggle} />
+            </div>
+          </div>
+          <div className="search">
+            <div className="search_icon">
+              <BiSearch />
+            </div>
+            <AnimatePresence>
+              {isOpen && (
+                <motion.input
+                  initial="hidden"
+                  animate="show"
+                  exit="hidden"
+                  variants={inputAnimation}
+                  type="text"
+                  placeholder="Search"
+                />
+              )}
+            </AnimatePresence>
+          </div>
+          <section className="routes">
+            {routes.map((route, index) => {
+              if (route.subRoutes) {
+                return (
+                  <SidebarMenu
+                    setIsOpen={setIsOpen}
+                    route={route}
+                    showAnimation={showAnimation}
+                    isOpen={isOpen}
+                    key={route.path}
+                  />
+                );
+              }
+
+              return (
+                <NavLink
+                to={route.path}
+                key={index}
+                className={isOpen ? "link active" : "link"}
+              >
+                <div className="icon">{route.icon}</div>
+                <AnimatePresence>
+                  {isOpen && (
+                    <motion.div
+                      variants={showAnimation}
+                      initial="hidden"
+                      animate="show"
+                      exit="hidden"
+                      className="link_text"
+                    >
+                      {route.name}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </NavLink>
+              );
             })}
-          </SidebarWrap>
-        </SidebarNav>
-      </IconContext.Provider>
+          </section>
+        </motion.div>
+
+        <main>{children}</main>
+      </div>
     </>
   );
 };
 
-export default Sidebar;
+export default SideBar;
