@@ -14,6 +14,7 @@ class Controller extends BaseController
 
     protected function success($data)
     {
+
         $response = [
             'meta' => [
                 'success' => true,
@@ -21,11 +22,27 @@ class Controller extends BaseController
                 'message' => 'OK',
             ],
             'data' => $data,
+            
+        ];
+
+        return response()->json($response, 200);
+    } 
+     protected function successWithPaginate($data)
+    {
+
+        $response = [
+            'meta' => [
+                'success' => true,
+                'code' => Response::HTTP_OK,
+                'message' => 'OK',
+            ],
+            'data' => $data['data'],
+            
         ];
 
         return response()->json($response, 200);
     }
-
+   
     protected function fail($message)
     {
         $response = [

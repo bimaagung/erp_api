@@ -1,9 +1,9 @@
-import React from 'react'
-import { useSelector } from 'react-redux';
-import { officeSelector } from '../../../features/officeSlice';
-
+import React from "react";
+import { useSelector } from "react-redux";
+import { officeSelector } from "../../../features/officeSlice";
+import { Button, Card, Col, Container, Row } from "react-bootstrap";
 const OfficeList = () => {
-  const data = useSelector(officeSelector.selectData)
+  const data = useSelector(officeSelector.selectData);
 
   return (
     <table>
@@ -20,13 +20,13 @@ const OfficeList = () => {
           <tr key={item.id}>
             <td>{item.id}</td>
             <td>{item.nama}</td>
-            <td>{item.alamat}</td> 
-             <td>example</td>
+            <td>{item.alamat}</td>
+            <td>example</td>
           </tr>
         ))}
       </tbody>
     </table>
   );
-}
+};
 
-export default OfficeList
+export default OfficeList;
