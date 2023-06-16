@@ -159,25 +159,25 @@ class KaryawanController extends Controller
         $dbResult['karyawan']['informasi_personal'] = $dbResult['personal'];
         $dbResult['karyawan']['informasi_pekerjaan'] = $dbResult['job'];
 
-        return $this->success($dbResult['karyawan']);
+        return $this->success(new KaryawanResource($dbResult['karyawan']));
     }
 
     public function findById($id)
     {
         $validator = Validator::make(['id' => $id], [
-            'id' => 'required|numeric',
+            'id' => ['required', 'numeric'],
         ]);
 
         if ($validator->fails()) {
             return $this->fail($validator->errors()->first());
         }
 
-        $karyawan = $this->karyawan->with(['personalInformation', 'jobInformation'])->find($id);
+        $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
         if (!$karyawan) {
             return $this->fail(__('karyawan.not_found'));
         }
 
-        return $this->success($karyawan);
+        return $this->success(new KaryawanResource($karyawan));
     }
 }
