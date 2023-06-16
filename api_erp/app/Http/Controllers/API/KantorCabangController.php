@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\KantorCabangResource;
+use App\Http\Resources\Paginations\PaginationKantorCabangResource;
 use App\Models\KantorCabang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -19,12 +19,13 @@ class KantorCabangController extends Controller
         $this->kantorCabang = $kantorCabang;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $data = $this->kantorCabang->get();
-        $result = KantorCabangResource::collection($data);
-
-        return ResponseBuilder::success($result);
+        $data = KantorCabang::query();
+        
+        $perPage = $request->query('per_page', 10);
+        $data = $data->paginate($perPage);
+        return new PaginationKantorCabangResource($data);
     }
 
     public function show($id)
