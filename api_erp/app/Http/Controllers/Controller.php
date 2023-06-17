@@ -23,7 +23,22 @@ class Controller extends BaseController
             'data' => $data,
         ];
 
-        return response()->json($response, 200);
+        return response()->json($response, Response::HTTP_OK);
+    }
+
+    protected function successWithPaginate($pagination, $data)
+    {
+        $response = [
+            'meta' => [
+                'success' => true,
+                'code' => Response::HTTP_OK,
+                'message' => 'OK',
+            ],
+            'data' => $data,
+            'pagination' => $pagination,
+        ];
+
+        return response()->json($response, Response::HTTP_OK);
     }
 
     protected function fail($message)
@@ -36,7 +51,7 @@ class Controller extends BaseController
             ]
         ];
 
-        return response()->json($response, 400);
+        return response()->json($response, Response::HTTP_BAD_REQUEST);
     }
 
     protected function notFound($message)
@@ -49,7 +64,7 @@ class Controller extends BaseController
             ]
         ];
 
-        return response()->json($response, 404);
+        return response()->json($response, Response::HTTP_NOT_FOUND);
     }
 
     protected function unauthorized()
@@ -62,6 +77,6 @@ class Controller extends BaseController
             ]
         ];
 
-        return response()->json($response, 401);
+        return response()->json($response, Response::HTTP_UNAUTHORIZED);
     }
 }

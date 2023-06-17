@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\UploadFile;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\KaryawanResource;
+use App\Http\Resources\Paginations\PaginationResource;
 use App\Models\JobInformation;
 use App\Models\Karyawan;
 use App\Models\PersonalInformation;
@@ -27,6 +28,26 @@ class KaryawanController extends Controller
         $this->karyawan = $karyawan;
         $this->personalInformation = $personalInformation;
         $this->jobInformation = $jobInformation;
+    }
+
+    public function index(Request $request)
+    {
+        $perPage = $request->query('per_page', 10);
+
+        $validator = Validator::make(['per_page' => $perPage], [
+            'per_page' => 'numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->fail($validator->errors()->first());
+        }
+
+        $karyawans = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->paginate($perPage);
+
+        return $this->successWithPaginate(
+            new PaginationResource($karyawans),
+            KaryawanResource::collection($karyawans),
+        );
     }
 
     public function create(Request $request)
