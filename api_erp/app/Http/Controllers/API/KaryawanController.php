@@ -202,14 +202,14 @@ class KaryawanController extends Controller
         return $this->success(new KaryawanResource($karyawan));
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $validator = Validator::make($request->all(), [
             'nama' => ['required', 'max:112'],
-            'nik' => ['required', 'integer', 'unique:karyawans'],
+            'nik' => ['required', 'integer'],
             'ttl' => ['required'],
             'jenis_kelamin' => ['required'],
-            'email' => ['required', 'email:rfc,dns', 'unique:karyawans', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+            'email' => ['required', 'email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
             'alamat' => ['required'],
             'domisili' => ['required'],
             'pendidikan' => ['required'],
@@ -223,14 +223,14 @@ class KaryawanController extends Controller
             'admin' => ['boolean'],
 
             // Personal Information
-            'npwp' => ['required', 'integer', 'unique:informasi_personal'],
+            'npwp' => ['required', 'integer'],
             'tipe_pajak',
             'potongan_pajak' => ['integer'],
             'tunjangan_pajak' => ['integer'],
             'nama_bank' => ['required'],
-            'nomor_akun_bank' => ['integer', 'unique:informasi_personal'],
-            'bpjs_ketenagakerjaan' => ['integer', 'unique:informasi_personal'],
-            'bpjs_kesehatan' => ['integer', 'unique:informasi_personal'],
+            'nomor_akun_bank' => ['integer'],
+            'bpjs_ketenagakerjaan' => ['integer'],
+            'bpjs_kesehatan' => ['integer'],
 
             // Job Information
             'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
@@ -245,16 +245,6 @@ class KaryawanController extends Controller
             'absen_diluar_kantor' => ['boolean'],
         ]);
 
-        $validator->setCustomMessages([
-            'kantor_cabang_id.exists' => __('branchOffice.not_found'),
-            'nik.unique' => __('karyawan.unique_nik'),
-            'email.unique' => __('karyawan.unique_email'),
-            'npwp.unique' => __('personal_information.unique_npwp'),
-            'nomor_akun_bank.unique' => __('personal_information.unique_nomor_akun_bank'),
-            'bpjs_ketenagakerjaan.unique' => __('personal_information.unique_bpjs_ketenagakerjaan'),
-            'bpjs_kesehatan.unique' => __('personal_information.unique_bpjs_kesehatan'),
-        ]);
-
         if ($validator->fails()) {
             $errors = $validator->errors();
 
@@ -265,6 +255,7 @@ class KaryawanController extends Controller
             }
         }
 
+        // TODO: Fixing if file image empty
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');
             if (!$upload) {
@@ -275,8 +266,8 @@ class KaryawanController extends Controller
         }
 
         try {
-            $dbResult = DB::transaction(function () use ($request, $upload) {
-                $karyawanResult = $this->karyawan->create([
+            $dbResult = DB::transaction(function () use ($id, $request, $upload) {
+                $this->karyawan->where('id', $id)->update([
                     'nama' => $request->nama,
                     'nik' => $request->nik,
                     'ttl' => $request->ttl,
@@ -292,8 +283,7 @@ class KaryawanController extends Controller
                     'admin' => $request->admin,
                 ]);
 
-                $personalResult = $this->personalInformation->create([
-                    'karyawan_id' => $karyawanResult->id,
+                $this->personalInformation->where('karyawan_id', $id)->update([
                     'npwp' => $request->npwp,
                     'tipe_pajak' => $request->tipe_pajak,
                     'potongan_pajak' => $request->potongan_pajak,
@@ -304,8 +294,7 @@ class KaryawanController extends Controller
                     'bpjs_kesehatan' => $request->bpjs_kesehatan,
                 ]);
 
-                $jobResult = $this->jobInformation->create([
-                    'karyawan_id' => $karyawanResult->id,
+                $this->jobInformation->where('karyawan_id', $id)->update([
                     'kantor_cabang_id' => $request->kantor_cabang_id,
                     'department' => $request->department,
                     'jabatan' => $request->jabatan,
@@ -317,21 +306,14 @@ class KaryawanController extends Controller
                     'mode_absensi' => $request->mode_absensi,
                     'absen_diluar_kantor' => $request->absen_diluar_kantor,
                 ]);
-
-                return [
-                    'karyawan' => $karyawanResult,
-                    'personal' => $personalResult,
-                    'job' => $jobResult,
-                ];
             }, 5);
         } catch (QueryException $e) {
             DB::rollback();
             throw $e;
         }
 
-        $dbResult['karyawan']['informasi_personal'] = $dbResult['personal'];
-        $dbResult['karyawan']['informasi_pekerjaan'] = $dbResult['job'];
+        $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
-        return $this->success(new KaryawanResource($dbResult['karyawan']));
+        return $this->success(new KaryawanResource($karyawan));
     }
 }

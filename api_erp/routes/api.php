@@ -36,6 +36,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'findById');
             Route::post('/', 'create');
+            Route::put('/{id}', 'update');
         });
         Route::controller(PersonalInformationController::class)->group(function () {
             Route::post('/informasi-personal/{karyawan_id}', 'save');
