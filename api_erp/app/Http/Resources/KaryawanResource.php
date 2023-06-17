@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Storage;
 
 class KaryawanResource extends JsonResource
 {
@@ -27,7 +28,7 @@ class KaryawanResource extends JsonResource
             'agama' => $this->agama,
             'tanggal_lahir' => $this->tanggal_lahir,
             'telp' => $this->telp,
-            'foto' => $this->foto,
+            'foto' => url('/') . Storage::url('karyawan/' . $this->foto),
             'informasi_personal' => new PersonalInformationResource($this->informasiPersonal),
             'informasi_pekerjaan' => new JobInformationResource($this->informasiPekerjaan),
             'created_at' => (string) $this->created_at,
