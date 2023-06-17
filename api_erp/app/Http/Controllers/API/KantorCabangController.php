@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\KantorCabangResource;
+use App\Http\Resources\PaginationResource;
 use App\Http\Resources\Paginations\PaginationKantorCabangResource;
 use App\Models\KantorCabang;
 use Illuminate\Http\Request;
@@ -21,11 +23,21 @@ class KantorCabangController extends Controller
 
     public function index(Request $request)
     {
-        $data = KantorCabang::query();
-        
         $perPage = $request->query('per_page', 10);
-        $data = $data->paginate($perPage);
-        return new PaginationKantorCabangResource($data);
+        $validator = Validator::make(['per_page' => $perPage], [
+            'per_page' => 'numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->fail($validator->errors()->first());
+        }
+
+        $branchOffice = $this->kantorCabang->orderBy('created_at', 'DESC')->paginate($perPage);
+
+        return $this->successWithPaginate(
+            new PaginationResource($branchOffice),
+            KantorCabangResource::collection($branchOffice),
+        );
     }
 
     public function show($id)
@@ -33,7 +45,7 @@ class KantorCabangController extends Controller
         $data = $this->kantorCabang->where('id', $id)->first();
 
         if (!$data) {
-            return $this->fail(__('branchOffice.not_found')); 
+            return $this->fail(__('branchOffice.not_found'));
         }
 
         return $this->success($data);
@@ -52,7 +64,7 @@ class KantorCabangController extends Controller
             'keluar_sabtu_minggu' => ['required'],
         ]);
         if ($validator->fails()) {
-            return $this->fail($validator->errors()->first()); 
+            return $this->fail($validator->errors()->first());
         }
 
         $data = $request->only([
@@ -67,6 +79,6 @@ class KantorCabangController extends Controller
         ]);
 
         $result = $this->kantorCabang->create($data);
-        return $this->success($result);
+        return $this->success(new KantorCabangResource($result));
     }
 }

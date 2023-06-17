@@ -5,7 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Helpers\UploadFile;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\KaryawanResource;
-use App\Http\Resources\Paginations\PaginationResource;
+use App\Http\Resources\PaginationResource;
 use App\Models\JobInformation;
 use App\Models\Karyawan;
 use App\Models\PersonalInformation;
