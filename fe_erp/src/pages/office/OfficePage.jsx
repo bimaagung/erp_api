@@ -14,7 +14,7 @@ const OfficePage = () => {
   }, [])
 
   const handleAddKantroCabang = () => {
-    navigate('/admin/add/kantor-cabang08:30')
+    navigate('/admin/add/kantor-cabang')
   }
 
   return (
