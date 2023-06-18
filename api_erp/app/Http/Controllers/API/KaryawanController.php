@@ -12,6 +12,7 @@ use App\Models\PersonalInformation;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
@@ -174,6 +175,7 @@ class KaryawanController extends Controller
             }, 5);
         } catch (QueryException $e) {
             DB::rollback();
+            Log::error($e);
             throw $e;
         }
 
@@ -255,7 +257,6 @@ class KaryawanController extends Controller
             }
         }
 
-        // TODO: Fixing if file image empty
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');
             if (!$upload) {
@@ -309,6 +310,7 @@ class KaryawanController extends Controller
             }, 5);
         } catch (QueryException $e) {
             DB::rollback();
+            Log::error($e);
             throw $e;
         }
 
