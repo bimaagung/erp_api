@@ -5,7 +5,7 @@ import { BiSearch } from "react-icons/bi";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SubMenu";
-import '../styles/layout.css'
+import "../styles/layout.css";
 
 const routes = [
   {
@@ -40,7 +40,6 @@ const routes = [
       },
     ],
   },
-  
 ];
 
 const SideBar = ({ children }) => {
@@ -147,31 +146,31 @@ const SideBar = ({ children }) => {
 
               return (
                 <NavLink
-                to={route.path}
-                key={index}
-                className={isOpen ? "link active" : "link"}
-              >
-                <div className="icon">{route.icon}</div>
-                <AnimatePresence>
-                  {isOpen && (
-                    <motion.div
-                      variants={showAnimation}
-                      initial="hidden"
-                      animate="show"
-                      exit="hidden"
-                      className="link_text"
-                    >
-                      {route.name}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </NavLink>
+                  to={route.path}
+                  key={index}
+                  className={isOpen ? "link active" : "link"}
+                >
+                  <div className="icon">{route.icon}</div>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        variants={showAnimation}
+                        initial="hidden"
+                        animate="show"
+                        exit="hidden"
+                        className="link_text"
+                      >
+                        {route.name}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </NavLink>
               );
             })}
           </section>
         </motion.div>
 
-        <main>{children}</main>
+        <div>{children}</div>
       </div>
     </>
   );
