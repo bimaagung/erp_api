@@ -11,8 +11,11 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.5",
+    "@syncfusion/ej2-react-calendars": "^21.2.10",
+    "add": "^2.0.6",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
+    "date-fns": "^2.30.0",
     "framer-motion": "^10.12.16",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
@@ -23,7 +26,11 @@
     "react-icons": "^4.9.0",
     "react-redux": "^8.1.0",
     "react-router-dom": "^6.12.1",
-    "styled-components": "^6.0.0-rc.3"
+    "react-table": "^7.8.0",
+    "react-time-picker": "^6.2.0",
+    "remove": "^0.1.5",
+    "styled-components": "^6.0.0-rc.3",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@types/react": "^18.0.37",
