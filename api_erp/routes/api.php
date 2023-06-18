@@ -37,6 +37,7 @@ Route::middleware('auth:api')->group(function () {
             Route::get('/{id}', 'findById');
             Route::post('/', 'create');
             Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
         });
         Route::controller(PersonalInformationController::class)->group(function () {
             Route::post('/informasi-personal/{karyawan_id}', 'save');
