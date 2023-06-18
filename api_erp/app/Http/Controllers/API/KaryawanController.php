@@ -247,6 +247,10 @@ class KaryawanController extends Controller
             'absen_diluar_kantor' => ['boolean'],
         ]);
 
+        $validator->setCustomMessages([
+            'kantor_cabang_id.exists' => __('branchOffice.not_found'),
+        ]);
+
         if ($validator->fails()) {
             $errors = $validator->errors();
 
@@ -267,7 +271,7 @@ class KaryawanController extends Controller
         }
 
         try {
-            $dbResult = DB::transaction(function () use ($id, $request, $upload) {
+            DB::transaction(function () use ($id, $request, $upload) {
                 $this->karyawan->where('id', $id)->update([
                     'nama' => $request->nama,
                     'nik' => $request->nik,
@@ -317,5 +321,43 @@ class KaryawanController extends Controller
         $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
         return $this->success(new KaryawanResource($karyawan));
+    }
+
+    public function destroy($id)
+    {
+        $validator = Validator::make(['id' => $id], [
+            'id' => ['required', 'numeric', 'exists:karyawans,id']
+        ]);
+
+        $validator->setCustomMessages([
+            'id.exists' => __('karyawan.not_found'),
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+
+            if ($errors->has('id')) {
+                return $this->fail($errors->first('id'));
+            } else {
+                return $this->fail($validator->errors()->first());
+            }
+        }
+
+        try {
+            $dbResult = DB::transaction(function () use ($id) {
+                $karyawanResult = $this->karyawan->destroy($id);
+                $this->personalInformation->destroy($id);
+                $this->jobInformation->destroy($id);
+                return [
+                    'karyawan' => $karyawanResult,
+                ];
+            }, 5);
+        } catch (QueryException $e) {
+            DB::rollback();
+            Log::error($e);
+            throw $e;
+        }
+
+        return $this->success($dbResult['karyawan']);
     }
 }
