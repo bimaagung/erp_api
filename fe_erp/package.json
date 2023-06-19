@@ -10,12 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "^5.1.4",
     "@reduxjs/toolkit": "^1.9.5",
-    "@syncfusion/ej2-react-calendars": "^21.2.10",
-    "add": "^2.0.6",
+    "antd": "^5.6.1",
     "axios": "^1.4.0",
     "bootstrap": "^5.3.0",
     "date-fns": "^2.30.0",
+    "dayjs": "^1.11.8",
     "framer-motion": "^10.12.16",
     "js-cookie": "^3.0.5",
     "jwt-decode": "^3.1.2",
