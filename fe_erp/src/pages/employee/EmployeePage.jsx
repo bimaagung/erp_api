@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import SideBar from '../../components/layouts/Sidebar'
-import { useDispatch, useSelector } from 'react-redux'
 import {SiAddthis} from 'react-icons/si'
 import { useNavigate } from 'react-router-dom'
 import EmployeeList from './components/EmployeeList'
-import { employeeSelector, getEmployeeList } from '../../features/employeeSlice'
 
 const EmployeePage = () => {
   const navigate = useNavigate()
