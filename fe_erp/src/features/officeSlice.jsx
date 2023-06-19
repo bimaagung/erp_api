@@ -24,6 +24,17 @@ export const getOfficeList = createAsyncThunk(
   }
 );
 
+export const getOfficeByid = createAsyncThunk("office/getbyid", async (id) => {
+  const apiUrl = config.apiBaseUrl
+  try {
+    const response = await axios.get(apiUrl + `kantor-cabang/${id}`)
+    return response.data
+    
+  } catch (error) {
+    console.log(error)  
+  }
+})
+
 
 export const addOffice = createAsyncThunk("office/add", async (params = {}) => {
 
@@ -71,6 +82,16 @@ const officeSlice = createSlice({
         state.data = action.payload
       })
       .addCase(addOffice.pending, (state, action) => {
+        state.loading = true,
+        state.errorMessage = null,
+        state.data = null
+      })
+      .addCase(getOfficeByid.fulfilled, (state, action) => {
+        state.loading = false,
+        state.errorMessage = null,
+        state.data = action.payload
+      })
+      .addCase(getOfficeByid.pending, (state, action) => {
         state.loading = true,
         state.errorMessage = null,
         state.data = null

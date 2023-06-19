@@ -29,7 +29,7 @@ const ListOrderTable = forwardRef((props, ref) => {
         accessor: 'birthDate',
         Cell: ({ row }) => (
           <>
-          <Link to={`/admin/kantor-cabang/${row.original.id}`}>
+          <Link to={`/admin/update/kantor-cabang/${row.original.id}`}>
             <Button
               variant="info"
               size="sm"
