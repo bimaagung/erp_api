@@ -38,19 +38,17 @@ class KaryawanController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->query('per_page', 10);
-        $currentPage = $request->query('current_page', 1);
 
-        $validator = Validator::make(['per_page' => $perPage, 'current_page' => $currentPage], [
+        $validator = Validator::make(['per_page' => $perPage], [
             'per_page' => 'numeric',
-            'current_page' => 'numeric'
         ]);
 
         if ($validator->fails()) {
             return $this->fail($validator->errors()->first());
         }
 
-        $karyawans = Cache::remember($this->cacheKey, $this->expiration, function () use ($perPage , $currentPage) {
-            return $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->orderBy('created_at', 'DESC')->paginate($perPage, $currentPage);
+        $karyawans = Cache::remember($this->cacheKey, $this->expiration, function () use ($perPage) {
+            return $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->orderBy('created_at', 'DESC')->paginate($perPage);
         });
 
         return $this->successWithPaginate(
