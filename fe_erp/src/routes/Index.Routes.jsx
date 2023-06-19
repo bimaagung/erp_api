@@ -2,8 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SigninPage from "../pages/auth/signin/SigninPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import Test from "../pages/dashboard/Test";
-import Sidebar from "../components/layouts/Sidebar";
 import HomePage from "../pages/Home/HomePage";
 import OfficePage from "../pages/office/OfficePage";
 import EmployeePage from "../pages/employee/EmployeePage";
