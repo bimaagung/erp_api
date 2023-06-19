@@ -7,7 +7,7 @@ import EmployeeList from './components/EmployeeList'
 const EmployeePage = () => {
   const navigate = useNavigate()
   const handleAddKaryawan = () => {
-    navigate('/admin/add/karywan')
+    navigate('/admin/add/karyawan')
   }
   return (
     <SideBar>
