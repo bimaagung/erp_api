@@ -17,10 +17,10 @@ const FormAddKantorCabang = (props) => {
     alamat: "",
     phone1: "",
     phone2: "",
-    jamMasukSeninJumat: (dayjs('09:00', format)).format(format),
-    jamMasukSabtuMinggu: (dayjs('09:00', format)).format(format),
-    jamKeluarSeninJumat: (dayjs('17:00', format)).format(format),
-    jamKeluarSabtuMinggu: (dayjs('17:00', format)).format(format)
+    masuk_senin_jumat: (dayjs('09:00', format)).format(format),
+    masuk_sabtu_minggu: (dayjs('09:00', format)).format(format),
+    keluar_senin_jumat: (dayjs('17:00', format)).format(format),
+    keluar_sabtu_minggu: (dayjs('17:00', format)).format(format)
   })
   const handlelMasukSeninJumat = (time) => {
     if (time) {
@@ -28,7 +28,7 @@ const FormAddKantorCabang = (props) => {
       const formattedTime = time.format(format);
       setForm({
         ...form,
-        jamMasukSeninJumat: formattedTime,
+        masuk_senin_jumat: formattedTime,
       });
     }
   };
@@ -39,7 +39,7 @@ const FormAddKantorCabang = (props) => {
       const formattedTime = time.format(format);
       setForm({
         ...form,
-        jamMasukSabtuMinggu: formattedTime,
+        masuk_sabtu_minggu: formattedTime,
       });
     }
   };
@@ -50,7 +50,7 @@ const handlelKeluarSeninJumat = (time) => {
       const formattedTime = time.format(format);
       setForm({
         ...form,
-        jamKeluarSeninJumat: formattedTime,
+        keluar_senin_jumat: formattedTime,
       });
     }
   };
@@ -60,7 +60,7 @@ const handlelKeluarSeninJumat = (time) => {
       const formattedTime = time.format(format);
       setForm({
         ...form,
-        jamMasukSabtuMinggu: formattedTime,
+        keluar_sabtu_minggu: formattedTime,
       });
     }
   };

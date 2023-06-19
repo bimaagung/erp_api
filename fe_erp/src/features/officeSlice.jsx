@@ -24,6 +24,28 @@ export const getOfficeList = createAsyncThunk(
   }
 );
 
+
+export const addOffice = createAsyncThunk("office/add", async (params = {}) => {
+
+  // const token = document.cookie
+  //     .split('; ')
+  //     .find((row) => row.startsWith('token='))
+  //     ?.split('=')[1];
+
+  const apiUrl = config.apiBaseUrl
+  try {
+      const response = await axios.post(apiUrl + "kantor-cabang", params, {
+          // headers: {
+          //     Authorization: `Bearer ${token}`
+          // }
+      });
+
+      return response.data
+  } catch (err) {
+      console.log(err)
+  }
+})
+
 const officeSlice = createSlice({
   name: "office",
   initialState,
@@ -42,7 +64,17 @@ const officeSlice = createSlice({
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = {};
-      });
+      })
+      .addCase(addOffice.fulfilled, (state, action) => {
+        state.loading = false,
+        state.errorMessage = null,
+        state.data = action.payload
+      })
+      .addCase(addOffice.pending, (state, action) => {
+        state.loading = true,
+        state.errorMessage = null,
+        state.data = null
+      })
   }
 });
 
