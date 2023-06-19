@@ -1,18 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/formAddKantorCabang.css";
 import { Card } from "react-bootstrap";
 import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getOfficeByid, officeSelector } from "../../../features/officeSlice";
 
 
 const FormUpdateKantorCabang = (props) => {
-  
-  const format = 'HH:mm'; 
-  const [selectedMasukSeninJumat, setSelectedSeninJumat] = useState(dayjs('09:00', format));
-  const [selectedMasukSabtuMinggu, setSelectedMasukSabtuMinggu] = useState(dayjs('09:00', format));
-  const [selectedKeluarSeninJumat, setSelectedKeluarSeninJumat] = useState(dayjs('17:00', format));
-  const [selectedKeluarSabtuMinggu, setSelectedKeluarSabutMinggu] = useState(dayjs('17:00', format));
-  const [form,  setForm]= useState({
+    const { id } = useParams();
+    const dispatch = useDispatch()
+    const data = useSelector(officeSelector.selectData)
+    useEffect(() => {
+        dispatch(getOfficeByid(id))
+    },[])
+
+    const format = 'HH:mm'; 
+    const [selectedMasukSeninJumat, setSelectedSeninJumat] = useState(dayjs('09:00', format));
+    const [selectedMasukSabtuMinggu, setSelectedMasukSabtuMinggu] = useState(dayjs('09:00', format));
+    const [selectedKeluarSeninJumat, setSelectedKeluarSeninJumat] = useState(dayjs('17:00', format));
+    const [selectedKeluarSabtuMinggu, setSelectedKeluarSabutMinggu] = useState(dayjs('17:00', format))
+
+    const [form,  setForm]= useState({
     nama: "",
     alamat: "",
     phone1: "",
@@ -84,6 +94,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="nama"
+              placeholder={data?.data?.nama}
               onChange={e => setForm({
                 ...form, ...{ nama: e.target.value }
               })}
@@ -97,6 +108,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="Alamat" 
+              placeholder= {data?.data?.alamat}
               onChange={e => setForm({
                 ...form, ...{ alamat: e.target.value }
               })}
@@ -112,6 +124,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control" 
                   id="phone1" 
+                  placeholder={data?.data?.phone1}
                   onChange={e => setForm({
                     ...form, ...{ phone1: e.target.value }
                   })}
@@ -148,7 +161,8 @@ const handlelKeluarSeninJumat = (time) => {
                   <input 
                   type="text" 
                   className="form-control"
-                   id="phone2" 
+                   id="phone2"
+                   placeholder={data?.data?.phone2} 
                    onChange={e => setForm({
                     ...form, ...{ phone2: e.target.value }
                   })}

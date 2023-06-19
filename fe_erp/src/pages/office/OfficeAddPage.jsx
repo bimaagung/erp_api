@@ -12,7 +12,6 @@ const OfficeAddPage = () => {
   const navigate = useNavigate()
   
   const handleSubmit = (payload) => {
-    console.log(payload)
     dispatch(addOffice(payload))
     if(!loading) {
       navigate('/admin/kantor-cabang')
