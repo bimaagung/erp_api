@@ -11,8 +11,10 @@ use App\Models\Karyawan;
 use App\Models\PersonalInformation;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
@@ -23,8 +25,10 @@ class KaryawanController extends Controller
     protected Karyawan $karyawan;
     protected PersonalInformation $personalInformation;
     protected JobInformation $jobInformation;
+    protected string $cacheKey = 'karyawan';
+    protected int $expiration = 60 * 3;
 
-    public function __construct(Karyawan $karyawan, PersonalInformation $personalInformation, JobInformation $jobInformation)
+    public function __construct(Karyawan $karyawan, PersonalInformation $personalInformation, JobInformation $jobInformation, Redis $redis)
     {
         $this->karyawan = $karyawan;
         $this->personalInformation = $personalInformation;
@@ -43,7 +47,9 @@ class KaryawanController extends Controller
             return $this->fail($validator->errors()->first());
         }
 
-        $karyawans = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->orderBy('created_at', 'DESC')->paginate($perPage);
+        $karyawans = Cache::remember($this->cacheKey, $this->expiration, function () use ($perPage) {
+            return $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->orderBy('created_at', 'DESC')->paginate($perPage);
+        });
 
         return $this->successWithPaginate(
             new PaginationResource($karyawans),
@@ -178,6 +184,8 @@ class KaryawanController extends Controller
             Log::error($e);
             throw $e;
         }
+
+        Cache::delete($this->cacheKey);
 
         $dbResult['karyawan']['informasi_personal'] = $dbResult['personal'];
         $dbResult['karyawan']['informasi_pekerjaan'] = $dbResult['job'];
@@ -320,6 +328,8 @@ class KaryawanController extends Controller
 
         $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
+        Cache::delete($this->cacheKey);
+
         return $this->success(new KaryawanResource($karyawan));
     }
 
@@ -357,6 +367,8 @@ class KaryawanController extends Controller
             Log::error($e);
             throw $e;
         }
+
+        Cache::delete($this->cacheKey);
 
         return $this->success($dbResult['karyawan']);
     }
