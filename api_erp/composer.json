@@ -9,8 +9,10 @@
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^3.2",
+        "laravel/telescope": "^4.14",
         "laravel/tinker": "^2.7",
         "milantarami/laravel-api-response-builder": "^1.0",
+        "opcodesio/log-viewer": "^2.4",
         "php-open-source-saver/jwt-auth": "^2.1",
         "predis/predis": "^2.2"
     },
