@@ -2,12 +2,11 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SigninPage from "../pages/auth/signin/SigninPage";
 import DashboardPage from "../pages/dashboard/DashboardPage";
-import Test from "../pages/dashboard/Test";
-import Sidebar from "../components/layouts/Sidebar";
 import HomePage from "../pages/Home/HomePage";
 import OfficePage from "../pages/office/OfficePage";
 import EmployeePage from "../pages/employee/EmployeePage";
 import SalaryPage from "../pages/Salary/SalaryPage";
+import OfficeAddPage from "../pages/office/OfficeAddPage";
 
 const IndexRoutes = () => {
   return (
@@ -19,6 +18,7 @@ const IndexRoutes = () => {
         <Route path="/admin/karyawan" element={<EmployeePage />} />
         <Route path="/admin/gaji" element={<SalaryPage />} />
         <Route path="/admin/kantor-cabang" element={<OfficePage />} />
+        <Route path="/admin/add/kantor-cabang" element={<OfficeAddPage />} />
       </Routes>
     </Router>
   );

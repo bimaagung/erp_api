@@ -30,13 +30,14 @@ Route::controller(AuthContoller::class)->group(function () {
     Route::post('/signin', 'login')->name('login');;
 });
 
-Route::middleware('auth:api')->group(function () {
+// Route::middleware('auth:api')->group(function () {
     Route::group(['prefix' => 'karyawan'], function () {
         Route::controller(KaryawanController::class)->group(function () {
             Route::get('/', 'index');
             Route::get('/{id}', 'findById');
             Route::post('/', 'create');
             Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
         });
         Route::controller(PersonalInformationController::class)->group(function () {
             Route::post('/informasi-personal/{karyawan_id}', 'save');
@@ -47,7 +48,7 @@ Route::middleware('auth:api')->group(function () {
         Route::controller(FamilyController::class)->group(function () {
             Route::post('/keluarga/{karyawan_id}', 'store');
         });
-    });
+    // });
 });
 
 

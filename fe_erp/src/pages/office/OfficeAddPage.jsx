@@ -1,0 +1,28 @@
+import React from "react";
+import SideBar from "../../components/layouts/Sidebar";
+import FormAddKantorCabang from "./components/FormAddKantorCabang";
+import { useDispatch, useSelector } from 'react-redux';
+import { addOffice, officeSelector } from "../../features/officeSlice";
+import { useNavigate } from "react-router-dom";
+
+
+const OfficeAddPage = () => {
+  const dispatch = useDispatch()
+  const loading = useSelector(officeSelector.loading)
+  const navigate = useNavigate()
+  
+  const handleSubmit = (payload) => {
+    console.log(payload)
+    dispatch(addOffice(payload))
+    if(!loading) {
+      navigate('/admin/kantor-cabang')
+    }
+  }
+  return (
+    <SideBar>
+     <FormAddKantorCabang onSubmit = {handleSubmit}/>
+    </SideBar>
+  );
+};
+
+export default OfficeAddPage;
