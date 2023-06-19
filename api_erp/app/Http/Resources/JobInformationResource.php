@@ -17,7 +17,7 @@ class JobInformationResource extends JsonResource
         return [
             'id' => $this->id,
             'karyawan_id' => (int)$this->karyawan_id,
-            'kantor_cabang_id' => (int)$this->kantor_cabang_id,
+            'kantor_cabang' => new KantorCabangResource($this->branchOffice),
             'department' => $this->department,
             'jabatan' => $this->jabatan,
             'tanggal_masuk' => $this->tanggal_masuk,

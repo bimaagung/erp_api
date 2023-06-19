@@ -24,4 +24,9 @@ class JobInformation extends Model
         'mode_absensi',
         'absen_diluar_kantor',
     ];
+
+    public function branchOffice()
+    {
+        return $this->hasOne(KantorCabang::class, 'id', 'kantor_cabang_id');
+    }
 }
