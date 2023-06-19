@@ -16,14 +16,13 @@ const FormUpdateKantorCabang = (props) => {
         dispatch(getOfficeByid(id))
     },[])
 
-    console.log(data)
-  
-  const format = 'HH:mm'; 
-  const [selectedMasukSeninJumat, setSelectedSeninJumat] = useState(dayjs(data?.data?.masuk_senin_jumat, format));
-  const [selectedMasukSabtuMinggu, setSelectedMasukSabtuMinggu] = useState(dayjs(data?.data?.masuk_sabtu_minggu, format));
-  const [selectedKeluarSeninJumat, setSelectedKeluarSeninJumat] = useState(dayjs(data?.data?.keluar_senin_jumat, format));
-  const [selectedKeluarSabtuMinggu, setSelectedKeluarSabutMinggu] = useState(dayjs(data?.data?.keluar_sabtu_minggu, format));
-  const [form,  setForm]= useState({
+    const format = 'HH:mm'; 
+    const [selectedMasukSeninJumat, setSelectedSeninJumat] = useState(dayjs('09:00', format));
+    const [selectedMasukSabtuMinggu, setSelectedMasukSabtuMinggu] = useState(dayjs('09:00', format));
+    const [selectedKeluarSeninJumat, setSelectedKeluarSeninJumat] = useState(dayjs('17:00', format));
+    const [selectedKeluarSabtuMinggu, setSelectedKeluarSabutMinggu] = useState(dayjs('17:00', format))
+
+    const [form,  setForm]= useState({
     nama: "",
     alamat: "",
     phone1: "",

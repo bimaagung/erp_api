@@ -57,6 +57,27 @@ export const addOffice = createAsyncThunk("office/add", async (params = {}) => {
   }
 })
 
+
+export const UpdateOffice = createAsyncThunk("office/update", async ({ id, params }) => {
+  // const token = document.cookie
+  //     .split('; ')
+  //     .find((row) => row.startsWith('token='))
+  //     ?.split('=')[1];
+  const apiUrl = config.apiBaseUrl
+  try {
+      const response = await axios.put(apiUrl + `kantor-cabang/${id}`, params, {
+          // headers: {
+          //     "content-type": "multipart/form-data",
+          //     Authorization: `Bearer ${token}`
+          // }
+      })
+
+      return response.data
+  } catch (err) {
+      console.log(err)
+  }
+})
+
 const officeSlice = createSlice({
   name: "office",
   initialState,
@@ -95,6 +116,16 @@ const officeSlice = createSlice({
         state.loading = true,
         state.errorMessage = null,
         state.data = null
+      })
+      .addCase(UpdateOffice.pending, (state, action) => {
+        state.loading = true,
+        state.errorMessage = null
+        state.data = null
+      })
+      .addCase(UpdateOffice.fulfilled, (state, action) => {
+        state.loading = false,
+        state.errorMessage = null
+        state.data = action.payload
       })
   }
 });
