@@ -31,23 +31,23 @@ Route::controller(AuthContoller::class)->group(function () {
 });
 
 // Route::middleware('auth:api')->group(function () {
-    Route::group(['prefix' => 'karyawan'], function () {
-        Route::controller(KaryawanController::class)->group(function () {
-            Route::get('/', 'index');
-            Route::get('/{id}', 'findById');
-            Route::post('/', 'create');
-            Route::put('/{id}', 'update');
-            Route::delete('/{id}', 'destroy');
-        });
-        Route::controller(PersonalInformationController::class)->group(function () {
-            Route::post('/informasi-personal/{karyawan_id}', 'save');
-        });
-        Route::controller(JobInformationController::class)->group(function () {
-            Route::post('/informasi-pekerjaan/{karyawan_id}', 'save');
-        });
-        Route::controller(FamilyController::class)->group(function () {
-            Route::post('/keluarga/{karyawan_id}', 'store');
-        });
+Route::group(['prefix' => 'karyawan'], function () {
+    Route::controller(KaryawanController::class)->group(function () {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'findById');
+        Route::post('/', 'create');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
+    Route::controller(PersonalInformationController::class)->group(function () {
+        Route::post('/informasi-personal/{karyawan_id}', 'save');
+    });
+    Route::controller(JobInformationController::class)->group(function () {
+        Route::post('/informasi-pekerjaan/{karyawan_id}', 'save');
+    });
+    Route::controller(FamilyController::class)->group(function () {
+        Route::post('/keluarga/{karyawan_id}', 'store');
+    });
     // });
 });
 
@@ -57,3 +57,6 @@ Route::group(['prefix' => 'kantor-cabang'], function () {
     Route::get('/{id}', [KantorCabangController::class, 'show']);
     Route::post('/', [KantorCabangController::class, 'create']);
 });
+
+// http://localhost:8000/log-viewer for logging
+// http://localhost:8000/telescope for review  performance
