@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Link } from 'react-router-dom'
 
 const ListOrderTable = forwardRef((props, ref) => {
-  const apiUrl = config.apiBaseUrl + "kantor-cabang"
+  const apiUrl = config.apiBaseUrl + "karyawan"
 
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -21,15 +21,23 @@ const ListOrderTable = forwardRef((props, ref) => {
         accessor: 'nama',
       },
       {
-        Header: 'Alamat',
-        accessor: 'alamat',
+        Header: 'Cabang',
+        accessor: 'informasi_pekerjaan.kantor_cabang_id',
+      },
+      {
+        Header: 'Departemen',
+        accessor: 'informasi_pekerjaan.department',
+      },
+      {
+        Header: 'Jabatan',
+        accessor: 'informasi_pekerjaan.jabatan',
       },
       {
         Header: 'Action',
         accessor: 'birthDate',
         Cell: ({ row }) => (
           <>
-          <Link to={`/admin/kantor-cabang/${row.original.id}`}>
+          <Link to={`/admin/karyawan/${row.original.id}`}>
             <Button
               variant="info"
               size="sm"
@@ -103,10 +111,10 @@ const ListOrderTable = forwardRef((props, ref) => {
         }
 
         if (pageSize) params.pageSize = pageSize
-        // const token = document.cookie
-        //   .split('; ')
-        //   .find((row) => row.startsWith('token='))
-        //   ?.split('=')[1];
+        const token = document.cookie
+          .split('; ')
+          .find((row) => row.startsWith('token='))
+          ?.split('=')[1];
 
         const response = await axios.get(apiUrl, {
           params,
