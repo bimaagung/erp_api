@@ -5,13 +5,20 @@ import { useDispatch, useSelector } from "react-redux";
 import { useDropzone } from "react-dropzone";
 import "../styles/formAddEmployee.css";
 import { getOfficeList, officeSelector } from "../../../features/officeSlice";
+import { departmentSelector, getDepartemntList } from "../../../features/departmentSlice";
+import { getPositionList, positionSelector } from "../../../features/positionSlice";
 
 const FormAddEmployee = (props) => {
   const office = useSelector(officeSelector.selectData);
+  const department = useSelector(departmentSelector.selectData)
+  const position = useSelector(positionSelector.selectData)
+
   const [previewImage, setPreviewImage] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getOfficeList());
+    dispatch(getDepartemntList())
+    dispatch(getPositionList())
   }, []);
 
   const [form, setForm] = useState({
@@ -36,7 +43,7 @@ const FormAddEmployee = (props) => {
     nomor_akun_bank: "",
     bpjs_ketenagakerjaan: "",
     bpjs_kesehatan: "",
-    kantor_cabang_id: null,
+    kantor_cabang_id: 1,
     departement: "",
     jabatan: "",
     tanggal_masuk: "",
@@ -48,7 +55,7 @@ const FormAddEmployee = (props) => {
     absen_diluar_kantor: "",
   });
 
-  console.log(form);
+  // console.log(form);
 
   const formateDate = (value) => {
     const date = new Date(value);
@@ -925,6 +932,30 @@ const FormAddEmployee = (props) => {
                 >
                   <option value=""></option>
                   {office?.data?.map((o) => (
+                    <option key={o.id} value={parseInt( o.id)}>
+                      {o.nama}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="departement" className="form-label">
+                  Departemen:
+                </label>
+                <select
+                  id="department"
+                  className="form-select"
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      ...{
+                        departement: e.target.value,
+                      },
+                    })
+                  }
+                >
+                  <option value=""></option>
+                  {department?.data?.map((o) => (
                     <option key={o.id} value={o.id}>
                       {o.nama}
                     </option>
@@ -932,36 +963,28 @@ const FormAddEmployee = (props) => {
                 </select>
               </div>
               <div className="mb-3">
-                <label htmlFor="npwp" className="form-label">
-                  Departemen:
-                </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="npwp"
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      ...{ npwp: e.target.value },
-                    })
-                  }
-                />
-              </div>
-              <div className="mb-3">
-                <label htmlFor="tipe pajak" className="form-label">
+                <label htmlFor="jabatan" className="form-label">
                   Jabatan:
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="tipe-pajak"
+                <select
+                  id="jabatan"
+                  className="form-select"
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      ...{ tipe_pajak: e.target.value },
+                      ...{
+                        jabatan: e.target.value,
+                      },
                     })
                   }
-                />
+                >
+                  <option value=""></option>
+                  {position?.data?.map((o) => (
+                    <option key={o.id} value={o.id}>
+                      {o.nama}
+                    </option>
+                  ))}
+                </select>
               </div>
               <div className="row">
                 <div className="col-md-6">
@@ -977,20 +1000,24 @@ const FormAddEmployee = (props) => {
                 </div>
                 <div className="col-md-6">
                   <div className="mb-3">
-                    <label htmlFor="no-asuransi" className="form-label">
+                    <label htmlFor="status" className="form-label">
                       Status:
                     </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="no-asuransi"
-                      onChange={(e) =>
-                        setForm({
-                          ...form,
-                          ...{ bpjs_ketenagakerjaan: e.target.value },
-                        })
-                      }
-                    />
+                    <select
+                  id="status"
+                  className="form-select"
+                  onChange={(e) =>
+                    setForm({
+                      ...form,
+                      status: e.target.value,
+                    })
+                  }
+                >
+                  <option value=""> </option>
+                  <option value="Kontrak">Kontrak</option>
+                  <option value="Tetap">Tetap/Permanen</option>
+                  <option value="Lainnya">Lainnya</option>
+                </select>
                   </div>
                 </div>
               </div>
