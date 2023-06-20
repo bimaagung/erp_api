@@ -22,6 +22,22 @@ export const getEmployeeList = createAsyncThunk(
       return rejectWithValue(err.response.data);
     }
   }
+)
+
+export const addEmployee = createAsyncThunk(
+  "admin/add-employee",
+  async (_, { rejectWithValue }) => {
+    const apiUrl = config.apiBaseUrl;
+    try {
+      const response = await axios.post(apiUrl + "karyawan");
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
 );
 
 const employeeSlice = createSlice({
@@ -39,6 +55,19 @@ const employeeSlice = createSlice({
         state.errorMessage = null;
       })
       .addCase(getEmployeeList.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = {};
+      })
+      .addCase(addEmployee.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addEmployee.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+        state.errorMessage = null;
+      })
+      .addCase(addEmployee.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = {};
