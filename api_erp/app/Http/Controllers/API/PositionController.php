@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\PositionResource;
 use App\Models\Position;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class PositionController extends Controller
 {
@@ -13,6 +15,13 @@ class PositionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    protected Position $position;
+
+    public function __construct(Position $position)
+    {
+        $this->position = $position;
+    }
+
     public function index()
     {
         //
@@ -20,7 +29,19 @@ class PositionController extends Controller
 
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'nama' => ['required', 'exists:position, nama', 'max:112'],
+        ]);
+
+        $validator->setCustomMessages([
+            'nama.exists' => __('department.unique'),
+        ]);
+
+        $position = $this->position->create([
+            'nama' => $request->nama,
+        ]);
+
+        return $this->success(new PositionResource($position));
     }
 
     public function show(Position $position)
