@@ -8,7 +8,7 @@ import EmployeePage from "../pages/employee/EmployeePage";
 import SalaryPage from "../pages/Salary/SalaryPage";
 import OfficeAddPage from "../pages/office/OfficeAddPage";
 import OfficeUpdatePage from "../pages/office/OfficeUpdatePage";
-import EmployeeAddPage from "../pages/employee/components/EmployeeAddPage";
+import EmployeeAddPage from "../pages/employee/EmployeeAddPage";
 
 const IndexRoutes = () => {
   return (
