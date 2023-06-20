@@ -57,6 +57,7 @@ Route::group(['prefix' => 'department'], function () {
     Route::controller(DepartmentController::class)->group(function () {
         Route::post('/', 'store');
         Route::get('/', 'index');
+        Route::get('/{id}', 'findById');
     });
 });
 
