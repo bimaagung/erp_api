@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\API\AuthContoller;
+use App\Http\Controllers\API\DepartmentController;
 use App\Http\Controllers\API\FamilyController;
 use App\Http\Controllers\API\JobInformationController;
 use App\Http\Controllers\API\KantorCabangController;
 use App\Http\Controllers\API\KaryawanController;
 use App\Http\Controllers\API\PersonalInformationController;
+use App\Http\Resources\DepartmentResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
@@ -49,6 +51,12 @@ Route::group(['prefix' => 'karyawan'], function () {
         Route::post('/keluarga/{karyawan_id}', 'store');
     });
     // });
+});
+
+Route::group(['prefix' => 'department'], function () {
+    Route::controller(DepartmentController::class)->group(function () {
+        Route::post('/', 'store');
+    });
 });
 
 
