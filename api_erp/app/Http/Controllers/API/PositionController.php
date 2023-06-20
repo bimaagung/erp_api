@@ -24,7 +24,9 @@ class PositionController extends Controller
 
     public function index()
     {
-        //
+        $position = $this->position->orderBy('created_at', 'DESC')->get();
+
+        return $this->success(PositionResource::collection($position));
     }
 
     public function store(Request $request)
