@@ -90,8 +90,8 @@ const BasicTable = ({
     initPageNumbers(pageIndex + 1, pageCount)
   }, [initPageNumbers, pageIndex, pageCount])
 
-  const onChangePage = (page) => {
-    gotoPage(page - 1)
+  const onChangePage = (current_page) => {
+    gotoPage(current_page - 1)
   }
 
   const PagePrev = (props) => {
@@ -142,7 +142,7 @@ const BasicTable = ({
             return (
               <Pagination.Ellipsis
                 key={idx}
-                onClick={() => onChangePage(val.page)}
+                onClick={() => onChangePage(val.current_page)}
               />
             )
           }
