@@ -24,22 +24,26 @@ export const getEmployeeList = createAsyncThunk(
   }
 )
 
-export const addEmployee = createAsyncThunk(
-  "admin/add-employee",
-  async (_, { rejectWithValue }) => {
-    const apiUrl = config.apiBaseUrl;
-    try {
-      const response = await axios.post(apiUrl + "karyawan");
-      return response.data;
-    } catch (err) {
-      if (!err.response) {
-        throw err;
-      }
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+export const addEmployee = createAsyncThunk("employee/add", async (params = {}) => {
 
+  // const token = document.cookie
+  //     .split('; ')
+  //     .find((row) => row.startsWith('token='))
+  //     ?.split('=')[1];
+
+  const apiUrl = config.apiBaseUrl
+  try {
+      const response = await axios.post(apiUrl + "karyawan", params, {
+          // headers: {
+          //     Authorization: `Bearer ${token}`
+          // }
+      });
+
+      return response.data
+  } catch (err) {
+      console.log(err)
+  }
+})
 const employeeSlice = createSlice({
   name: "employee",
   initialState,
