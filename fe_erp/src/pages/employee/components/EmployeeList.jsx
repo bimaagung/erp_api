@@ -26,11 +26,11 @@ const ListOrderTable = forwardRef((props, ref) => {
       },
       {
         Header: 'Departemen',
-        accessor: 'informasi_pekerjaan.department',
+        accessor: 'informasi_pekerjaan.department.nama',
       },
       {
         Header: 'Jabatan',
-        accessor: 'informasi_pekerjaan.jabatan',
+        accessor: 'informasi_pekerjaan.jabatan.nama',
       },
       {
         Header: 'Action',
@@ -94,7 +94,7 @@ const ListOrderTable = forwardRef((props, ref) => {
       setLoading(false)
       try {
         const params = {
-          page: pageIndex + 1,
+          current_page: pageIndex + 1,
           ...filters.current
         }
 
