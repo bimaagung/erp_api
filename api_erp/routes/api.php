@@ -65,6 +65,7 @@ Route::group(['prefix' => 'department'], function () {
 Route::group(['prefix' => 'position'], function () {
     Route::controller(PositionController::class)->group(function () {
         Route::post('/', 'store');
+        Route::get('/', 'index');
     });
 });
 
