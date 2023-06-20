@@ -1,0 +1,8 @@
+@import "rsuite/dist/rsuite.css";
+
+.title-add-employee {
+    font-size: 30px;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+  
