@@ -43,7 +43,7 @@ const FormAddEmployee = (props) => {
     nomor_akun_bank: "",
     bpjs_ketenagakerjaan: "",
     bpjs_kesehatan: "",
-    kantor_cabang_id: 1,
+    kantor_cabang_id:null,
     departement: "",
     jabatan: "",
     tanggal_masuk: "",
