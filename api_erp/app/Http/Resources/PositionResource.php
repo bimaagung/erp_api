@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class DepartmentResource extends JsonResource
+class PositionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -19,6 +19,6 @@ class DepartmentResource extends JsonResource
             'nama' => $this->nama,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
-        ];
+        ];;
     }
 }

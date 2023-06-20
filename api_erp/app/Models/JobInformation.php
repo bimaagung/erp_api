@@ -14,8 +14,8 @@ class JobInformation extends Model
     protected $fillable = [
         'karyawan_id',
         'kantor_cabang_id',
-        'department',
-        'jabatan',
+        'department_id',
+        'jabatan_id',
         'tanggal_masuk',
         'status',
         'periode_kontrak',
@@ -28,5 +28,15 @@ class JobInformation extends Model
     public function branchOffice()
     {
         return $this->hasOne(KantorCabang::class, 'id', 'kantor_cabang_id');
+    }
+
+    public function department()
+    {
+        return $this->belongsTo(Department::class, 'department_id', 'id');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'jabatan_id', 'id');
     }
 }
