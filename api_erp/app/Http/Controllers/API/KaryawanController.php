@@ -90,8 +90,8 @@ class KaryawanController extends Controller
 
             // Job Information
             'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
-            'department' => ['required'],
-            'jabatan' => ['required'],
+            'department_id' => ['required', 'exists:departments,id'],
+            'jabatan_id' => ['required', 'exists:positions,id'],
             'tanggal_masuk' => ['required', 'date'],
             'status' => ['required'],
             'periode_kontrak' => ['integer'],
@@ -103,6 +103,8 @@ class KaryawanController extends Controller
 
         $validator->setCustomMessages([
             'kantor_cabang_id.exists' => __('branchOffice.not_found'),
+            'department_id.exists' => __('department.not_found'),
+            'jabatan_id.exists' => __('position.not_found'),
             'nik.unique' => __('karyawan.unique_nik'),
             'email.unique' => __('karyawan.unique_email'),
             'npwp.unique' => __('personal_information.unique_npwp'),
@@ -115,7 +117,11 @@ class KaryawanController extends Controller
             $errors = $validator->errors();
 
             if ($errors->has('kantor_cabang_id')) {
-                return $this->fail($errors->first('kantor_cabang_id'));
+                return $this->notFound($errors->first('kantor_cabang_id'));
+            } else if ($errors->has('department_id')) {
+                return $this->notFound($errors->first('department_id'));
+            } else if ($errors->has('jabatan_id')) {
+                return $this->notFound($errors->first('jabatan_id'));
             } else {
                 return $this->fail($validator->errors()->first());
             }
@@ -163,8 +169,8 @@ class KaryawanController extends Controller
                 $jobResult = $this->jobInformation->create([
                     'karyawan_id' => $karyawanResult->id,
                     'kantor_cabang_id' => $request->kantor_cabang_id,
-                    'department' => $request->department,
-                    'jabatan' => $request->jabatan,
+                    'department_id' => $request->department_id,
+                    'jabatan_id' => $request->jabatan_id,
                     'tanggal_masuk' => $request->tanggal_masuk,
                     'status' => $request->status,
                     'periode_kontrak' => $request->periode_kontrak,
@@ -245,8 +251,8 @@ class KaryawanController extends Controller
 
             // Job Information
             'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
-            'department' => ['required'],
-            'jabatan' => ['required'],
+            'department_id.exists' => __('department.not_found'),
+            'jabatan_id.exists' => __('position.not_found'),
             'tanggal_masuk' => ['required', 'date'],
             'status' => ['required'],
             'periode_kontrak' => ['integer'],
@@ -258,13 +264,19 @@ class KaryawanController extends Controller
 
         $validator->setCustomMessages([
             'kantor_cabang_id.exists' => __('branchOffice.not_found'),
+            'department_id.exists' => __('department.not_found'),
+            'jabatan_id.exists' => __('position.not_found'),
         ]);
 
         if ($validator->fails()) {
             $errors = $validator->errors();
 
             if ($errors->has('kantor_cabang_id')) {
-                return $this->fail($errors->first('kantor_cabang_id'));
+                return $this->notFound($errors->first('kantor_cabang_id'));
+            } else if ($errors->has('department_id')) {
+                return $this->notFound($errors->first('department_id'));
+            } else if ($errors->has('jabatan_id')) {
+                return $this->notFound($errors->first('jabatan_id'));
             } else {
                 return $this->fail($validator->errors()->first());
             }
@@ -310,8 +322,8 @@ class KaryawanController extends Controller
 
                 $this->jobInformation->where('karyawan_id', $id)->update([
                     'kantor_cabang_id' => $request->kantor_cabang_id,
-                    'department' => $request->department,
-                    'jabatan' => $request->jabatan,
+                    'department_id' => $request->department_id,
+                    'jabatan_id' => $request->jabatan_id,
                     'tanggal_masuk' => $request->tanggal_masuk,
                     'status' => $request->status,
                     'periode_kontrak' => $request->periode_kontrak,
