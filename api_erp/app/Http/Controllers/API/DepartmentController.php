@@ -41,15 +41,24 @@ class DepartmentController extends Controller
         return $this->success(new DepartmentResource($department));
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Department  $department
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Department $department)
+
+    public function findById($id)
     {
-        //
+        $validator = Validator::make(['id' => $id], [
+            'id' => 'numeric',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->fail($validator->errors()->first());
+        }
+
+        $department = $this->department->find($id);
+
+        if (!$department) {
+            return $this->fail(__('department.not_found'));
+        }
+
+        return $this->success(new DepartmentResource($department));
     }
 
     /**
