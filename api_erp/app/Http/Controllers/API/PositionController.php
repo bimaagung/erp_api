@@ -34,7 +34,7 @@ class PositionController extends Controller
         ]);
 
         $validator->setCustomMessages([
-            'nama.exists' => __('department.unique'),
+            'nama.exists' => __('position.unique'),
         ]);
 
         $position = $this->position->create([
