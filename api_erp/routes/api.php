@@ -56,6 +56,7 @@ Route::group(['prefix' => 'karyawan'], function () {
 Route::group(['prefix' => 'department'], function () {
     Route::controller(DepartmentController::class)->group(function () {
         Route::post('/', 'store');
+        Route::get('/', 'index');
     });
 });
 
