@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
 import { DatePicker, DateRangePicker } from "rsuite";
 import { useDispatch, useSelector } from "react-redux";
+import { useDropzone } from "react-dropzone";
 import "../styles/formAddEmployee.css";
 import { getOfficeList, officeSelector } from "../../../features/officeSlice";
 
 const FormAddEmployee = (props) => {
   const office = useSelector(officeSelector.selectData);
+  const [previewImage, setPreviewImage] = useState(null);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getOfficeList());
@@ -71,14 +73,61 @@ const FormAddEmployee = (props) => {
       ...{ tanggal_masuk: date },
     });
   };
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (!dateRange) {
-  //     props.onSubmit([]);
-  //   } else {
-  //     props.onSubmit(dateRange);
-  //   }
-  // };
+
+  const onDrop = useCallback((acceptedFiles) => {
+    const file = acceptedFiles[0];
+    setPreviewImage(URL.createObjectURL(file));
+    setForm({
+      ...form,
+      ...{ foto: file },
+    });
+  }, []);
+
+  const {
+    acceptedFiles,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    isDragReject,
+  } = useDropzone({ onDrop });
+
+  const dropzoneStyle = {
+    border: "2px dashed #ccc",
+    borderRadius: "5px",
+    padding: "20px",
+    textAlign: "center",
+    cursor: "pointer",
+    width: "100%",
+    gap: "8px",
+    marginBottom: "16px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  };
+
+  const activeStyle = {
+    border: "2px dashed #007bff",
+  };
+
+  const acceptStyle = {
+    border: "2px dashed #00e676",
+  };
+
+  const rejectStyle = {
+    border: "2px dashed #ff1744",
+  };
+
+  let dropzoneStyleDynamic = { ...dropzoneStyle };
+  if (isDragActive) {
+    dropzoneStyleDynamic = { ...dropzoneStyleDynamic, ...activeStyle };
+  }
+  if (isDragAccept) {
+    dropzoneStyleDynamic = { ...dropzoneStyleDynamic, ...acceptStyle };
+  }
+  if (isDragReject) {
+    dropzoneStyleDynamic = { ...dropzoneStyleDynamic, ...rejectStyle };
+  }
 
   return (
     <Card style={{ width: "100%", height: "auto" }}>
@@ -92,7 +141,37 @@ const FormAddEmployee = (props) => {
           }}
         >
           <div className="row">
-            <div className="col-md-6">kanan</div>
+            <div className="col-md-6">
+             <div className="drop">
+                <div 
+                  {...getRootProps({
+                    className: "dropzone",
+                    style: dropzoneStyleDynamic,
+                  })}
+                >
+                  <input {...getInputProps()} accept="image/*" />
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      className="img-fluid"
+                      alt="Preview"
+                      style={{ height: "40vh", objectFit: "cover" }}
+                    />
+                  ) : (
+                    <p>
+                      Drag 'n' drop some files here, or click to select files
+                    </p>
+                  )}
+                </div>
+                <aside>
+                  {acceptedFiles.map((file) => (
+                    <li key={file.path}>
+                      {file.path} - {file.size} bytes
+                    </li>
+                  ))}
+                </aside>
+                </div>
+            </div>
             <div className="col-md-6">
               <div className="informasi-umum">
                 <h4>informasi umum</h4>
@@ -375,27 +454,29 @@ const FormAddEmployee = (props) => {
                     })
                   }
                 >
-                  <option value=""> </option>
+                  <option value="0"> </option>
                   <option value="1">Yes</option>
                   <option value="0">No</option>
                 </select>
               </div>
-              <div className="mb-3">
-                <label htmlFor="tunjangan pajak" className="form-label">
-                  Tunjangan Pajak Dalam %:
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="tolerans keterlambatan"
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      ...{ tunjangan_pajak: e.target.value },
-                    })
-                  }
-                />
-              </div>
+              {form.potongan_pajak === "1" && (
+                <div className="mb-3">
+                  <label htmlFor="tunjangan pajak" className="form-label">
+                    Tunjangan Pajak Dalam %:
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="tolerans keterlambatan"
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        ...{ tunjangan_pajak: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              )}
               <div className="mb-3">
                 <label htmlFor="nama-bank" className="form-label">
                   Nama Bank:
@@ -974,22 +1055,27 @@ const FormAddEmployee = (props) => {
                   <option value="0">No</option>
                 </select>
               </div>
-              <div className="mb-3">
-                <label htmlFor="toleransi keterlabamtan" className="form-label">
-                  Toleransi Keterlambatan (menit):
-                </label>
-                <input
-                  type="number"
-                  className="form-control"
-                  id="tolerans keterlambatan"
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      ...{ toleransi_keterlambatan: e.target.value },
-                    })
-                  }
-                />
-              </div>
+              {form.potongan_terlambat === "1" && (
+                <div className="mb-3">
+                  <label
+                    htmlFor="toleransi keterlabamtan"
+                    className="form-label"
+                  >
+                    Toleransi Keterlambatan (menit):
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="tolerans keterlambatan"
+                    onChange={(e) =>
+                      setForm({
+                        ...form,
+                        ...{ toleransi_keterlambatan: e.target.value },
+                      })
+                    }
+                  />
+                </div>
+              )}
               <div className="mb-3">
                 <label htmlFor="nama-bank" className="form-label">
                   Mode Absensi:
@@ -1023,7 +1109,7 @@ const FormAddEmployee = (props) => {
                     })
                   }
                 >
-                  <option value=""> </option>
+                  <option value="0"> </option>
                   <option value="1">Yes</option>
                   <option value="0">No</option>
                 </select>
