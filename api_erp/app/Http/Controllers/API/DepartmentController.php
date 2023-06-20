@@ -19,7 +19,9 @@ class DepartmentController extends Controller
 
     public function index()
     {
-        //
+        $department = $this->department->orderBy('created_at', 'DESC')->get();
+
+        return $this->success(DepartmentResource::collection($department));
     }
 
     public function store(Request $request)
