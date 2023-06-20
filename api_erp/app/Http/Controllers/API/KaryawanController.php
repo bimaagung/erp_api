@@ -89,7 +89,7 @@ class KaryawanController extends Controller
             'bpjs_kesehatan' => ['integer', 'unique:informasi_personal'],
 
             // Job Information
-            'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang_id'],
+            'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
             'department_id' => ['required', 'exists:departments,id'],
             'jabatan_id' => ['required', 'exists:positions,id'],
             'tanggal_masuk' => ['required', 'date'],
