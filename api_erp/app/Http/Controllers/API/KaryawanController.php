@@ -85,8 +85,8 @@ class KaryawanController extends Controller
             'tunjangan_pajak' => ['integer'],
             'nama_bank' => ['required'],
             'nomor_akun_bank' => ['integer', 'unique:informasi_personal'],
-            'bpjs_ketenagakerjaan' => ['integer', 'unique:informasi_personal'],
-            'bpjs_kesehatan' => ['integer', 'unique:informasi_personal'],
+            'bpjs_ketenagakerjaan' => ['unique:informasi_personal'],
+            'bpjs_kesehatan' => ['unique:informasi_personal'],
 
             // Job Information
             'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
@@ -246,8 +246,8 @@ class KaryawanController extends Controller
             'tunjangan_pajak' => ['integer'],
             'nama_bank' => ['required'],
             'nomor_akun_bank' => ['integer'],
-            'bpjs_ketenagakerjaan' => ['integer'],
-            'bpjs_kesehatan' => ['integer'],
+            'bpjs_ketenagakerjaan',
+            'bpjs_kesehatan',
 
             // Job Information
             'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
