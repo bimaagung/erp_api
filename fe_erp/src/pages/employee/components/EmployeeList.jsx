@@ -26,7 +26,7 @@ const ListOrderTable = forwardRef((props, ref) => {
       },
       {
         Header: 'Departemen',
-        accessor: 'informasi_pekerjaan.departement.nama',
+        accessor: 'informasi_pekerjaan.department.nama',
       },
       {
         Header: 'Jabatan',

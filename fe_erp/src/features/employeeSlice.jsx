@@ -34,9 +34,10 @@ export const addEmployee = createAsyncThunk("employee/add", async (params = {}) 
   const apiUrl = config.apiBaseUrl
   try {
       const response = await axios.post(apiUrl + "karyawan", params, {
-          // headers: {
-          //     Authorization: `Bearer ${token}`
-          // }
+          headers: {
+              // Authorization: `Bearer ${token}`,
+              "content-type": "multipart/form-data",
+          }
       });
 
       return response.data
