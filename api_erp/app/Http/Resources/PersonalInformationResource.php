@@ -23,8 +23,8 @@ class PersonalInformationResource extends JsonResource
             'tunjangan_pajak' => (int)$this->tunjangan_pajak,
             'nama_bank' => $this->nama_bank,
             'nomor_akun_bank' => (int)$this->nomor_akun_bank,
-            'bpjs_ketenagakerjaan' => (int)$this->bpjs_ketenagakerjaan,
-            'bpjs_kesehatan' => (int)$this->bpjs_kesehatan,
+            'bpjs_ketenagakerjaan' => $this->bpjs_ketenagakerjaan,
+            'bpjs_kesehatan' => $this->bpjs_kesehatan,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];
