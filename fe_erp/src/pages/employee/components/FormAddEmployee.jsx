@@ -40,12 +40,12 @@ const FormAddEmployee = (props) => {
     potongan_pajak: null,
     tunjangan_pajak: null,
     nama_bank: "",
-    nomor_akun_bank: "",
-    bpjs_ketenagakerjaan: "",
-    bpjs_kesehatan: "",
+    nomor_akun_bank: null,
+    bpjs_ketenagakerjaan: null,
+    bpjs_kesehatan: null,
     kantor_cabang_id:null,
-    departement: "",
-    jabatan: "",
+    department_id: "",
+    jabatan_id: "",
     tanggal_masuk: "",
     status: "",
     priode_kontrak: "",
@@ -212,7 +212,7 @@ const FormAddEmployee = (props) => {
                       onChange={(e) =>
                         setForm({
                           ...form,
-                          ...{ nik: e.target.value },
+                          ...{ nik: parseInt(e.target.value) },
                         })
                       }
                     />
@@ -949,7 +949,7 @@ const FormAddEmployee = (props) => {
                     setForm({
                       ...form,
                       ...{
-                        departement: e.target.value,
+                        department_id: e.target.value,
                       },
                     })
                   }
@@ -973,7 +973,7 @@ const FormAddEmployee = (props) => {
                     setForm({
                       ...form,
                       ...{
-                        jabatan: e.target.value,
+                        jabatan_id: e.target.value,
                       },
                     })
                   }
