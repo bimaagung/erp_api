@@ -1,24 +1,28 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "react-bootstrap";
-import { DatePicker, DateRangePicker } from "rsuite";
+import { DatePicker } from "rsuite";
 import { useDispatch, useSelector } from "react-redux";
-import { useDropzone } from "react-dropzone";
 import "../styles/formAddEmployee.css";
 import { getOfficeList, officeSelector } from "../../../features/officeSlice";
-import { departmentSelector, getDepartemntList } from "../../../features/departmentSlice";
-import { getPositionList, positionSelector } from "../../../features/positionSlice";
+import {
+  departmentSelector,
+  getDepartemntList,
+} from "../../../features/departmentSlice";
+import {
+  getPositionList,
+  positionSelector,
+} from "../../../features/positionSlice";
+import { bankType } from "../const/bankType";
 
 const FormAddEmployee = (props) => {
   const office = useSelector(officeSelector.selectData);
-  const department = useSelector(departmentSelector.selectData)
-  const position = useSelector(positionSelector.selectData)
-
-  const [previewImage, setPreviewImage] = useState(null);
+  const department = useSelector(departmentSelector.selectData);
+  const position = useSelector(positionSelector.selectData);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getOfficeList());
-    dispatch(getDepartemntList())
-    dispatch(getPositionList())
+    dispatch(getDepartemntList());
+    dispatch(getPositionList());
   }, []);
 
   const [form, setForm] = useState({
@@ -40,12 +44,12 @@ const FormAddEmployee = (props) => {
     potongan_pajak: null,
     tunjangan_pajak: null,
     nama_bank: "",
-    nomor_akun_bank: "",
-    bpjs_ketenagakerjaan: "",
-    bpjs_kesehatan: "",
-    kantor_cabang_id:null,
-    departement: "",
-    jabatan: "",
+    nomor_akun_bank: null,
+    bpjs_ketenagakerjaan: null,
+    bpjs_kesehatan: null,
+    kantor_cabang_id: null,
+    department_id: "",
+    jabatan_id: "",
     tanggal_masuk: "",
     status: "",
     priode_kontrak: "",
@@ -81,60 +85,24 @@ const FormAddEmployee = (props) => {
     });
   };
 
-  const onDrop = useCallback((acceptedFiles) => {
-    const file = acceptedFiles[0];
-    setPreviewImage(URL.createObjectURL(file));
+  const [previewSource, setPreviewSource] = useState("");
+
+  const handleFileInputChange = (e) => {
+    const file = e.target.files[0];
     setForm({
       ...form,
       ...{ foto: file },
     });
-  }, []);
-
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ onDrop });
-
-  const dropzoneStyle = {
-    border: "2px dashed #ccc",
-    borderRadius: "5px",
-    padding: "20px",
-    textAlign: "center",
-    cursor: "pointer",
-    width: "100%",
-    gap: "8px",
-    marginBottom: "16px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    previewFile(file);
   };
 
-  const activeStyle = {
-    border: "2px dashed #007bff",
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreviewSource(reader.result);
+    };
   };
-
-  const acceptStyle = {
-    border: "2px dashed #00e676",
-  };
-
-  const rejectStyle = {
-    border: "2px dashed #ff1744",
-  };
-
-  let dropzoneStyleDynamic = { ...dropzoneStyle };
-  if (isDragActive) {
-    dropzoneStyleDynamic = { ...dropzoneStyleDynamic, ...activeStyle };
-  }
-  if (isDragAccept) {
-    dropzoneStyleDynamic = { ...dropzoneStyleDynamic, ...acceptStyle };
-  }
-  if (isDragReject) {
-    dropzoneStyleDynamic = { ...dropzoneStyleDynamic, ...rejectStyle };
-  }
 
   return (
     <Card style={{ width: "100%", height: "auto" }}>
@@ -149,35 +117,20 @@ const FormAddEmployee = (props) => {
         >
           <div className="row">
             <div className="col-md-6">
-             <div className="drop">
-                <div 
-                  {...getRootProps({
-                    className: "dropzone",
-                    style: dropzoneStyleDynamic,
-                  })}
-                >
-                  <input {...getInputProps()} accept="image/*" />
-                  {previewImage ? (
-                    <img
-                      src={previewImage}
-                      className="img-fluid"
-                      alt="Preview"
-                      style={{ height: "40vh", objectFit: "cover" }}
-                    />
-                  ) : (
-                    <p>
-                      Drag 'n' drop some files here, or click to select files
-                    </p>
-                  )}
-                </div>
-                <aside>
-                  {acceptedFiles.map((file) => (
-                    <li key={file.path}>
-                      {file.path} - {file.size} bytes
-                    </li>
-                  ))}
-                </aside>
-                </div>
+              <div>
+                <input type="file" onChange={handleFileInputChange} />
+                {previewSource && (
+                  <img
+                    src={previewSource}
+                    alt="Preview"
+                    style={{
+                      width: "200px",
+                      height: "200px",
+                      border: "1px solid #ccc",
+                    }}
+                  />
+                )}
+              </div>
             </div>
             <div className="col-md-6">
               <div className="informasi-umum">
@@ -212,7 +165,7 @@ const FormAddEmployee = (props) => {
                       onChange={(e) =>
                         setForm({
                           ...form,
-                          ...{ nik: e.target.value },
+                          ...{ nik: parseInt(e.target.value) },
                         })
                       }
                     />
@@ -500,364 +453,14 @@ const FormAddEmployee = (props) => {
                 >
                   <option value=""> </option>
 
-                  <option value="ALLO">
-                    ALLO - Allo Bank Indonesia (formerly Bank Harda
-                    Internasional)
-                  </option>
-                  <option value="ANGLOMAS">
-                    ANGLOMAS - Anglomas International Bank
-                  </option>
-                  <option value="BANGKOK">BANGKOK - Bangkok Bank</option>
-                  <option value="AGRIS">AGRIS - Bank Agris</option>
-                  <option value="ALADIN">
-                    ALADIN - Bank Aladin Syariah (formerly Bank Maybank Syariah
-                    Indonesia)
-                  </option>
-                  <option value="AMAR">
-                    AMAR - Bank Amar Indonesia (formerly Anglomas International
-                    Bank)
-                  </option>
-                  <option value="ANDARA">ANDARA - Bank Andara</option>
-                  <option value="ANZ">ANZ - Bank ANZ Indonesia</option>
-                  <option value="ARTA_NIAGA_KENCANA">
-                    ARTA_NIAGA_KENCANA - Bank Arta Niaga Kencana
-                  </option>
-                  <option value="ARTHA">
-                    ARTHA - Bank Artha Graha International
-                  </option>
-                  <option value="ARTOS">ARTOS - Bank Artos Indonesia</option>
-                  <option value="BISNIS_INTERNASIONAL">
-                    BISNIS_INTERNASIONAL - Bank Bisnis Internasional
-                  </option>
-                  <option value="BJB">BJB - Bank BJB</option>
-                  <option value="BJB_SYR">BJB_SYR - Bank BJB Syariah</option>
-                  <option value="BNI_SYR">BNI_SYR - Bank BNI Syariah</option>
-                  <option value="BNP_PARIBAS">
-                    BNP_PARIBAS - Bank BNP Paribas
-                  </option>
-                  <option value="AGRONIAGA">
-                    AGRONIAGA - Bank BRI Agroniaga
-                  </option>
-                  <option value="BUKOPIN">BUKOPIN - Bank Bukopin</option>
-                  <option value="BUMI_ARTA">BUMI_ARTA - Bank Bumi Arta</option>
-                  <option value="CAPITAL">
-                    CAPITAL - Bank Capital Indonesia
-                  </option>
-                  <option value="BCA">BCA - Bank Central Asia (BCA)</option>
-                  <option value="BCA_SYR">
-                    BCA_SYR - Bank Central Asia (BCA) Syariah
-                  </option>
-                  <option value="CHINATRUST">
-                    CHINATRUST - Bank Chinatrust Indonesia
-                  </option>
-                  <option value="CIMB">CIMB - Bank CIMB Niaga</option>
-                  <option value="CIMB_UUS">
-                    CIMB_UUS - Bank CIMB Niaga UUS
-                  </option>
-                  <option value="COMMONWEALTH">
-                    COMMONWEALTH - Bank Commonwealth
-                  </option>
-                  <option value="DANAMON">DANAMON - Bank Danamon</option>
-                  <option value="DANAMON_UUS">
-                    DANAMON_UUS - Bank Danamon UUS
-                  </option>
-                  <option value="DBS">DBS - Bank DBS Indonesia</option>
-                  <option value="DINAR_INDONESIA">
-                    DINAR_INDONESIA - Bank Dinar Indonesia
-                  </option>
-                  <option value="DKI">DKI - Bank DKI</option>
-                  <option value="DKI_UUS">DKI_UUS - Bank DKI UUS</option>
-                  <option value="FAMA">FAMA - Bank Fama International</option>
-                  <option value="GANESHA">GANESHA - Bank Ganesha</option>
-                  <option value="HANA">HANA - Bank Hana</option>
-                  <option value="HARDA_INTERNASIONAL">
-                    HARDA_INTERNASIONAL - Bank Harda Internasional
-                  </option>
-                  <option value="HIMPUNAN_SAUDARA">
-                    HIMPUNAN_SAUDARA - Bank Himpunan Saudara 1906
-                  </option>
-                  <option value="IBK">
-                    IBK - Bank IBK Indonesia (formerly Bank Agris)
-                  </option>
-                  <option value="ICBC">ICBC - Bank ICBC Indonesia</option>
-                  <option value="INA_PERDANA">
-                    INA_PERDANA - Bank Ina Perdania
-                  </option>
-                  <option value="INDEX_SELINDO">
-                    INDEX_SELINDO - Bank Index Selindo
-                  </option>
-                  <option value="JAGO">
-                    JAGO - Bank Jago (formerly Bank Artos Indonesia)
-                  </option>
-                  <option value="JASA_JAKARTA">
-                    JASA_JAKARTA - Bank Jasa Jakarta
-                  </option>
-                  <option value="JTRUST">
-                    JTRUST - Bank JTrust Indonesia (formerly Bank Mutiara)
-                  </option>
-                  <option value="KESEJAHTERAAN_EKONOMI">
-                    KESEJAHTERAAN_EKONOMI - Bank Kesejahteraan Ekonomi
-                  </option>
-                  <option value="MANDIRI">MANDIRI - Bank Mandiri</option>
-                  <option value="MASPION">
-                    MASPION - Bank Maspion Indonesia
-                  </option>
-                  <option value="MAYAPADA">
-                    MAYAPADA - Bank Mayapada International
-                  </option>
-                  <option value="MAYBANK">MAYBANK - Bank Maybank</option>
-                  <option value="MAYBANK_SYR">
-                    MAYBANK_SYR - Bank Maybank Syariah Indonesia
-                  </option>
-                  <option value="MAYORA">MAYORA - Bank Mayora</option>
-                  <option value="MEGA">MEGA - Bank Mega</option>
-                  <option value="MESTIKA_DHARMA">
-                    MESTIKA_DHARMA - Bank Mestika Dharma
-                  </option>
-                  <option value="MITRA_NIAGA">
-                    MITRA_NIAGA - Bank Mitra Niaga
-                  </option>
-                  <option value="MIZUHO">MIZUHO - Bank Mizuho Indonesia</option>
-                  <option value="MNC_INTERNASIONAL">
-                    MNC_INTERNASIONAL - Bank MNC Internasional
-                  </option>
-                  <option value="MUAMALAT">
-                    MUAMALAT - Bank Muamalat Indonesia
-                  </option>
-                  <option value="MULTI_ARTA_SENTOSA">
-                    MULTI_ARTA_SENTOSA - Bank Multi Arta Sentosa
-                  </option>
-                  <option value="NATIONALNOBU">
-                    NATIONALNOBU - Bank Nationalnobu
-                  </option>
-                  <option value="BNI">BNI - Bank Negara Indonesia (BNI)</option>
-                  <option value="BNC">
-                    BNC - Bank Neo Commerce (formerly Bank Yudha Bhakti)
-                  </option>
-                  <option value="NUSANTARA_PARAHYANGAN">
-                    NUSANTARA_PARAHYANGAN - Bank Nusantara Parahyangan
-                  </option>
-                  <option value="OCBC">OCBC - Bank OCBC NISP</option>
-                  <option value="OCBC_UUS">
-                    OCBC_UUS - Bank OCBC NISP UUS
-                  </option>
-                  <option value="BAML">
-                    BAML - Bank of America Merill-Lynch
-                  </option>
-                  <option value="BOC">BOC - Bank of China (BOC)</option>
-                  <option value="INDIA">INDIA - Bank of India Indonesia</option>
-                  <option value="TOKYO">
-                    TOKYO - Bank of Tokyo Mitsubishi UFJ
-                  </option>
-                  <option value="OKE">
-                    OKE - Bank Oke Indonesia (formerly Bank Andara)
-                  </option>
-                  <option value="PANIN">PANIN - Bank Panin</option>
-                  <option value="PANIN_SYR">
-                    PANIN_SYR - Bank Panin Syariah
-                  </option>
-                  <option value="PERMATA">PERMATA - Bank Permata</option>
-                  <option value="PERMATA_UUS">
-                    PERMATA_UUS - Bank Permata UUS
-                  </option>
-                  <option value="QNB_INDONESIA">
-                    QNB_INDONESIA - Bank QNB Indonesia (formerly Bank QNB
-                    Kesawan)
-                  </option>
-                  <option value="RABOBANK">
-                    RABOBANK - Bank Rabobank International Indonesia
-                  </option>
-                  <option value="BRI">BRI - Bank Rakyat Indonesia (BRI)</option>
-                  <option value="RESONA">RESONA - Bank Resona Perdania</option>
-                  <option value="ROYAL">ROYAL - Bank Royal Indonesia</option>
-                  <option value="SAHABAT_SAMPOERNA">
-                    SAHABAT_SAMPOERNA - Bank Sahabat Sampoerna
-                  </option>
-                  <option value="SBI_INDONESIA">
-                    SBI_INDONESIA - Bank SBI Indonesia
-                  </option>
-                  <option value="SEABANK">
-                    SEABANK - Bank Seabank Indonesia (formerly Bank
-                    Kesejahteraan Ekonomi)
-                  </option>
-                  <option value="SHINHAN">
-                    SHINHAN - Bank Shinhan Indonesia (formerly Bank Metro
-                    Express)
-                  </option>
-                  <option value="SINARMAS">SINARMAS - Bank Sinarmas</option>
-                  <option value="SINARMAS_UUS">
-                    SINARMAS_UUS - Bank Sinarmas UUS
-                  </option>
-                  <option value="MITSUI">
-                    MITSUI - Bank Sumitomo Mitsui Indonesia
-                  </option>
-                  <option value="BRI_SYR">BRI_SYR - Bank Syariah BRI</option>
-                  <option value="BUKOPIN_SYR">
-                    BUKOPIN_SYR - Bank Syariah Bukopin
-                  </option>
-                  <option value="BSI">
-                    BSI - Bank Syariah Indonesia (BSI)
-                  </option>
-                  <option value="MANDIRI_SYR">
-                    MANDIRI_SYR - Bank Syariah Mandiri
-                  </option>
-                  <option value="MEGA_SYR">MEGA_SYR - Bank Syariah Mega</option>
-                  <option value="BTN">BTN - Bank Tabungan Negara (BTN)</option>
-                  <option value="BTN_UUS">
-                    BTN_UUS - Bank Tabungan Negara (BTN) UUS
-                  </option>
-                  <option value="TABUNGAN_PENSIUNAN_NASIONAL">
-                    TABUNGAN_PENSIUNAN_NASIONAL - Bank Tabungan Pensiunan
-                    Nasional
-                  </option>
-                  <option value="UOB">UOB - Bank UOB Indonesia</option>
-                  <option value="VICTORIA_INTERNASIONAL">
-                    VICTORIA_INTERNASIONAL - Bank Victoria Internasional
-                  </option>
-                  <option value="VICTORIA_SYR">
-                    VICTORIA_SYR - Bank Victoria Syariah
-                  </option>
-                  <option value="WOORI">WOORI - Bank Woori Indonesia</option>
-                  <option value="WOORI_SAUDARA">
-                    WOORI_SAUDARA - Bank Woori Saudara Indonesia 1906 (formerly
-                    Bank Himpunan Saudara and Bank Woori Indonesia)
-                  </option>
-                  <option value="YUDHA_BHAKTI">
-                    YUDHA_BHAKTI - Bank Yudha Bhakti
-                  </option>
-                  <option value="ACEH">ACEH - BPD Aceh</option>
-                  <option value="ACEH_UUS">ACEH_UUS - BPD Aceh UUS</option>
-                  <option value="BALI">BALI - BPD Bali</option>
-                  <option value="BANTEN">
-                    BANTEN - BPD Banten (formerly Bank Pundi Indonesia)
-                  </option>
-                  <option value="BENGKULU">BENGKULU - BPD Bengkulu</option>
-                  <option value="DAERAH_ISTIMEWA">
-                    DAERAH_ISTIMEWA - BPD Daerah Istimewa Yogyakarta (DIY)
-                  </option>
-                  <option value="DAERAH_ISTIMEWA_UUS">
-                    DAERAH_ISTIMEWA_UUS - BPD Daerah Istimewa Yogyakarta (DIY)
-                    UUS
-                  </option>
-                  <option value="JAMBI">JAMBI - BPD Jambi</option>
-                  <option value="JAMBI_UUS">JAMBI_UUS - BPD Jambi UUS</option>
-                  <option value="JAWA_TENGAH">
-                    JAWA_TENGAH - BPD Jawa Tengah
-                  </option>
-                  <option value="JAWA_TENGAH_UUS">
-                    JAWA_TENGAH_UUS - BPD Jawa Tengah UUS
-                  </option>
-                  <option value="JAWA_TIMUR">
-                    JAWA_TIMUR - BPD Jawa Timur
-                  </option>
-                  <option value="JAWA_TIMUR_UUS">
-                    JAWA_TIMUR_UUS - BPD Jawa Timur UUS
-                  </option>
-                  <option value="KALIMANTAN_BARAT">
-                    KALIMANTAN_BARAT - BPD Kalimantan Barat
-                  </option>
-                  <option value="KALIMANTAN_BARAT_UUS">
-                    KALIMANTAN_BARAT_UUS - BPD Kalimantan Barat UUS
-                  </option>
-                  <option value="KALIMANTAN_SELATAN">
-                    KALIMANTAN_SELATAN - BPD Kalimantan Selatan
-                  </option>
-                  <option value="KALIMANTAN_SELATAN_UUS">
-                    KALIMANTAN_SELATAN_UUS - BPD Kalimantan Selatan UUS
-                  </option>
-                  <option value="KALIMANTAN_TENGAH">
-                    KALIMANTAN_TENGAH - BPD Kalimantan Tengah
-                  </option>
-                  <option value="KALIMANTAN_TIMUR">
-                    KALIMANTAN_TIMUR - BPD Kalimantan Timur
-                  </option>
-                  <option value="KALIMANTAN_TIMUR_UUS">
-                    KALIMANTAN_TIMUR_UUS - BPD Kalimantan Timur UUS
-                  </option>
-                  <option value="LAMPUNG">LAMPUNG - BPD Lampung</option>
-                  <option value="MALUKU">MALUKU - BPD Maluku</option>
-                  <option value="NUSA_TENGGARA_BARAT">
-                    NUSA_TENGGARA_BARAT - BPD Nusa Tenggara Barat
-                  </option>
-                  <option value="NUSA_TENGGARA_BARAT_UUS">
-                    NUSA_TENGGARA_BARAT_UUS - BPD Nusa Tenggara Barat UUS
-                  </option>
-                  <option value="NUSA_TENGGARA_TIMUR">
-                    NUSA_TENGGARA_TIMUR - BPD Nusa Tenggara Timur
-                  </option>
-                  <option value="PAPUA">PAPUA - BPD Papua</option>
-                  <option value="RIAU_DAN_KEPRI">
-                    RIAU_DAN_KEPRI - BPD Riau Dan Kepri
-                  </option>
-                  <option value="RIAU_DAN_KEPRI_UUS">
-                    RIAU_DAN_KEPRI_UUS - BPD Riau Dan Kepri UUS
-                  </option>
-                  <option value="SULAWESI">
-                    SULAWESI - BPD Sulawesi Tengah
-                  </option>
-                  <option value="SULAWESI_TENGGARA">
-                    SULAWESI_TENGGARA - BPD Sulawesi Tenggara
-                  </option>
-                  <option value="SULSELBAR">SULSELBAR - BPD Sulselbar</option>
-                  <option value="SULSELBAR_UUS">
-                    SULSELBAR_UUS - BPD Sulselbar UUS
-                  </option>
-                  <option value="SULUT">SULUT - BPD Sulut</option>
-                  <option value="SUMATERA_BARAT">
-                    SUMATERA_BARAT - BPD Sumatera Barat
-                  </option>
-                  <option value="SUMATERA_BARAT_UUS">
-                    SUMATERA_BARAT_UUS - BPD Sumatera Barat UUS
-                  </option>
-                  <option value="SUMSEL_DAN_BABEL">
-                    SUMSEL_DAN_BABEL - BPD Sumsel Dan Babel
-                  </option>
-                  <option value="SUMSEL_DAN_BABEL_UUS">
-                    SUMSEL_DAN_BABEL_UUS - BPD Sumsel Dan Babel UUS
-                  </option>
-                  <option value="SUMUT">SUMUT - BPD Sumut</option>
-                  <option value="SUMUT_UUS">SUMUT_UUS - BPD Sumut UUS</option>
-                  <option value="BTPN_SYARIAH">
-                    BTPN_SYARIAH - BTPN Syariah (formerly BTPN UUS and Bank
-                    Sahabat Purba Danarta)
-                  </option>
-                  <option value="CENTRATAMA">
-                    CENTRATAMA - Centratama Nasional Bank
-                  </option>
-                  <option value="CCB">
-                    CCB - China Construction Bank Indonesia (formerly Bank Antar
-                    Daerah and Bank Windu Kentjana International)
-                  </option>
-                  <option value="CITIBANK">CITIBANK - Citibank</option>
-                  <option value="DEUTSCHE">DEUTSCHE - Deutsche Bank</option>
-                  <option value="HSBC_UUS">
-                    HSBC_UUS - Hongkong and Shanghai Bank Corporation (HSBC) UUS
-                  </option>
-                  <option value="HSBC">
-                    HSBC - HSBC Indonesia (formerly Bank Ekonomi Raharja)
-                  </option>
-                  <option value="EXIMBANK">
-                    EXIMBANK - Indonesia Eximbank (formerly Bank Ekspor
-                    Indonesia)
-                  </option>
-                  <option value="JPMORGAN">
-                    JPMORGAN - JP Morgan Chase Bank
-                  </option>
-                  <option value="MANDIRI_TASPEN">
-                    MANDIRI_TASPEN - Mandiri Taspen Pos (formerly Bank Sinar
-                    Harapan Bali)
-                  </option>
-                  <option value="PRIMA_MASTER">
-                    PRIMA_MASTER - Prima Master Bank
-                  </option>
-                  <option value="RBS">
-                    RBS - Royal Bank of Scotland (RBS)
-                  </option>
-                  <option value="STANDARD_CHARTERED">
-                    STANDARD_CHARTERED - Standard Charted Bank
-                  </option>
+                  {bankType.map((o) => (
+                    <option key={o.id} value={o.value}>
+                      {o.label}
+                    </option>
+                  ))}
                 </select>
               </div>
+
               <div className="mb-3">
                 <label htmlFor="no-akun-bank" className="form-label">
                   No Akun Bank:
@@ -932,7 +535,7 @@ const FormAddEmployee = (props) => {
                 >
                   <option value=""></option>
                   {office?.data?.map((o) => (
-                    <option key={o.id} value={parseInt( o.id)}>
+                    <option key={o.id} value={parseInt(o.id)}>
                       {o.nama}
                     </option>
                   ))}
@@ -949,7 +552,7 @@ const FormAddEmployee = (props) => {
                     setForm({
                       ...form,
                       ...{
-                        departement: e.target.value,
+                        department_id: e.target.value,
                       },
                     })
                   }
@@ -973,7 +576,7 @@ const FormAddEmployee = (props) => {
                     setForm({
                       ...form,
                       ...{
-                        jabatan: e.target.value,
+                        jabatan_id: e.target.value,
                       },
                     })
                   }
@@ -1004,20 +607,20 @@ const FormAddEmployee = (props) => {
                       Status:
                     </label>
                     <select
-                  id="status"
-                  className="form-select"
-                  onChange={(e) =>
-                    setForm({
-                      ...form,
-                      status: e.target.value,
-                    })
-                  }
-                >
-                  <option value=""> </option>
-                  <option value="Kontrak">Kontrak</option>
-                  <option value="Tetap">Tetap/Permanen</option>
-                  <option value="Lainnya">Lainnya</option>
-                </select>
+                      id="status"
+                      className="form-select"
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          status: e.target.value,
+                        })
+                      }
+                    >
+                      <option value=""> </option>
+                      <option value="Kontrak">Kontrak</option>
+                      <option value="Tetap">Tetap/Permanen</option>
+                      <option value="Lainnya">Lainnya</option>
+                    </select>
                   </div>
                 </div>
               </div>
@@ -1113,7 +716,7 @@ const FormAddEmployee = (props) => {
                   onChange={(e) =>
                     setForm({
                       ...form,
-                      potongan_terlambat: e.target.value,
+                      mode_absensi: e.target.value,
                     })
                   }
                 >
