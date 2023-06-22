@@ -1,10 +1,23 @@
-import React from 'react'
-import FormUpdateEmployee from './components/FormUpdateEmployee'
+import React from "react";
+import FormUpdateEmployee from "./components/FormUpdateEmployee";
+import SideBar from "../../components/layouts/Sidebar";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
+import { updateEmployee } from "../../features/employeeSlice";
 
 const EmployeeUpdatePage = () => {
-  return (
-    <FormUpdateEmployee/>
-  )
-}
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
-export default EmployeeUpdatePage
+  const handleUpdateEmployee = (payload) => {
+    console.log(payload);
+    dispatch(updateEmployee({ id: id, params: payload }));
+  };
+  return (
+    <SideBar>
+      <FormUpdateEmployee onSubmit={handleUpdateEmployee} />
+    </SideBar>
+  );
+};
+
+export default EmployeeUpdatePage;
