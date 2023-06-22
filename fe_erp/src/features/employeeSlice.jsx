@@ -6,6 +6,7 @@ const initialState = {
   data: {},
   loading: false,
   errorMessage: null,
+ 
 }
 
 export const getEmployeeList = createAsyncThunk(
@@ -24,7 +25,7 @@ export const getEmployeeList = createAsyncThunk(
   }
 )
 
-export const addEmployee = createAsyncThunk("employee/add", async (params = {}) => {
+export const addEmployee = createAsyncThunk("employee/add", async (params = {}, {rejectWithValue}) => {
 
   // const token = document.cookie
   //     .split('; ')
@@ -42,7 +43,10 @@ export const addEmployee = createAsyncThunk("employee/add", async (params = {}) 
 
       return response.data
   } catch (err) {
-      console.log(err)
+    if (!err.response) {
+      throw err;
+    }
+    return rejectWithValue(err.response.data);
   }
 })
 const employeeSlice = createSlice({
@@ -71,11 +75,13 @@ const employeeSlice = createSlice({
         state.loading = false;
         state.data = action.payload;
         state.errorMessage = null;
+      
       })
       .addCase(addEmployee.rejected, (state, action) => {
         state.loading = false;
-        state.errorMessage = action.payload;
+        state.errorMessage = action.payload.meta.message;
         state.data = {};
+      
       });
   }
 });
@@ -83,7 +89,8 @@ const employeeSlice = createSlice({
 export const employeeSelector = {
   selectData: (state) => state.employee.data,
   loading: (state) => state.employee.loading,
-  errorMessage: (state) => state.employee.errorMessage
+  errorMessage: (state) => state.employee.errorMessage,
+  
 }
 
 export default employeeSlice.reducer;
