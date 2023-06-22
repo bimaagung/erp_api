@@ -126,9 +126,10 @@ class KaryawanController extends Controller
                 return $this->fail($validator->errors()->first());
             }
         }
-
+        
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');
+            
             if (!$upload) {
                 return $this->fail(__('upload.invalid'));
             }
