@@ -25,6 +25,17 @@ export const getEmployeeList = createAsyncThunk(
   }
 )
 
+export const getEmployeeByid = createAsyncThunk("employee/getbyid", async (id) => {
+  const apiUrl = config.apiBaseUrl
+  try {
+    const response = await axios.get(apiUrl + `karyawan/${id}`)
+    return response.data
+    
+  } catch (error) {
+    console.log(error)  
+  }
+})
+
 export const addEmployee = createAsyncThunk("employee/add", async (params = {}, {rejectWithValue}) => {
 
   // const token = document.cookie
@@ -68,8 +79,20 @@ const employeeSlice = createSlice({
         state.errorMessage = action.payload;
         state.data = {};
       })
-      .addCase(addEmployee.pending, (state) => {
+      .addCase(getEmployeeByid.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload.data;
+        state.errorMessage = null;
+      })
+      .addCase(getEmployeeByid.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = {};
+        
+      })
+      .addCase(getEmployeeByid.pending, (state) => {
         state.loading = true;
+        
       })
       .addCase(addEmployee.fulfilled, (state, action) => {
         state.loading = false;

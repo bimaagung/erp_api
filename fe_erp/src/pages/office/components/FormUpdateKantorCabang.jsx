@@ -94,7 +94,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="nama"
-              placeholder={data?.data?.nama}
+              value={data?.data?.nama}
               onChange={e => setForm({
                 ...form, ...{ nama: e.target.value }
               })}
@@ -108,7 +108,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="Alamat" 
-              placeholder= {data?.data?.alamat}
+              value= {data?.data?.alamat}
               onChange={e => setForm({
                 ...form, ...{ alamat: e.target.value }
               })}
@@ -124,7 +124,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control" 
                   id="phone1" 
-                  placeholder={data?.data?.phone1}
+                  value={data?.data?.phone1}
                   onChange={e => setForm({
                     ...form, ...{ phone1: e.target.value }
                   })}
@@ -162,7 +162,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control"
                    id="phone2"
-                   placeholder={data?.data?.phone2} 
+                   value={data?.data?.phone2} 
                    onChange={e => setForm({
                     ...form, ...{ phone2: e.target.value }
                   })}
