@@ -222,54 +222,54 @@ class KaryawanController extends Controller
 
     public function update(Request $request, int $id)
     {
-        $validator = Validator::make($request->all(), [
-            'nama' => ['max:112'],
-            'nik' => ['integer'],
-            'email' => ['email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
-            'tanggal_lahir' => ['date'],
-            'telp' => ['max:15'],
-            'foto' => [
-                File::types(['jpg', 'png'])
-                    ->max(5 * 1024)
-            ],
-            'admin' => ['boolean'],
+        // $validator = Validator::make($request->all(), [
+            // 'nama' => ['max:112'],
+            // 'nik' => ['integer'],
+            // 'email' => ['email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+            // 'tanggal_lahir' => ['date'],
+            // 'telp' => ['max:15'],
+            // 'foto' => [
+            //     File::types(['jpg', 'png'])
+            //         ->max(5 * 1024)
+            // ],
+            // 'admin' => ['boolean'],
 
             // Personal Information
-            'npwp' => ['integer'],
-            'potongan_pajak' => ['integer'],
-            'tunjangan_pajak' => ['integer'],
-            'nomor_akun_bank' => ['integer'],
+            // 'npwp' => ['integer'],
+            // 'potongan_pajak' => ['integer'],
+            // 'tunjangan_pajak' => ['integer'],
+            // 'nomor_akun_bank' => ['integer'],
 
             // Job Information
             // 'kantor_cabang_id' => ['integer', 'exists:kantor_cabang,id'],
             // 'department_id.exists' => __('department.not_found'),
             // 'jabatan_id.exists' => __('position.not_found'),
-            'tanggal_masuk' => ['date'],
-            'periode_kontrak' => ['integer'],
-            'potongan_terlambat' => ['boolean'],
-            'toleransi_keterlambatan' => ['integer'],
-            'absen_diluar_kantor' => ['boolean'],
-        ]);
+            // 'tanggal_masuk' => ['date'],
+            // 'periode_kontrak' => ['integer'],
+            // 'potongan_terlambat' => ['boolean'],
+            // 'toleransi_keterlambatan' => ['integer'],
+            // 'absen_diluar_kantor' => ['boolean'],
+        // ]);
 
-        $validator->setCustomMessages([
-            'kantor_cabang_id.exists' => __('branchOffice.not_found'),
-            'department_id.exists' => __('department.not_found'),
-            'jabatan_id.exists' => __('position.not_found'),
-        ]);
+        // $validator->setCustomMessages([
+        //     'kantor_cabang_id.exists' => __('branchOffice.not_found'),
+        //     'department_id.exists' => __('department.not_found'),
+        //     'jabatan_id.exists' => __('position.not_found'),
+        // ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
+        // if ($validator->fails()) {
+        //     $errors = $validator->errors();
 
-            if ($errors->has('kantor_cabang_id')) {
-                return $this->notFound($errors->first('kantor_cabang_id'));
-            } else if ($errors->has('department_id')) {
-                return $this->notFound($errors->first('department_id'));
-            } else if ($errors->has('jabatan_id')) {
-                return $this->notFound($errors->first('jabatan_id'));
-            } else {
-                return $this->fail($validator->errors()->first());
-            }
-        }
+        //     if ($errors->has('kantor_cabang_id')) {
+        //         return $this->notFound($errors->first('kantor_cabang_id'));
+        //     } else if ($errors->has('department_id')) {
+        //         return $this->notFound($errors->first('department_id'));
+        //     } else if ($errors->has('jabatan_id')) {
+        //         return $this->notFound($errors->first('jabatan_id'));
+        //     } else {
+        //         return $this->fail($validator->errors()->first());
+        //     }
+        // }
 
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');
