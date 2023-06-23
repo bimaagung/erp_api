@@ -1,9 +1,9 @@
-
 import React, { useCallback, useEffect, useState } from "react"
 import { Col, Form, Pagination, Row, Table } from "react-bootstrap"
 import { usePagination, useSortBy, useTable } from "react-table"
 import { FaCaretUp, FaCaretDown } from "react-icons/fa"
 import './styles/basictable.css'
+
 const BasicTable = ({
   columns,
   data,
@@ -13,6 +13,7 @@ const BasicTable = ({
   totalData,
 }) => {
   const [pageNumbers, setPageNumbers] = useState([])
+  const [currentPerPage, setCurrentPerPage] = useState(10)
 
   const perPages = [10, 25, 50, 100]
 
@@ -30,12 +31,12 @@ const BasicTable = ({
     nextPage,
     previousPage,
     setPageSize,
-    state: { pageIndex, pageSize, sortBy },
+    state: { pageIndex, sortBy },
   } = useTable(
     {
       columns,
       data,
-      initialState: { pageIndex: 0 },
+      initialState: { pageIndex: 0, perPage: currentPerPage },
       manualPagination: true,
       manualSortBy: true,
       pageCount: totalPage,
@@ -43,6 +44,7 @@ const BasicTable = ({
     useSortBy,
     usePagination
   )
+
   const initPageNumbers = useCallback((current, totalPage) => {
     const pageNumbers = []
     const shownPageNumbers = 9
@@ -83,15 +85,15 @@ const BasicTable = ({
   }, [])
 
   useEffect(() => {
-    fetchData({ pageIndex, pageSize, sortBy })
-  }, [fetchData, pageIndex, pageSize, sortBy])
+    fetchData({ pageIndex, per_page: currentPerPage, sortBy })
+  }, [fetchData, pageIndex, currentPerPage, sortBy])
 
   useEffect(() => {
     initPageNumbers(pageIndex + 1, pageCount)
   }, [initPageNumbers, pageIndex, pageCount])
 
-  const onChangePage = (page) => {
-    gotoPage(page - 1)
+  const onChangePage = (current_page) => {
+    gotoPage(current_page - 1)
   }
 
   const PagePrev = (props) => {
@@ -142,7 +144,7 @@ const BasicTable = ({
             return (
               <Pagination.Ellipsis
                 key={idx}
-                onClick={() => onChangePage(val.page)}
+                onClick={() => onChangePage(val.current_page)}
               />
             )
           }
@@ -154,7 +156,7 @@ const BasicTable = ({
 
   const Footer = (props) => {
     const currentPage = pageIndex + 1
-    const perPage = pageSize
+    const perPage = currentPerPage
     let from = 1
     let to = perPage
 
@@ -185,6 +187,7 @@ const BasicTable = ({
       </div>
     )
   }
+  
   return (
     <>
       <Table striped bordered responsive {...getTableProps()}>
@@ -234,7 +237,6 @@ const BasicTable = ({
             </tr>
           ) : (
             <tr>
-
               <td colSpan={columns?.length}>
                 {totalData > 0 ? <Footer /> : <div className="d-flex justify-content-center fw-bold fst-italic">List Empty</div>}
               </td>
@@ -254,17 +256,17 @@ const BasicTable = ({
               position: "relative",
             }}
             size="sm"
-            value={pageSize}
+            value={currentPerPage}
             onChange={(e) => {
               let value = e.target.value
               if (!isNaN(value)) {
-                setPageSize(Number(e.target.value))
+                setCurrentPerPage(Number(e.target.value))
               }
             }}
           >
-            {perPages.map((pageSize, i) => (
-              <option key={i} value={pageSize}>
-                {pageSize}
+            {perPages.map((perPage, i) => (
+              <option key={i} value={perPage}>
+                {perPage}
               </option>
             ))}
           </Form.Control>

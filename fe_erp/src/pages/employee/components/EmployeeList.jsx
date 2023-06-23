@@ -26,11 +26,11 @@ const ListOrderTable = forwardRef((props, ref) => {
       },
       {
         Header: 'Departemen',
-        accessor: 'informasi_pekerjaan.department',
+        accessor: 'informasi_pekerjaan.department.nama',
       },
       {
         Header: 'Jabatan',
-        accessor: 'informasi_pekerjaan.jabatan',
+        accessor: 'informasi_pekerjaan.jabatan.nama',
       },
       {
         Header: 'Action',
@@ -60,13 +60,13 @@ const ListOrderTable = forwardRef((props, ref) => {
   const filters = useRef({})
 
   const currentPageIndex = useRef({})
-  const currentPageSize = useRef(10)
+  const currentPer_page = useRef(10)
   const currentSortBy = useRef({})
 
   useImperativeHandle(ref, () => ({
-    efreshData() {
+    refreshData() {
       const defaultValues = {
-        pageSize: currentPageSize.current,
+        per_page: currentPer_page.current,
         pageIndex: 0,
         sortBy: [],
       }
@@ -77,7 +77,7 @@ const ListOrderTable = forwardRef((props, ref) => {
     reloadData() {
       const values = {
         pageIndex: currentPageIndex.current,
-        pageSize: currentPageSize.current,
+        per_page: currentPer_page.current,
         sortBy: currentSortBy.current,
       }
       fetchData({ ...values })
@@ -90,11 +90,12 @@ const ListOrderTable = forwardRef((props, ref) => {
   }))
 
   const fetchData = useCallback(
-    async ({ pageSize, pageIndex, sortBy }) => {
+    async ({ per_page, pageIndex, sortBy }) => {
       setLoading(false)
       try {
         const params = {
-          page: pageIndex + 1,
+          current_page: pageIndex + 1,
+
           ...filters.current
         }
 
@@ -110,7 +111,7 @@ const ListOrderTable = forwardRef((props, ref) => {
           params.sort = 'desc'
         }
 
-        if (pageSize) params.pageSize = pageSize
+        if (per_page) params.per_page = per_page
         const token = document.cookie
           .split('; ')
           .find((row) => row.startsWith('token='))
@@ -135,7 +136,7 @@ const ListOrderTable = forwardRef((props, ref) => {
 
 
         currentPageIndex.current = pageIndex
-        currentPageIndex.pageSize = pageSize
+        currentPageIndex.current = per_page
         currentPageIndex.sortBy = sortBy
 
         setLoading(false)
