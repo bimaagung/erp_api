@@ -223,17 +223,11 @@ class KaryawanController extends Controller
     public function update(Request $request, int $id)
     {
         $validator = Validator::make($request->all(), [
-            'nama' => ['required', 'max:112'],
-            'nik' => ['required', 'integer'],
-            'ttl' => ['required'],
-            'jenis_kelamin' => ['required'],
-            'email' => ['required', 'email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
-            'alamat' => ['required'],
-            'domisili' => ['required'],
-            'pendidikan' => ['required'],
-            'agama' => ['required'],
-            'tanggal_lahir' => ['required', 'date'],
-            'telp' => ['required', 'max:15'],
+            'nama' => ['max:112'],
+            'nik' => ['integer'],
+            'email' => ['email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
+            'tanggal_lahir' => ['date'],
+            'telp' => ['max:15'],
             'foto' => [
                 File::types(['jpg', 'png'])
                     ->max(5 * 1024)
@@ -241,25 +235,19 @@ class KaryawanController extends Controller
             'admin' => ['boolean'],
 
             // Personal Information
-            'npwp' => ['required', 'integer'],
-            'tipe_pajak',
+            'npwp' => ['integer'],
             'potongan_pajak' => ['integer'],
             'tunjangan_pajak' => ['integer'],
-            'nama_bank' => ['required'],
             'nomor_akun_bank' => ['integer'],
-            'bpjs_ketenagakerjaan',
-            'bpjs_kesehatan',
 
             // Job Information
             'kantor_cabang_id' => ['integer', 'exists:kantor_cabang,id'],
             'department_id.exists' => __('department.not_found'),
             'jabatan_id.exists' => __('position.not_found'),
-            'tanggal_masuk' => ['required', 'date'],
-            'status' => ['required'],
+            'tanggal_masuk' => ['date'],
             'periode_kontrak' => ['integer'],
             'potongan_terlambat' => ['boolean'],
             'toleransi_keterlambatan' => ['integer'],
-            'mode_absensi' => ['required'],
             'absen_diluar_kantor' => ['boolean'],
         ]);
 
