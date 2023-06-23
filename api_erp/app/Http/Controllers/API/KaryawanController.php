@@ -126,10 +126,10 @@ class KaryawanController extends Controller
                 return $this->fail($validator->errors()->first());
             }
         }
-
+        
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');
-
+            
             if (!$upload) {
                 return $this->fail(__('upload.invalid'));
             }
@@ -251,7 +251,7 @@ class KaryawanController extends Controller
             'bpjs_kesehatan',
 
             // Job Information
-            'kantor_cabang_id' => ['integer', 'exists:kantor_cabang,id'],
+            'kantor_cabang_id' => ['required', 'integer', 'exists:kantor_cabang,id'],
             'department_id.exists' => __('department.not_found'),
             'jabatan_id.exists' => __('position.not_found'),
             'tanggal_masuk' => ['required', 'date'],
