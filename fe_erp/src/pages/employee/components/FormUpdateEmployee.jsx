@@ -14,13 +14,15 @@ import {
 } from "../../../features/positionSlice";
 import { bankType } from "../const/bankType";
 import { useParams } from "react-router-dom";
-import { employeeSelector, getEmployeeByid } from "../../../features/employeeSlice";
-import moment from 'moment';
+import {
+  employeeSelector,
+  getEmployeeByid,
+} from "../../../features/employeeSlice";
+import moment from "moment";
 
 const FormUpdateEmployee = (props) => {
-
-    const { id } = useParams()
-    const employee = useSelector(employeeSelector.selectData)
+  const { id } = useParams();
+  const employee = useSelector(employeeSelector.selectData);
   const office = useSelector(officeSelector.selectData);
   const department = useSelector(departmentSelector.selectData);
   const position = useSelector(positionSelector.selectData);
@@ -29,9 +31,8 @@ const FormUpdateEmployee = (props) => {
     dispatch(getOfficeList());
     dispatch(getDepartemntList());
     dispatch(getPositionList());
-    dispatch(getEmployeeByid(id))
+    dispatch(getEmployeeByid(id));
   }, []);
-
 
   const [form, setForm] = useState({
     nama: "",
@@ -126,9 +127,10 @@ const FormUpdateEmployee = (props) => {
           <div className="row">
             <div className="col-md-6">
               <div>
-                <input type="file" 
-                onChange={handleFileInputChange}
-                // value={employee?.foto}
+                <input
+                  type="file"
+                  onChange={handleFileInputChange}
+                  // value={employee?.foto}
                 />
                 {previewSource && (
                   <img
@@ -155,7 +157,7 @@ const FormUpdateEmployee = (props) => {
                   type="text"
                   className="form-control"
                   id="nama"
-                  value={form.nama ? form.nama : employee.nama || ""}
+                  value={form.nama ? form.nama : employee?.nama || ""}
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -174,8 +176,8 @@ const FormUpdateEmployee = (props) => {
                       type="text"
                       className="form-control"
                       id="nik"
-                      value={form.nik? form.nik : employee?.nik || ""}
-                      disabled = {true}
+                      value={form.nik ? form.nik : employee?.nik || ""}
+                      disabled={true}
                       onChange={(e) =>
                         setForm({
                           ...form,
@@ -208,7 +210,11 @@ const FormUpdateEmployee = (props) => {
                     <select
                       id="inputState"
                       className="form-select"
-                      value={form.jenis_kelamin ? form.jenis_kelamin : employee.jenis_kelamin || ""}
+                      value={
+                        form.jenis_kelamin
+                          ? form.jenis_kelamin
+                          : employee.jenis_kelamin || ""
+                      }
                       onChange={(e) =>
                         setForm({
                           ...form,
@@ -247,9 +253,11 @@ const FormUpdateEmployee = (props) => {
                       Tanggal Lahir:
                     </label>
 
-                    <DatePicker 
-                    //   defaultValue={ moment(employee?.tanggal_lahir ? employee?.tanggal_lahir :'2000-01-01', 'YYYY-MM-DD').toDate()}
-                    format="yyyy-MM-dd" onChange={handleBirtDay} />
+                    <DatePicker
+                      //   defaultValue={ moment(employee?.tanggal_lahir ? employee?.tanggal_lahir :'2000-01-01', 'YYYY-MM-DD').toDate()}
+                      format="yyyy-MM-dd"
+                      onChange={handleBirtDay}
+                    />
                   </div>
                   <div className="mb-3">
                     <label htmlFor="ttl" className="form-label">
@@ -259,7 +267,7 @@ const FormUpdateEmployee = (props) => {
                       type="text"
                       className="form-control"
                       id="jenis kelamin"
-                      value={form.telp? form.telp : employee.telp || ""}
+                      value={form.telp ? form.telp : employee.telp || ""}
                       onChange={(e) =>
                         setForm({
                           ...form,
@@ -312,7 +320,9 @@ const FormUpdateEmployee = (props) => {
                   type="text"
                   className="form-control"
                   id="alamt-domisili"
-                  value={form.domisili ? form.domisili : employee?.domisili || ""}
+                  value={
+                    form.domisili ? form.domisili : employee?.domisili || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -329,7 +339,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.pendidikan? form.pendidikan : employee?.pendidikan || ""}
+                  value={
+                    form.pendidikan
+                      ? form.pendidikan
+                      : employee?.pendidikan || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -384,7 +398,11 @@ const FormUpdateEmployee = (props) => {
                   type="text"
                   className="form-control"
                   id="npwp"
-                  value={form.npwp ? form.npwp : employee?.informasi_personal?.npwp || ""}
+                  value={
+                    form.npwp
+                      ? form.npwp
+                      : employee?.informasi_personal?.npwp || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -400,7 +418,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.tipe_pajak ? form.tipe_pajak : employee?.informasi_personal?.tipe_pajak}
+                  value={
+                    form.tipe_pajak
+                      ? form.tipe_pajak
+                      : employee?.informasi_personal?.tipe_pajak
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -434,7 +456,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.potongan_pajak? form.potongan_pajak : employee?.informasi_personal?.potongan_pajak || ""}
+                  value={
+                    form.potongan_pajak
+                      ? form.potongan_pajak
+                      : employee?.informasi_personal?.potongan_pajak || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -455,7 +481,11 @@ const FormUpdateEmployee = (props) => {
                   <input
                     type="number"
                     className="form-control"
-                    value={form.tunjangan_pajak ? form.tunjangan_pajak : employee?.informasi_personal?.tunjangan_pajak || ""}
+                    value={
+                      form.tunjangan_pajak
+                        ? form.tunjangan_pajak
+                        : employee?.informasi_personal?.tunjangan_pajak || ""
+                    }
                     id="tolerans keterlambatan"
                     onChange={(e) =>
                       setForm({
@@ -473,7 +503,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.nama_bank ? form.nama_bank : employee?.informasi_personal?.nama_bank || ""}
+                  value={
+                    form.nama_bank
+                      ? form.nama_bank
+                      : employee?.informasi_personal?.nama_bank || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -499,7 +533,11 @@ const FormUpdateEmployee = (props) => {
                   type="text"
                   className="form-control"
                   id="no-akun-bank"
-                  value={form.nomor_akun_bank ? form.nomor_akun_bank : employee?.informasi_personal?.nomor_akun_bank || ""}
+                  value={
+                    form.nomor_akun_bank
+                      ? form.nomor_akun_bank
+                      : employee?.informasi_personal?.nomor_akun_bank || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -516,7 +554,11 @@ const FormUpdateEmployee = (props) => {
                   type="text"
                   className="form-control"
                   id="no-asuransi"
-                  value={form.bpjs_ketenagakerjaan ? form.bpjs_ketenagakerjaan : employee?.informasi_personal?.bpjs_ketenagakerjaan || ""}
+                  value={
+                    form.bpjs_ketenagakerjaan
+                      ? form.bpjs_ketenagakerjaan
+                      : employee?.informasi_personal?.bpjs_ketenagakerjaan || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -533,7 +575,11 @@ const FormUpdateEmployee = (props) => {
                   type="text"
                   className="form-control"
                   id="no-bpjs"
-                  value={form.bpjs_kesehatan? form.bpjs_kesehatan : employee?.informasi_personal?.bpjs_kesehatan || ""}
+                  value={
+                    form.bpjs_kesehatan
+                      ? form.bpjs_kesehatan
+                      : employee?.informasi_personal?.bpjs_kesehatan || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -557,7 +603,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.kantor_cabang_id ? form.kantor_cabang_id : employee?.informasi_pekerjaan?.kantor_cabang?.id || ""}
+                  value={
+                    form.kantor_cabang_id
+                      ? form.kantor_cabang_id
+                      : employee?.informasi_pekerjaan?.kantor_cabang?.id || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -582,7 +632,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="department"
                   className="form-select"
-                  value={ form.department_id ? form.department_id : employee?.informasi_pekerjaan?.department?.id || ""}
+                  value={
+                    form.department_id
+                      ? form.department_id
+                      : employee?.informasi_pekerjaan?.department?.id || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -607,7 +661,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="jabatan"
                   className="form-select"
-                  value={form.jabatan_id ? form.jabatan_id : employee?.informasi_pekerjaan?.jabatan?.id || ""}
+                  value={
+                    form.jabatan_id
+                      ? form.jabatan_id
+                      : employee?.informasi_pekerjaan?.jabatan?.id || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -645,7 +703,11 @@ const FormUpdateEmployee = (props) => {
                     <select
                       id="status"
                       className="form-select"
-                      value={form.status ? form.status : employee?.informasi_pekerjaan?.status || ""}
+                      value={
+                        form.status
+                          ? form.status
+                          : employee?.informasi_pekerjaan?.status || ""
+                      }
                       onChange={(e) =>
                         setForm({
                           ...form,
@@ -669,7 +731,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.periode_kontrak ? form.periode_kontrak : employee?.informasi_pekerjaan?.periode_kontrak || ""}
+                  value={
+                    form.periode_kontrak
+                      ? form.periode_kontrak
+                      : employee?.informasi_pekerjaan?.periode_kontrak || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -711,7 +777,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.potongan_terlambat ? form.potongan_terlambat : employee?.informasi_pekerjaan?.potongan_terlambat || ""}
+                  value={
+                    form.potongan_terlambat
+                      ? form.potongan_terlambat
+                      : employee?.informasi_pekerjaan?.potongan_terlambat || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -736,7 +806,12 @@ const FormUpdateEmployee = (props) => {
                     type="number"
                     className="form-control"
                     id="tolerans keterlambatan"
-                    value={form.toleransi_keterlambatan ? form.toleransi_keterlambatan : employee?.informasi_pekerjaan?.toleransi_keterlambatan || ""}
+                    value={
+                      form.toleransi_keterlambatan
+                        ? form.toleransi_keterlambatan
+                        : employee?.informasi_pekerjaan
+                            ?.toleransi_keterlambatan || ""
+                    }
                     onChange={(e) =>
                       setForm({
                         ...form,
@@ -753,7 +828,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.mode_absensi ? form.mode_absensi : employee?.informasi_pekerjaan?.mode_absensi || ""}
+                  value={
+                    form.mode_absensi
+                      ? form.mode_absensi
+                      : employee?.informasi_pekerjaan?.mode_absensi || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
@@ -773,7 +852,11 @@ const FormUpdateEmployee = (props) => {
                 <select
                   id="inputState"
                   className="form-select"
-                  value={form.absen_diluar_kantor ? form.absen_diluar_kantor : employee?.informasi_pekerjaan?.absen_diluar_kantor || ""}
+                  value={
+                    form.absen_diluar_kantor
+                      ? form.absen_diluar_kantor
+                      : employee?.informasi_pekerjaan?.absen_diluar_kantor || ""
+                  }
                   onChange={(e) =>
                     setForm({
                       ...form,
