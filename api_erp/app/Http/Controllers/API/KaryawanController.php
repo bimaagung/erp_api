@@ -214,7 +214,7 @@ class KaryawanController extends Controller
         $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
         if (!$karyawan) {
-            return $this->fail(__('karyawan.not_found'));
+            return $this->notFound(__('karyawan.not_found'));
         }
 
         return $this->success(new KaryawanResource($karyawan));
@@ -222,6 +222,12 @@ class KaryawanController extends Controller
 
     public function update(Request $request, int $id)
     {
+        $karyawan = $this->karyawan->find($id);
+
+        if (!$karyawan) {
+            return $this->notFound(__('karyawan.not_found'));
+        }
+
         $karyawanPayload = $request->only(
             [
                 'nama',
@@ -291,6 +297,7 @@ class KaryawanController extends Controller
         $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
         Cache::delete($this->cacheKey);
+
 
         return $this->success(new KaryawanResource($karyawan));
     }
