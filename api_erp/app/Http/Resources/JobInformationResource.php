@@ -23,10 +23,10 @@ class JobInformationResource extends JsonResource
             'tanggal_masuk' => $this->tanggal_masuk,
             'status' => $this->status,
             'periode_kontrak' => (int)$this->periode_kontrak,
-            'potongan_terlambat' => $this->potongan_terlambat,
+            'potongan_terlambat' => (bool)$this->potongan_terlambat,
             'toleransi_keterlambatan' => (int)$this->toleransi_keterlambatan,
             'mode_absensi' => $this->mode_absensi,
-            'absen_diluar_kantor' => $this->absen_diluar_kantor,
+            'absen_diluar_kantor' => (bool)$this->absen_diluar_kantor,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];

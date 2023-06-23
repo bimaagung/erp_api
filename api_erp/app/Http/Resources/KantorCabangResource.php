@@ -24,8 +24,8 @@ class KantorCabangResource extends JsonResource
             'keluar_senin_jumat' => $this->keluar_senin_jumat,
             'masuk_sabtu_minggu' => $this->masuk_sabtu_minggu,
             'keluar_sabtu_minggu' => $this->keluar_sabtu_minggu,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at
+            'created_at' => (string)$this->created_at,
+            'updated_at' => (string)$this->updated_at
         ];
     }
 }
