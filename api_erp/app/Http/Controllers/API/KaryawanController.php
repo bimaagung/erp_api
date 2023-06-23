@@ -222,105 +222,65 @@ class KaryawanController extends Controller
 
     public function update(Request $request, int $id)
     {
-        // $validator = Validator::make($request->all(), [
-            // 'nama' => ['max:112'],
-            // 'nik' => ['integer'],
-            // 'email' => ['email:rfc,dns', 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/'],
-            // 'tanggal_lahir' => ['date'],
-            // 'telp' => ['max:15'],
-            // 'foto' => [
-            //     File::types(['jpg', 'png'])
-            //         ->max(5 * 1024)
-            // ],
-            // 'admin' => ['boolean'],
+        $karyawanPayload = $request->only(
+            [
+                'nama',
+                'nik',
+                'ttl',
+                'jenis_kelamin',
+                'email',
+                'alamat',
+                'domisili',
+                'pendidikan',
+                'agama',
+                'tanggal_lahir',
+                'telp',
+                'foto',
+                'admin',
+            ]
+        );
 
-            // Personal Information
-            // 'npwp' => ['integer'],
-            // 'potongan_pajak' => ['integer'],
-            // 'tunjangan_pajak' => ['integer'],
-            // 'nomor_akun_bank' => ['integer'],
+        $personalInformationPayload = $request->only(
+            [
+                'npwp',
+                'tipe_pajak',
+                'potongan_pajak',
+                'tunjangan_pajak',
+                'nama_bank',
+                'nomor_akun_bank',
+                'bpjs_ketenagakerjaan',
+                'bpjs_kesehatan',
+            ]
+        );
 
-            // Job Information
-            // 'kantor_cabang_id' => ['integer', 'exists:kantor_cabang,id'],
-            // 'department_id.exists' => __('department.not_found'),
-            // 'jabatan_id.exists' => __('position.not_found'),
-            // 'tanggal_masuk' => ['date'],
-            // 'periode_kontrak' => ['integer'],
-            // 'potongan_terlambat' => ['boolean'],
-            // 'toleransi_keterlambatan' => ['integer'],
-            // 'absen_diluar_kantor' => ['boolean'],
-        // ]);
-
-        // $validator->setCustomMessages([
-        //     'kantor_cabang_id.exists' => __('branchOffice.not_found'),
-        //     'department_id.exists' => __('department.not_found'),
-        //     'jabatan_id.exists' => __('position.not_found'),
-        // ]);
-
-        // if ($validator->fails()) {
-        //     $errors = $validator->errors();
-
-        //     if ($errors->has('kantor_cabang_id')) {
-        //         return $this->notFound($errors->first('kantor_cabang_id'));
-        //     } else if ($errors->has('department_id')) {
-        //         return $this->notFound($errors->first('department_id'));
-        //     } else if ($errors->has('jabatan_id')) {
-        //         return $this->notFound($errors->first('jabatan_id'));
-        //     } else {
-        //         return $this->fail($validator->errors()->first());
-        //     }
-        // }
+        $jobInformationPayload = $request->only(
+            [
+                'kantor_cabang_id',
+                'department_id',
+                'jabatan_id',
+                'tanggal_masuk',
+                'status',
+                'periode_kontrak',
+                'potongan_terlambat',
+                'toleransi_keterlambatan',
+                'mode_absensi',
+                'absen_diluar_kantor'
+            ]
+        );
 
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');
             if (!$upload) {
                 return $this->fail(__('upload.invalid'));
             }
-        } else {
-            $upload = 'default.jpg';
+            $karyawanPayload['foto'] = $upload;
         }
 
         try {
-            DB::transaction(function () use ($id, $request, $upload) {
-                $this->karyawan->where('id', $id)->update([
-                    'nama' => $request->nama,
-                    'nik' => $request->nik,
-                    'ttl' => $request->ttl,
-                    'jenis_kelamin' => $request->jenis_kelamin,
-                    'email' => $request->email,
-                    'alamat' => $request->alamat,
-                    'domisili' => $request->domisili,
-                    'pendidikan' => $request->pendidikan,
-                    'agama' => $request->agama,
-                    'tanggal_lahir' => $request->tanggal_lahir,
-                    'telp' => $request->telp,
-                    'foto' => $upload,
-                    'admin' => $request->admin,
-                ]);
-
-                $this->personalInformation->where('karyawan_id', $id)->update([
-                    'npwp' => $request->npwp,
-                    'tipe_pajak' => $request->tipe_pajak,
-                    'potongan_pajak' => $request->potongan_pajak,
-                    'tunjangan_pajak' => $request->tunjangan_pajak,
-                    'nama_bank' => $request->nama_bank,
-                    'nomor_akun_bank' => $request->nomor_akun_bank,
-                    'bpjs_ketenagakerjaan' => $request->bpjs_ketenagakerjaan,
-                    'bpjs_kesehatan' => $request->bpjs_kesehatan,
-                ]);
-
-                $this->jobInformation->where('karyawan_id', $id)->update([
-                    'kantor_cabang_id' => $request->kantor_cabang_id,
-                    'department_id' => $request->department_id,
-                    'jabatan_id' => $request->jabatan_id,
-                    'tanggal_masuk' => $request->tanggal_masuk,
-                    'status' => $request->status,
-                    'periode_kontrak' => $request->periode_kontrak,
-                    'potongan_terlambat' => $request->potongan_terlambat,
-                    'toleransi_keterlambatan' => $request->toleransi_keterlambatan,
-                    'mode_absensi' => $request->mode_absensi,
-                    'absen_diluar_kantor' => $request->absen_diluar_kantor,
-                ]);
+            DB::transaction(function () use ($id, $karyawanPayload, $personalInformationPayload, $jobInformationPayload) {
+                $this->karyawan->where('id', $id)->update($karyawanPayload);
+                $this->personalInformation->where('karyawan_id', $id)->update($personalInformationPayload);
+                $this->jobInformation->where('karyawan_id', $id)->update($jobInformationPayload);
             }, 5);
         } catch (QueryException $e) {
             DB::rollback();

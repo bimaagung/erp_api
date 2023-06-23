@@ -10,6 +10,7 @@ use App\Models\PersonalInformation;
 use App\Models\Position;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class KaryawanTest extends TestCase
@@ -43,7 +44,7 @@ class KaryawanTest extends TestCase
             'agama' => $karyawan->agama,
             'tanggal_lahir' => $karyawan->tanggal_lahir,
             'telp' => $karyawan->telp,
-            'foto' => $karyawan->foto,
+            'foto' => url('/') . Storage::url('karyawan/' . $karyawan->foto),
             'informasi_personal' => [
                 'id' => $personalInformation->id,
                 'karyawan_id' => $personalInformation->karyawan_id,
@@ -52,11 +53,11 @@ class KaryawanTest extends TestCase
                 'potongan_pajak' => $personalInformation->potongan_pajak,
                 'tunjangan_pajak' => $personalInformation->tunjangan_pajak,
                 'nama_bank' => $personalInformation->nama_bank,
-                'nomor_akun_bank' => $personalInformation->nomor_akun_bank,
+                'nomor_akun_bank' => (int)$personalInformation->nomor_akun_bank,
                 'bpjs_ketenagakerjaan' => $personalInformation->bpjs_ketenagakerjaan,
                 'bpjs_kesehatan' => $personalInformation->bpjs_kesehatan,
-                'created_at' => $personalInformation->created_at,
-                'updated_at' => $personalInformation->updated_at,
+                'created_at' => (string)$personalInformation->created_at,
+                'updated_at' => (string)$personalInformation->updated_at,
             ],
             'informasi_pekerjaan' => [
                 'id' => $jobInformation->id,
@@ -71,20 +72,20 @@ class KaryawanTest extends TestCase
                     'keluar_senin_jumat' => $branchOffice->keluar_senin_jumat,
                     'masuk_sabtu_minggu' => $branchOffice->masuk_sabtu_minggu,
                     'keluar_sabtu_minggu' => $branchOffice->keluar_sabtu_minggu,
-                    'created_at' => $branchOffice->created_at,
-                    'updated_at' => $branchOffice->updated_at
+                    'created_at' => (string)$branchOffice->created_at,
+                    'updated_at' => (string)$branchOffice->updated_at
                 ],
                 'department' => [
                     'id' => $department->id,
                     'nama' => $department->nama,
-                    'created_at' => $department->created_at,
-                    'updated_at' => $department->updated_at,
+                    'created_at' => (string)$department->created_at,
+                    'updated_at' => (string)$department->updated_at,
                 ],
                 'jabatan' => [
                     'id' => $position->id,
                     'nama' => $position->nama,
-                    'created_at' => $position->created_at,
-                    'updated_at' => $position->updated_at,
+                    'created_at' => (string)$position->created_at,
+                    'updated_at' => (string)$position->updated_at,
                 ],
                 'tanggal_masuk' => $jobInformation->tanggal_masuk,
                 'status' => $jobInformation->status,
@@ -93,11 +94,11 @@ class KaryawanTest extends TestCase
                 'toleransi_keterlambatan' => $jobInformation->toleransi_keterlambatan,
                 'mode_absensi' => $jobInformation->mode_absensi,
                 'absen_diluar_kantor' => $jobInformation->absen_diluar_kantor,
-                'created_at' => $jobInformation->created_at,
-                'updated_at' => $jobInformation->updated_at,
+                'created_at' => (string)$jobInformation->created_at,
+                'updated_at' => (string)$jobInformation->updated_at,
             ],
-            'created_at' => $karyawan->created_at,
-            'updated_at' => $karyawan->updated_at,
+            'created_at' => (string)$karyawan->created_at,
+            'updated_at' => (string)$karyawan->updated_at,
         ];
 
         $this

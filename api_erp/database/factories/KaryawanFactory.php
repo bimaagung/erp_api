@@ -28,7 +28,7 @@ class KaryawanFactory extends Factory
             'agama' => "Islam",
             'tanggal_lahir' => fake()->date(),
             'telp' => '+083748',
-            'foto' => fake()->imageUrl(640, 480),
+            'foto' => 'default.jpg',
             'admin' => false,
         ];
     }
