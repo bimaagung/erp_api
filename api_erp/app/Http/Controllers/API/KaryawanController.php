@@ -241,9 +241,9 @@ class KaryawanController extends Controller
             'nomor_akun_bank' => ['integer'],
 
             // Job Information
-            'kantor_cabang_id' => ['integer', 'exists:kantor_cabang,id'],
-            'department_id.exists' => __('department.not_found'),
-            'jabatan_id.exists' => __('position.not_found'),
+            // 'kantor_cabang_id' => ['integer', 'exists:kantor_cabang,id'],
+            // 'department_id.exists' => __('department.not_found'),
+            // 'jabatan_id.exists' => __('position.not_found'),
             'tanggal_masuk' => ['date'],
             'periode_kontrak' => ['integer'],
             'potongan_terlambat' => ['boolean'],
