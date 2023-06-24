@@ -19,6 +19,8 @@ jobs:
         image: mysql:5.7
         env:
           MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: root
+          MYSQL_PASSWORD: root
           MYSQL_DATABASE: erp_api
         ports:
           - 33306:3306
