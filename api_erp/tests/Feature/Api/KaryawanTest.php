@@ -20,7 +20,7 @@ use Tests\TestCase;
 
 class KaryawanTest extends TestCase
 {
-    use RefreshDatabase;
+    use DatabaseMigrations;
 
 
     public function create()
