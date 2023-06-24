@@ -1,11 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import FormUpdateEmployee from "./components/FormUpdateEmployee";
 import SideBar from "../../components/layouts/Sidebar";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { employeeSelector, getEmployeeByid, updateEmployee } from "../../features/employeeSlice";
+import { useNavigate, useParams } from "react-router-dom";
+import { employeeSelector, updateEmployee } from "../../features/employeeSlice";
 
 const EmployeeUpdatePage = () => {
+  const loading = useSelector(employeeSelector.loading)
+  const errorMessage = useSelector(employeeSelector.errorMessage)
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const { id } = useParams();
   
@@ -13,14 +16,7 @@ const EmployeeUpdatePage = () => {
     dispatch(updateEmployee({ id: id, params: payload }));
   }
 
-// const dataKaryawan = useSelector(employeeSelector.selectData)
-
-// useEffect(() => {
-// dispatch(getEmployeeByid(id))
-// }, [])
-
   const handleUpdateEmployee = (payload) => {
-    // console.log(payload);
     const updateData = {}
     if (payload) {
       for (const key in payload) {
@@ -29,8 +25,11 @@ const EmployeeUpdatePage = () => {
               updateData[key] = value;
           }
       }
-      console.log(updateData)
       updateKaryawan(updateData);
+
+      if (!loading && !errorMessage) {
+        navigate('/admin/karyawan')
+      }
   }
   };
   return (

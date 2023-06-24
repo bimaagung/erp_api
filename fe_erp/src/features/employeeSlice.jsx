@@ -127,7 +127,25 @@ const employeeSlice = createSlice({
         state.data = action.payload;
         state.errorMessage = null;
       })
+      .addCase(addEmployee.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null
+      })
       .addCase(addEmployee.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload.meta.message;
+        state.data = {};
+      })
+      .addCase(updateEmployee.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+        state.errorMessage = null;
+      })
+      .addCase(updateEmployee.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null
+      })
+      .addCase(updateEmployee.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload.meta.message;
         state.data = {};
