@@ -21,12 +21,11 @@ use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
 
 class KaryawanController extends Controller
 {
-
     protected Karyawan $karyawan;
     protected PersonalInformation $personalInformation;
     protected JobInformation $jobInformation;
     protected string $cacheKey = 'karyawan';
-    protected int $expiration = 60 * 3;
+    protected int $expiration = 60 * 60 * 24 * 7;
 
     public function __construct(Karyawan $karyawan, PersonalInformation $personalInformation, JobInformation $jobInformation, Redis $redis)
     {
@@ -50,7 +49,9 @@ class KaryawanController extends Controller
             return $this->fail($validator->errors()->first());
         }
 
-        $karyawans = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->orderBy('created_at', 'DESC')->paginate($perPage, ['*'], 'page', $currentPage);
+        $karyawans = Cache::remember('karyawans-' . $currentPage . '-' . $perPage, $this->expiration, function () use ($perPage, $currentPage) {
+            return $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->orderBy('created_at', 'DESC')->paginate($perPage, ['*'], 'page', $currentPage);
+        });
 
         return $this->successWithPaginate(
             new PaginationResource($karyawans),
