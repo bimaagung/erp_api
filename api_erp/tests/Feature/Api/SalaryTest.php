@@ -7,6 +7,7 @@ use App\Models\Salary;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Testing\Fluent\AssertableJson;
 use Tests\TestCase;
 
 class SalaryTest extends TestCase
@@ -24,16 +25,16 @@ class SalaryTest extends TestCase
             'tunjangan_tetap' => fake()->randomNumber(5),
             'tunjangan_lainnya' => fake()->randomNumber(5),
             'tunjangan_harian' => fake()->randomNumber(5),
-            'bpjs_jht_karyawan' => fake()->randomNumber(2),
-            'bpjs_kesehatan_karyawan' => fake()->randomNumber(2),
-            'bpjs_jp_karyawan' => fake()->randomNumber(2),
-            'asuransi_lainnya_karyawan' => fake()->randomNumber(2),
-            'bpjs_jht_kantor' => fake()->randomNumber(2),
-            'bpjs_kesehatan_kantor' => fake()->randomNumber(2),
-            'bpjs_jp_kantor' => fake()->randomNumber(2),
-            'asuransi_lainnya_kantor' => fake()->randomNumber(2),
-            'bpjs_jkm_kantor' => fake()->randomNumber(2),
-            'bpjs_jkk_kantor' => fake()->randomNumber(2),
+            'bpjs_jht_karyawan' => fake()->randomFloat(2),
+            'bpjs_kesehatan_karyawan' => fake()->randomFloat(2),
+            'bpjs_jp_karyawan' => fake()->randomFloat(2),
+            'asuransi_lainnya_karyawan' => fake()->randomFloat(2),
+            'bpjs_jht_kantor' => fake()->randomFloat(2),
+            'bpjs_kesehatan_kantor' => fake()->randomFloat(2),
+            'bpjs_jp_kantor' => fake()->randomFloat(2),
+            'asuransi_lainnya_kantor' => fake()->randomFloat(2),
+            'bpjs_jkm_kantor' => fake()->randomFloat(2),
+            'bpjs_jkk_kantor' => fake()->randomFloat(2),
         ];
     }
 

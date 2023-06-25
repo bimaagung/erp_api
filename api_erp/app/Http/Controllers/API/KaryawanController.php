@@ -194,7 +194,7 @@ class KaryawanController extends Controller
             throw $e;
         }
 
-        Cache::delete($this->cacheKey);
+        Cache::flush();
 
         $dbResult['karyawan']['informasi_personal'] = $dbResult['personal'];
         $dbResult['karyawan']['informasi_pekerjaan'] = $dbResult['job'];
@@ -297,7 +297,7 @@ class KaryawanController extends Controller
 
         $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
 
-        Cache::delete($this->cacheKey);
+        Cache::flush();
 
 
         return $this->success(new KaryawanResource($karyawan));
@@ -338,7 +338,7 @@ class KaryawanController extends Controller
             throw $e;
         }
 
-        Cache::delete($this->cacheKey);
+        Cache::flush();
 
         return $this->success($dbResult['karyawan']);
     }

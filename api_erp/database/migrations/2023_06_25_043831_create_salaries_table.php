@@ -20,16 +20,16 @@ return new class extends Migration
             $table->integer('tunjangan_tetap')->default(0);
             $table->integer('tunjangan_lainnya')->default(0);
             $table->integer('tunjangan_harian')->default(0);
-            $table->integer('bpjs_jht_karyawan')->default(0);
-            $table->integer('bpjs_kesehatan_karyawan')->default(0);
-            $table->integer('bpjs_jp_karyawan')->default(0);
-            $table->integer('asuransi_lainnya_karyawan')->default(0);
-            $table->integer('bpjs_jht_kantor')->default(0);
-            $table->integer('bpjs_kesehatan_kantor')->default(0);
-            $table->integer('bpjs_jp_kantor')->default(0);
-            $table->integer('asuransi_lainnya_kantor')->default(0);
-            $table->integer('bpjs_jkm_kantor')->default(0);
-            $table->integer('bpjs_jkk_kantor')->default(0);
+            $table->float('bpjs_jht_karyawan')->default(0.00000);
+            $table->float('bpjs_kesehatan_karyawan')->default(0.00000);
+            $table->float('bpjs_jp_karyawan')->default(0.00000);
+            $table->float('asuransi_lainnya_karyawan')->default(0.00000);
+            $table->float('bpjs_jht_kantor')->default(0.00000);
+            $table->float('bpjs_kesehatan_kantor')->default(0.00000);
+            $table->float('bpjs_jp_kantor')->default(0.00000);
+            $table->float('asuransi_lainnya_kantor')->default(0.00000);
+            $table->float('bpjs_jkm_kantor')->default(0.00000);
+            $table->float('bpjs_jkk_kantor')->default(0.00000);
             $table->timestamps();
         });
     }
