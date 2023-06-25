@@ -10,6 +10,7 @@ use App\Http\Controllers\API\PersonalInformationController;
 use App\Http\Controllers\API\PositionController;
 use App\Http\Controllers\API\SalaryController;
 use App\Http\Resources\DepartmentResource;
+use App\Models\KantorCabang;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteGroup;
 use Illuminate\Support\Facades\Route;
@@ -77,9 +78,13 @@ Route::group(['prefix' => 'gaji'], function () {
 });
 
 Route::group(['prefix' => 'kantor-cabang'], function () {
-    Route::get('/', [KantorCabangController::class, 'index']);
-    Route::get('/{id}', [KantorCabangController::class, 'show']);
-    Route::post('/', [KantorCabangController::class, 'create']);
+    Route::controller(KantorCabangController::class)->group(function() {
+        Route::get('/', 'index');
+        Route::get('/{id}', 'show');
+        Route::post('/', 'create');
+        Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
+    });
 });
 
 // http://localhost:8000/log-viewer for logging

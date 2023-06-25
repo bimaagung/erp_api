@@ -60,7 +60,7 @@ const ListOrderTable = forwardRef((props, ref) => {
   const filters = useRef({})
 
   const currentPageIndex = useRef({})
-  const currentPer_page = useRef(10)
+  const currentPer_page = useRef(11)
   const currentSortBy = useRef({})
 
   useImperativeHandle(ref, () => ({

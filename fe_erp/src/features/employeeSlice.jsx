@@ -40,16 +40,10 @@ export const getEmployeeByid = createAsyncThunk(
 export const addEmployee = createAsyncThunk(
   "employee/add",
   async (params = {}, { rejectWithValue }) => {
-    // const token = document.cookie
-    //     .split('; ')
-    //     .find((row) => row.startsWith('token='))
-    //     ?.split('=')[1];
-
     const apiUrl = config.apiBaseUrl;
     try {
       const response = await axios.post(apiUrl + "karyawan", params, {
         headers: {
-          // Authorization: `Bearer ${token}`,
           "content-type": "multipart/form-data",
         },
       });

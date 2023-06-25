@@ -13,9 +13,9 @@ const BasicTable = ({
   totalData,
 }) => {
   const [pageNumbers, setPageNumbers] = useState([])
-  const [currentPerPage, setCurrentPerPage] = useState(10)
+  const [currentPerPage, setCurrentPerPage] = useState(11)
 
-  const perPages = [10, 25, 50, 100]
+  const perPages = [11, 25, 50, 100]
 
   const {
     getTableProps,

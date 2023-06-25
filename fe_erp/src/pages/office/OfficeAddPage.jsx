@@ -9,11 +9,13 @@ import { useNavigate } from "react-router-dom";
 const OfficeAddPage = () => {
   const dispatch = useDispatch()
   const loading = useSelector(officeSelector.loading)
+  const success = useSelector(officeSelector.success)
+  console.log(success)
   const navigate = useNavigate()
   
   const handleSubmit = (payload) => {
     dispatch(addOffice(payload))
-    if(!loading) {
+    if(success) {
       navigate('/admin/kantor-cabang')
     }
   }

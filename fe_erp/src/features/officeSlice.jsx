@@ -1,12 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import config from '../config'
+import config from "../config";
 
 const initialState = {
   data: {},
   loading: false,
   errorMessage: null,
-}
+  success : false
+};
 
 export const getOfficeList = createAsyncThunk(
   "admin/get-office",
@@ -25,58 +26,53 @@ export const getOfficeList = createAsyncThunk(
 );
 
 export const getOfficeByid = createAsyncThunk("office/getbyid", async (id) => {
-  const apiUrl = config.apiBaseUrl
+  const apiUrl = config.apiBaseUrl;
   try {
-    const response = await axios.get(apiUrl + `kantor-cabang/${id}`)
-    return response.data
-    
+    const response = await axios.get(apiUrl + `kantor-cabang/${id}`);
+    return response.data;
   } catch (error) {
-    console.log(error)  
+    console.log(error);
   }
-})
+});
 
+export const addOffice = createAsyncThunk(
+  "office/add",
+  async (params = {}, { rejectWithValue }) => {
+    const apiUrl = config.apiBaseUrl;
+    try {
+      const response = await axios.post(apiUrl + "kantor-cabang", params);
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
 
-export const addOffice = createAsyncThunk("office/add", async (params = {}) => {
-
-  // const token = document.cookie
-  //     .split('; ')
-  //     .find((row) => row.startsWith('token='))
-  //     ?.split('=')[1];
-
-  const apiUrl = config.apiBaseUrl
-  try {
-      const response = await axios.post(apiUrl + "kantor-cabang", params, {
-          // headers: {
-          //     Authorization: `Bearer ${token}`
-          // }
+export const UpdateOffice = createAsyncThunk(
+  "office/update",
+  async ({ id, params }) => {
+    // const token = document.cookie
+    //     .split('; ')
+    //     .find((row) => row.startsWith('token='))
+    //     ?.split('=')[1];
+    const apiUrl = config.apiBaseUrl;
+    try {
+      const response = await axios.put(apiUrl + `kantor-cabang/${id}`, params, {
+        // headers: {
+        //     "content-type": "multipart/form-data",
+        //     Authorization: `Bearer ${token}`
+        // }
       });
 
-      return response.data
-  } catch (err) {
-      console.log(err)
+      return response.data;
+    } catch (err) {
+      console.log(err);
+    }
   }
-})
-
-
-export const UpdateOffice = createAsyncThunk("office/update", async ({ id, params }) => {
-  // const token = document.cookie
-  //     .split('; ')
-  //     .find((row) => row.startsWith('token='))
-  //     ?.split('=')[1];
-  const apiUrl = config.apiBaseUrl
-  try {
-      const response = await axios.put(apiUrl + `kantor-cabang/${id}`, params, {
-          // headers: {
-          //     "content-type": "multipart/form-data",
-          //     Authorization: `Bearer ${token}`
-          // }
-      })
-
-      return response.data
-  } catch (err) {
-      console.log(err)
-  }
-})
+);
 
 const officeSlice = createSlice({
   name: "office",
@@ -98,42 +94,48 @@ const officeSlice = createSlice({
         state.data = {};
       })
       .addCase(addOffice.fulfilled, (state, action) => {
-        state.loading = false,
-        state.errorMessage = null,
-        state.data = action.payload
+        state.loading = false;
+        state.errorMessage = null;
+        state.data = action.payload;
+        state.success = true
       })
-      .addCase(addOffice.pending, (state, action) => {
-        state.loading = true,
-        state.errorMessage = null,
-        state.data = null
+      .addCase(addOffice.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null;
+        state.data = null;
       })
+      .addCase(addOffice.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload.meta.message;
+        state.data = {};
+      })
+      
       .addCase(getOfficeByid.fulfilled, (state, action) => {
-        state.loading = false,
-        state.errorMessage = null,
-        state.data = action.payload
+        (state.loading = false),
+          (state.errorMessage = null),
+          (state.data = action.payload);
       })
       .addCase(getOfficeByid.pending, (state, action) => {
-        state.loading = true,
-        state.errorMessage = null,
-        state.data = null
+        (state.loading = true),
+          (state.errorMessage = null),
+          (state.data = null);
       })
       .addCase(UpdateOffice.pending, (state, action) => {
-        state.loading = true,
-        state.errorMessage = null
-        state.data = null
+        (state.loading = true), (state.errorMessage = null);
+        state.data = null;
       })
       .addCase(UpdateOffice.fulfilled, (state, action) => {
-        state.loading = false,
-        state.errorMessage = null
-        state.data = action.payload
-      })
-  }
+        (state.loading = false), (state.errorMessage = null);
+        state.data = action.payload;
+      });
+  },
 });
 
 export const officeSelector = {
   selectData: (state) => state.office.data,
   loading: (state) => state.office.loading,
-  errorMessage: (state) => state.office.errorMessage
-}
+  errorMessage: (state) => state.office.errorMessage,
+  success : (state) => state.office.success
+};
 
 export default officeSlice.reducer;

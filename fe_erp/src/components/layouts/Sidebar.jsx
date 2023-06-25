@@ -1,7 +1,6 @@
 import { NavLink } from "react-router-dom";
 import { FaBars, FaHome, FaLock, FaMoneyBill, FaUser } from "react-icons/fa";
 import { MdMessage } from "react-icons/md";
-import { BiSearch } from "react-icons/bi";
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import SidebarMenu from "./SubMenu";
