@@ -122,4 +122,38 @@ class KantorCabangController extends Controller
 
             return $this->success(new KantorCabangResource($kantorCabang));
     }
+
+    public function destroy($id) {
+        $validator = Validator::make(['id' => $id], [
+            'id' => ['required', 'numeric', 'exists:kantor_cabang,id']
+        ]);
+
+        $validator->setCustomMessages([
+            'id.exists' => __('kantor_cabang.not_found'),
+        ]);
+
+        if($validator->fails()) {
+            $errors = $validator->errors();
+
+            if($errors->has('id')) {
+                return $this->fail($errors->first('id'));
+            } else {
+                return $this->fail($validator->errors()->first());
+            }
+        }
+        try {
+            $dbResult = DB::transaction(function () use ($id) {
+                $dbResult = $this->kantorCabang->destroy($id);
+                return [
+                    'kantor_cabang' => $dbResult
+                ];
+            }, 5);
+        } catch (QueryException $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
+        Cache::flush();
+        return $this->success($dbResult['kantor_cabang']);
+    }
 }

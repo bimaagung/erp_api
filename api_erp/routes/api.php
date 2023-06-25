@@ -83,6 +83,7 @@ Route::group(['prefix' => 'kantor-cabang'], function () {
         Route::get('/{id}', 'show');
         Route::post('/', 'create');
         Route::put('/{id}', 'update');
+        Route::delete('/{id}', 'destroy');
     });
 });
 
