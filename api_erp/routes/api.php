@@ -8,6 +8,7 @@ use App\Http\Controllers\API\KantorCabangController;
 use App\Http\Controllers\API\KaryawanController;
 use App\Http\Controllers\API\PersonalInformationController;
 use App\Http\Controllers\API\PositionController;
+use App\Http\Controllers\API\SalaryController;
 use App\Http\Resources\DepartmentResource;
 use Illuminate\Http\Request;
 use Illuminate\Routing\RouteGroup;
@@ -66,6 +67,12 @@ Route::group(['prefix' => 'position'], function () {
     Route::controller(PositionController::class)->group(function () {
         Route::post('/', 'store');
         Route::get('/', 'index');
+    });
+});
+
+Route::group(['prefix' => 'gaji'], function () {
+    Route::controller(SalaryController::class)->group(function () {
+        Route::post('/', 'store');
     });
 });
 
