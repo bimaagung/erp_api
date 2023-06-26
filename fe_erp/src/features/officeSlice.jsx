@@ -60,7 +60,7 @@ export const UpdateOffice = createAsyncThunk(
     //     ?.split('=')[1];
     const apiUrl = config.apiBaseUrl;
     try {
-      const response = await axios.put(apiUrl + `kantor-cabang/${id}`, params, {
+      const response = await axios.post(apiUrl + `kantor-cabang/${id}?_method=PUT`, params, {
         // headers: {
         //     "content-type": "multipart/form-data",
         //     Authorization: `Bearer ${token}`
