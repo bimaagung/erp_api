@@ -74,6 +74,22 @@ export const UpdateOffice = createAsyncThunk(
   }
 );
 
+export const deleteOffice = createAsyncThunk("delete/office", async (id) => {
+  console.log(id);
+  const apiUrl = config.apiBaseUrl;
+  const response = await axios.delete(apiUrl + `kantor-cabang/${id}`, {
+    headers: {
+      // Uncomment and modify headers as needed
+      // "content-type": "multipart/form-data",
+      // Authorization: `Bearer ${token}`,
+    },
+  });
+  try {
+    return response.data;
+  } catch (err) {
+    console.log(err);
+  }
+});
 const officeSlice = createSlice({
   name: "office",
   initialState,
@@ -127,7 +143,22 @@ const officeSlice = createSlice({
       .addCase(UpdateOffice.fulfilled, (state, action) => {
         (state.loading = false), (state.errorMessage = null);
         state.data = action.payload;
-      });
+      })
+      .addCase(deleteOffice.fulfilled, (state, action) => {
+        state.loading = false;
+        state.errorMessage = null
+        state.data = action.payload
+      })
+      .addCase(deleteOffice.pending, (state, action) => {
+        state.loading = true;
+        state.errorMessage = null
+        state.data = action.payload
+      })
+      .addCase(deleteOffice.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload
+        state.data = null
+      })
   },
 });
 
