@@ -11,7 +11,6 @@ import { deleteOffice, getOfficeByid, officeSelector } from "../../../features/o
 const FormUpdateKantorCabang = (props) => {
     const { id } = useParams();
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const data = useSelector(officeSelector.selectData)
     useEffect(() => {
         dispatch(getOfficeByid(id))
@@ -76,12 +75,6 @@ const handlelKeluarSeninJumat = (time) => {
     }
   };
 
-  const handelDeleteKantorCabang = (id) => {
-    dispatch(deleteOffice(id))
-    navigate('/admin/kantor-cabang')
-  }
-
-
   return (
     <Card style={{ width: "100%", height: "auto" }}>
       <Card.Body>
@@ -100,7 +93,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="nama"
-              value={form.nama || (data && data.data && data.data.nama) || ""}
+              value={form.nama ? form.nama : data?.data?.nama || ""}
               onChange={e => setForm({
                 ...form, ...{ nama: e.target.value }
               })}
@@ -114,7 +107,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="Alamat" 
-              value= {data?.data?.alamat || ""}
+              value= {form.alamat ? form.alamat : data?.data?.alamat || ""}
               onChange={e => setForm({
                 ...form, ...{ alamat: e.target.value }
               })}
@@ -130,7 +123,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control" 
                   id="phone1" 
-                  value={data?.data?.phone1 || ""}
+                  value={form.phone1 ? form.phone1 : data?.data?.phone1 || ""}
                   onChange={e => setForm({
                     ...form, ...{ phone1: e.target.value }
                   })}
@@ -168,7 +161,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control"
                    id="phone2"
-                   value={data?.data?.phone2 || ""} 
+                   value={form.phone2 ?form.phone2 : data?.data?.phone2 || ""} 
                    onChange={e => setForm({
                     ...form, ...{ phone2: e.target.value }
                   })}
@@ -204,9 +197,7 @@ const handlelKeluarSeninJumat = (time) => {
             <button type="submit" className="btn btn-primary">
               Submit
             </button> 
-             <button type="submit" onClick={handelDeleteKantorCabang} className="btn btn-danger">
-              delete
-            </button>
+            
           </div>
         </form>
       </Card.Body>
