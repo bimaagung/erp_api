@@ -30,6 +30,7 @@ class KaryawanFactory extends Factory
             'telp' => '+083748',
             'foto' => 'default.jpg',
             'admin' => false,
+            'status_karyawan' => config('global.status.ACTIVE')
         ];
     }
 }

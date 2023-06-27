@@ -18,7 +18,6 @@ use Nette\Utils\Arrays;
 use PhpParser\Node\Expr\Cast\Array_;
 use Tests\TestCase;
 
-// Test 3
 class KaryawanTest extends TestCase
 {
     use DatabaseMigrations;
@@ -62,6 +61,7 @@ class KaryawanTest extends TestCase
             'tanggal_lahir' => $karyawan['karyawan']->tanggal_lahir,
             'telp' => $karyawan['karyawan']->telp,
             'foto' => url('/') . Storage::url('karyawan/' . $karyawan['karyawan']->foto),
+            'status_karyawan' => config('global.status.LEAVE'),
             'informasi_personal' => [
                 'id' => $karyawan['personalInformation']->id,
                 'karyawan_id' => $karyawan['personalInformation']->karyawan_id,
@@ -119,8 +119,7 @@ class KaryawanTest extends TestCase
         ];
 
         // Action
-        $reponse = $this->withoutExceptionHandling()->postJson("/api/karyawan/1?_method=PUT", ['nama' => 'abc', 'nik' => 2738627]);
-
+        $reponse = $this->withoutExceptionHandling()->postJson("/api/karyawan/1?_method=PUT", ['nama' => 'abc', 'nik' => 2738627, 'status_karyawan' => config('global.status.LEAVE')]);
         // Assert
         $reponse->assertStatus(Response::HTTP_OK);
         $reponse->assertJson(['data' => $data]);
@@ -159,6 +158,7 @@ class KaryawanTest extends TestCase
             'tanggal_lahir' => $karyawan['karyawan']->tanggal_lahir,
             'telp' => $karyawan['karyawan']->telp,
             'foto' => url('/') . Storage::url('karyawan/' . $karyawan['karyawan']->foto),
+            'status_karyawan' => $karyawan['karyawan']->status_karyawan,
             'informasi_personal' => [
                 'id' => $karyawan['personalInformation']->id,
                 'karyawan_id' => $karyawan['personalInformation']->karyawan_id,
@@ -241,6 +241,7 @@ class KaryawanTest extends TestCase
             'tanggal_lahir' => $karyawan['karyawan']->tanggal_lahir,
             'telp' => $karyawan['karyawan']->telp,
             'foto' => url('/') . Storage::url('karyawan/' . $karyawan['karyawan']->foto),
+            'status_karyawan' => $karyawan['karyawan']->status_karyawan,
             'informasi_personal' => [
                 'id' => $karyawan['personalInformation']->id,
                 'karyawan_id' => $karyawan['personalInformation']->karyawan_id,

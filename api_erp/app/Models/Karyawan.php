@@ -22,7 +22,8 @@ class Karyawan extends Model
         'tanggal_lahir',
         'telp',
         'foto',
-        'admin'
+        'admin',
+        'status_karyawan',
     ];
 
     public function informasiPersonal()
