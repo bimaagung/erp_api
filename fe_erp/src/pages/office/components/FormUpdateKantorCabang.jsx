@@ -3,9 +3,9 @@ import "../styles/formAddKantorCabang.css";
 import { Card } from "react-bootstrap";
 import { TimePicker } from 'antd';
 import dayjs from 'dayjs';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getOfficeByid, officeSelector } from "../../../features/officeSlice";
+import { deleteOffice, getOfficeByid, officeSelector } from "../../../features/officeSlice";
 
 
 const FormUpdateKantorCabang = (props) => {
@@ -75,7 +75,6 @@ const handlelKeluarSeninJumat = (time) => {
     }
   };
 
- 
   return (
     <Card style={{ width: "100%", height: "auto" }}>
       <Card.Body>
@@ -94,7 +93,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="nama"
-              value={data?.data?.nama}
+              value={form.nama ? form.nama : data?.data?.nama || ""}
               onChange={e => setForm({
                 ...form, ...{ nama: e.target.value }
               })}
@@ -108,7 +107,7 @@ const handlelKeluarSeninJumat = (time) => {
               type="text" 
               className="form-control" 
               id="Alamat" 
-              value= {data?.data?.alamat}
+              value= {form.alamat ? form.alamat : data?.data?.alamat || ""}
               onChange={e => setForm({
                 ...form, ...{ alamat: e.target.value }
               })}
@@ -124,7 +123,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control" 
                   id="phone1" 
-                  value={data?.data?.phone1}
+                  value={form.phone1 ? form.phone1 : data?.data?.phone1 || ""}
                   onChange={e => setForm({
                     ...form, ...{ phone1: e.target.value }
                   })}
@@ -162,7 +161,7 @@ const handlelKeluarSeninJumat = (time) => {
                   type="text" 
                   className="form-control"
                    id="phone2"
-                   value={data?.data?.phone2} 
+                   value={form.phone2 ?form.phone2 : data?.data?.phone2 || ""} 
                    onChange={e => setForm({
                     ...form, ...{ phone2: e.target.value }
                   })}
@@ -197,7 +196,8 @@ const handlelKeluarSeninJumat = (time) => {
 
             <button type="submit" className="btn btn-primary">
               Submit
-            </button>
+            </button> 
+            
           </div>
         </form>
       </Card.Body>

@@ -5,16 +5,21 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\KantorCabangResource;
 use App\Http\Resources\PaginationResource;
-use App\Http\Resources\Paginations\PaginationKantorCabangResource;
 use App\Models\KantorCabang;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
-use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
+
 
 class KantorCabangController extends Controller
 {
 
     protected $kantorCabang;
+    protected int $expiration = 60 * 60 * 24 * 7;
+    protected string $cacheKey = 'kantorCabang';
 
     public function __construct(KantorCabang $kantorCabang)
     {
@@ -80,5 +85,75 @@ class KantorCabangController extends Controller
 
         $result = $this->kantorCabang->create($data);
         return $this->success(new KantorCabangResource($result));
+    }
+
+    public function update(Request $request, int $id)
+    {
+        $kantorCabang = $this->kantorCabang->find($id);
+
+        if (!$kantorCabang) {
+            return $this->notFound(__('kantor_cabang.not_found'));
+        }
+
+        $kantorCabangPayload = $request->only(
+            [
+                'nama',
+                'alamat',
+                'phone1',
+                'phone2',
+                'masuk_senin_jumat',
+                'keluar_senin_jumat',
+                'masuk_sabtu_minggu',
+                'keluar_sabtu_minggu',
+            ]
+            );
+
+            try {
+              DB::transaction(function () use ($id, $kantorCabangPayload) {
+                    $this->kantorCabang->where('id', $id)->update($kantorCabangPayload);
+                    
+                }, 5);
+            } catch (QueryException $e) {
+                DB::rollBack();
+                Log::error($e);
+                throw $e;
+            }
+            Cache::flush();
+
+            return $this->success(new KantorCabangResource($kantorCabang));
+    }
+
+    public function destroy($id) {
+        $validator = Validator::make(['id' => $id], [
+            'id' => ['required', 'numeric', 'exists:kantor_cabang,id']
+        ]);
+
+        $validator->setCustomMessages([
+            'id.exists' => __('kantor_cabang.not_found'),
+        ]);
+
+        if($validator->fails()) {
+            $errors = $validator->errors();
+
+            if($errors->has('id')) {
+                return $this->fail($errors->first('id'));
+            } else {
+                return $this->fail($validator->errors()->first());
+            }
+        }
+        try {
+            $dbResult = DB::transaction(function () use ($id) {
+                $dbResult = $this->kantorCabang->destroy($id);
+                return [
+                    'kantor_cabang' => $dbResult
+                ];
+            }, 5);
+        } catch (QueryException $e) {
+            DB::rollBack();
+            Log::error($e);
+            throw $e;
+        }
+        Cache::flush();
+        return $this->success($dbResult['kantor_cabang']);
     }
 }
