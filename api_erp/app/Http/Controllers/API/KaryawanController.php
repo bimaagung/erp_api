@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\File;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
 
+// TODO: Simulation Change 
 class KaryawanController extends Controller
 {
     protected Karyawan $karyawan;
