@@ -35,4 +35,9 @@ class Karyawan extends Model
     {
         return $this->hasOne(JobInformation::class, 'karyawan_id', 'id');
     }
+    
+    public function informasiKeluarga()
+    {
+        return $this->hasMany(Family::class, 'karyawan_id', 'id');
+    }
 }

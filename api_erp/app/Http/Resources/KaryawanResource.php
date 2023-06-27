@@ -32,6 +32,7 @@ class KaryawanResource extends JsonResource
             'status_karyawan' => $this->status_karyawan,
             'informasi_personal' => new PersonalInformationResource($this->informasiPersonal),
             'informasi_pekerjaan' => new JobInformationResource($this->informasiPekerjaan),
+            'informasi_keluarga' => FamilyResource::collection($this->informasiKeluarga),
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
         ];

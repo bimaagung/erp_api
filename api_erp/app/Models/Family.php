@@ -18,4 +18,9 @@ class Family extends Model
         'nama',
         'pekerjaan',
     ];
+
+    public function karyawan()
+    {
+        return $this->belongsTo(Karyawan::class, 'karyawan_id', 'id');
+    }
 }
