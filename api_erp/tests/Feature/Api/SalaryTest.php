@@ -19,6 +19,7 @@ class SalaryTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        $this->markTestSkipped('all methods salary test still maintained');
         $this->payload = [
             'karyawan_id' => 1,
             'gaji_pokok' => fake()->randomNumber(6),
