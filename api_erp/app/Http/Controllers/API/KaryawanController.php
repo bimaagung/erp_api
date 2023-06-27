@@ -224,7 +224,7 @@ class KaryawanController extends Controller
             return $this->fail($validator->errors()->first());
         }
 
-        $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan'])->find($id);
+        $karyawan = $this->karyawan->with(['informasiPersonal', 'informasiPekerjaan', 'informasiKeluarga'])->find($id);
 
         if (!$karyawan) {
             return $this->notFound(__('karyawan.not_found'));
