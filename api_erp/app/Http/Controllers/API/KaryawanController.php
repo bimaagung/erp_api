@@ -16,10 +16,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\File;
 use MilanTarami\ApiResponseBuilder\Facades\ResponseBuilder;
 
-// TODO: Simulation Change 
 class KaryawanController extends Controller
 {
     protected Karyawan $karyawan;
@@ -62,6 +62,10 @@ class KaryawanController extends Controller
 
     public function create(Request $request)
     {
+        $request->merge([
+            'status_karyawan' => strtolower($request->input('status_karyawan'))
+        ]);
+
         $validator = Validator::make($request->all(), [
             'nama' => ['required', 'max:112'],
             'nik' => ['required', 'integer', 'unique:karyawans'],
@@ -79,6 +83,12 @@ class KaryawanController extends Controller
                     ->max(5 * 1024)
             ],
             'admin' => ['boolean'],
+            'status_karyawan' => ['required', 'string', 'max:10', Rule::in([
+                config('global.status.ACTIVE'),
+                config('global.status.LEAVE'),
+                config('global.status.RESIGN'),
+            ])],
+
 
             // Personal Information
             'npwp' => ['required', 'integer', 'unique:informasi_personal'],
@@ -155,6 +165,7 @@ class KaryawanController extends Controller
                     'telp' => $request->telp,
                     'foto' => $upload,
                     'admin' => $request->admin,
+                    'status_karyawan' => $request->status_karyawan
                 ]);
 
                 $personalResult = $this->personalInformation->create([
@@ -245,6 +256,7 @@ class KaryawanController extends Controller
                 'telp',
                 'foto',
                 'admin',
+                'status_karyawan',
             ]
         );
 
@@ -275,6 +287,24 @@ class KaryawanController extends Controller
                 'absen_diluar_kantor'
             ]
         );
+
+        if ($request->has('status_karyawan')) {
+            $request->merge([
+                'status_karyawan' => strtolower($request->input('status_karyawan'))
+            ]);
+
+            $validator = Validator::make($request->all(), [
+                'status_karyawan' => ['required', 'string', 'max:10', Rule::in([
+                    config('global.status.ACTIVE'),
+                    config('global.status.LEAVE'),
+                    config('global.status.RESIGN'),
+                ])],
+            ]);
+
+            if ($validator->fails()) {
+                return $this->fail($validator->errors()->first());
+            }
+        }
 
         if ($request->hasFile('foto')) {
             $upload = UploadFile::upload($request->file('foto'), 'karyawan');

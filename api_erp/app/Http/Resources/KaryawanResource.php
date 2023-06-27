@@ -29,6 +29,7 @@ class KaryawanResource extends JsonResource
             'tanggal_lahir' => $this->tanggal_lahir,
             'telp' => $this->telp,
             'foto' => url('/') . Storage::url('karyawan/' . $this->foto),
+            'status_karyawan' => $this->status_karyawan,
             'informasi_personal' => new PersonalInformationResource($this->informasiPersonal),
             'informasi_pekerjaan' => new JobInformationResource($this->informasiPekerjaan),
             'created_at' => (string) $this->created_at,
