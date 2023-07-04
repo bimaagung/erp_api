@@ -33,30 +33,7 @@ const EmployeeAddPage = () => {
 
   return (
     <SideBar>
-      <div>
-        <Tabs
-          defaultActiveKey="karyawan-form"
-          id="justify-tab-example"
-          className="mb-3"
-          justify
-        >
-          <Tab eventKey="karyawan-form" title="Informasi Umum">
-            <FormAddEmployee onSubmit={handleSubmit} />
-          </Tab>
-          <Tab eventKey="karyawan-pendidikan" title="Riwayat Pendidikan">
-            <h1>Riwayat Pendidikan</h1>
-          </Tab>
-          <Tab eventKey="karyawan-kerja" title="Riwayat Kerja">
-            <h1>Riwayat</h1>
-          </Tab>
-          <Tab eventKey="karyawan-keluarga" title="Data Keluarga">
-            <h1>Data Keluarga</h1>
-          </Tab>
-          <Tab eventKey="karyawan-pelatihan" title="Data Pelatihan">
-            <h1>Data Pelatihan</h1>
-          </Tab>
-        </Tabs>
-      </div>
+        <FormAddEmployee onSubmit={handleSubmit} />
     </SideBar>
   );
 };
