@@ -1,40 +1,62 @@
 import React from "react";
-import FormUpdateEmployee from "./components/FormUpdateEmployee";
-import SideBar from "../../components/layouts/Sidebar";
+import { Tabs, Tab } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { employeeSelector, updateEmployee } from "../../features/employeeSlice";
+import SideBar from "../../components/layouts/Sidebar";
+import FormUpdateEmployee from "./components/FormUpdateEmployee";
+import FormAddEducationLevel from "./components/FormAddEducationLevel";
+import FormAddFamily from "./components/FormAddFamily";
 
 const EmployeeUpdatePage = () => {
-  const loading = useSelector(employeeSelector.loading)
-  const errorMessage = useSelector(employeeSelector.errorMessage)
-  const navigate = useNavigate()
+  const loading = useSelector(employeeSelector.loading);
+  const errorMessage = useSelector(employeeSelector.errorMessage);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { id } = useParams();
-  
+
   const updateKaryawan = (payload) => {
     dispatch(updateEmployee({ id: id, params: payload }));
-  }
+  };
 
   const handleUpdateEmployee = (payload) => {
-    const updateData = {}
+    const updateData = {};
     if (payload) {
       for (const key in payload) {
-          const value = payload[key];
-          if (key !== '' && value !== null && value !== "" && value !== undefined) {
-              updateData[key] = value;
-          }
+        const value = payload[key];
+        if (key !== "" && value !== null && value !== "" && value !== undefined) {
+          updateData[key] = value;
+        }
       }
       updateKaryawan(updateData);
 
       if (!loading && !errorMessage) {
-        navigate('/admin/karyawan')
+        navigate("/admin/karyawan");
       }
-  }
+    }
   };
+
   return (
     <SideBar>
-      <FormUpdateEmployee onSubmit={handleUpdateEmployee} />
+      <div>
+        <Tabs defaultActiveKey="karyawan-form" id="justify-tab-example" className="mb-3" justify>
+          <Tab eventKey="karyawan-form" title="Informasi Umum">
+            <FormUpdateEmployee onSubmit={handleUpdateEmployee} />
+          </Tab>
+          <Tab eventKey="karyawan-pendidikan" title="Riwayat Pendidikan">
+            <FormAddEducationLevel />
+          </Tab>
+          <Tab eventKey="karyawan-kerja" title="Riwayat Kerja">
+            <h1>Riwayat</h1>
+          </Tab>
+          <Tab eventKey="karyawan-keluarga" title="Data Keluarga">
+            <FormAddFamily />
+          </Tab>
+          <Tab eventKey="karyawan-pelatihan" title="Data Pelatihan">
+            <h1>Data Pelatihan</h1>
+          </Tab>
+        </Tabs>
+      </div>
     </SideBar>
   );
 };
