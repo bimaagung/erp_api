@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { addEmployee } from "../../features/employeeSlice";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import { Tab, Tabs } from "react-bootstrap";
 const EmployeeAddPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
