@@ -4,6 +4,7 @@ import officeSlice from "./features/officeSlice";
 import employeeSlice from "./features/employeeSlice";
 import departmentSlice from "./features/departmentSlice";
 import positionSlice from "./features/positionSlice";
+import familySlice from "./features/familySlice";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     auth: authSlice,
     employee: employeeSlice,
     department: departmentSlice,
-    position : positionSlice
+    position : positionSlice,
+    family : familySlice
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

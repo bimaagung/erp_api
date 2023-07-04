@@ -4,20 +4,30 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { SiAddthis } from "react-icons/si";
 import { AiOutlineMinusSquare } from "react-icons/ai";
-import "../modals/styles/addFamilyModal.css"
+import "../modals/styles/addFamilyModal.css";
+import { useSelector } from "react-redux";
+import { familySelector } from "../../features/familySlice";
 
-export const AddFamilyModal = () => {
+export const AddFamilyModal = (props) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const loading = useSelector(familySelector.loading);
   const [form, setForm] = useState({
     nama: "",
     nik: "",
     status: "",
     pekerjaan: "",
   });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    props.onSubmit(form);
+    if (!loading) {
+      handleClose();
+    }
+  };
   return (
     <>
       <div className="add-family">
@@ -125,7 +135,7 @@ export const AddFamilyModal = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={handleSubmit}>
             Save Changes
           </Button>
         </Modal.Footer>
