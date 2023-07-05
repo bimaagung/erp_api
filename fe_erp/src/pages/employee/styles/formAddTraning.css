@@ -1,0 +1,14 @@
+.title-add-traning {
+    font-size: 30px;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+
+  .data-traning {
+    margin-bottom: 30px;
+  }
+
+  .delete-traning-button {
+      justify-content: end;
+      display: flex;
+  }
