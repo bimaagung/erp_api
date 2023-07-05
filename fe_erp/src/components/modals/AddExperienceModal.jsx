@@ -11,8 +11,10 @@ export const AddExperienceModal = (props) => {
   const [form, setForm] = useState({
     nama: "",
     tingkat: "",
+    tipe: "",
+    alamat: "",
     tanggal_masuk: "",
-    tanggal_keluar: ""
+    tanggal_keluar: "",
   });
 
   const formateDate = (value) => {
@@ -29,8 +31,8 @@ export const AddExperienceModal = (props) => {
     const updatedRows = [...rows];
     updatedRows[index].tanggal_masuk = date;
     setRows(updatedRows);
-  };  
-  
+  };
+
   const handleTanggalKeluar = (value, index) => {
     const date = formateDate(value);
     const updatedRows = [...rows];
@@ -87,7 +89,7 @@ export const AddExperienceModal = (props) => {
           <Form>
             {rows.map((row, index) => (
               <div className="row" key={index}>
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <div className="mb-3">
                     <label htmlFor={`nama${index}`} className="form-label">
                       Nama:
@@ -102,22 +104,56 @@ export const AddExperienceModal = (props) => {
                     />
                   </div>
                 </div>
-                <div className="col-md-3">
+                <div className="col-md-4">
                   <div className="mb-3">
                     <label htmlFor={`tingkat${index}`} className="form-label">
-                      Tingkat:
+                      Posisi:
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id={`tingakt${index}`}
-                      name="tingkat"
-                      value={row.tingkat}
+                      id={`posisi${index}`}
+                      name="posisi"
+                      value={row.posisi}
                       onChange={(e) => handleInputChange(e, index)}
                     />
                   </div>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-4">
+                  <div className="mb-3">
+                    <label htmlFor={`tipe${index}`} className="form-label">
+                      Tipe:
+                    </label>
+                    <select
+                      id={`tipe${index}`}
+                      className="form-select"
+                      name="tipe"
+                      value={row.tipe}
+                      onChange={(e) => handleInputChange(e, index)}
+                    >
+                      <option value=""></option>
+                      <option value="Kontrak">Kontrak</option>
+                      <option value="Tetap">Tetap</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="row">
+                  <div className="col-md-7">
+                    <div className="mb-3">
+                      <label htmlFor={`alamat${index}`} className="form-label">
+                        Alamat:
+                      </label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        id={`alamat${index}`}
+                        name="alamat"
+                        value={row.alamat}
+                        onChange={(e) => handleInputChange(e, index)}
+                      />
+                    </div>
+                  </div>
+                  <div className="col-md-2">
                   <div className="mb-3 position-relative">
                     <label
                       htmlFor={`tanggal_masuk${index}`}
@@ -135,10 +171,10 @@ export const AddExperienceModal = (props) => {
                     </div>
                   </div>
                 </div>
-                 <div className="col-md-2">
+                <div className="col-md-2">
                   <div className="mb-3 position-relative">
                     <label
-                      htmlFor={`tanggal_masuk${index}`}
+                      htmlFor={`tanggal_keluar${index}`}
                       className="form-label"
                     >
                       Tanggal Keluar:
@@ -153,7 +189,7 @@ export const AddExperienceModal = (props) => {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-1">
                   <div className="action-modal-experience">
                     <Button
                       variant="light"
@@ -163,6 +199,8 @@ export const AddExperienceModal = (props) => {
                     </Button>
                   </div>
                 </div>
+                </div>
+               
               </div>
             ))}
           </Form>
