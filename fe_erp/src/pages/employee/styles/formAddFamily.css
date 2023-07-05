@@ -7,3 +7,8 @@
   .data-family {
     margin-bottom: 30px;
   }
+
+  .delete-family-button {
+      justify-content: end;
+      display: flex;
+  }

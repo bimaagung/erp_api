@@ -10,15 +10,35 @@ const initialState = {
 
 export const addFamily = createAsyncThunk(
   "family/add",
-  async ({id, params } , { rejectWithValue }) => {
+  async ({ id, params }, { rejectWithValue }) => {
     const apiUrl = config.apiBaseUrl;
     try {
-      const response = await axios.post(`${apiUrl}karyawan/keluarga/${id}`, params, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await axios.post(
+        `${apiUrl}karyawan/keluarga/${id}`,
+        params,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
+      return response.data;
+    } catch (err) {
+      if (!err.response) {
+        throw err;
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const deleteFamily = createAsyncThunk(
+  "family/delete",
+  async (id, { rejectWithValue }) => {
+    const apiUrl = config.apiBaseUrl;
+    try {
+      const response = await axios.delete(apiUrl + `karyawan/keluarga/${id}`);
       return response.data;
     } catch (err) {
       if (!err.response) {
@@ -45,6 +65,20 @@ const familySlice = createSlice({
         state.errorMessage = null;
       })
       .addCase(addFamily.rejected, (state, action) => {
+        state.loading = false;
+        state.errorMessage = action.payload;
+        state.data = {};
+      })
+      .addCase(deleteFamily.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+        state.errorMessage = null;
+      })
+      .addCase(deleteFamily.pending, (state) => {
+        state.loading = true;
+        state.errorMessage = null;
+      })
+      .addCase(deleteFamily.rejected, (state, action) => {
         state.loading = false;
         state.errorMessage = action.payload;
         state.data = {};
