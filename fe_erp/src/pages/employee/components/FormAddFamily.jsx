@@ -25,7 +25,11 @@ const FormAddFamily = () => {
       await dispatch(addFamily({ id: id, params: payload })).unwrap();
       dispatch(getEmployeeByid(id));
     } catch (error) {
-      console.log("Error:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      })
     }
   };
 
@@ -40,7 +44,7 @@ const FormAddFamily = () => {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Yes, delete it!'
       }).then(async (result) => {
-        if (result.isConfirmed) {
+        if (result.isConfirmed) {   
           await dispatch(deleteFamily(familyId)).unwrap();
           Swal.fire(
             'Deleted!',
@@ -51,7 +55,11 @@ const FormAddFamily = () => {
         }
       })
     } catch (error) {
-      console.log("error:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.message,
+      })
     }
   };
   return (

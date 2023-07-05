@@ -89,17 +89,24 @@ export const AddFamilyModal = (props) => {
                   <label htmlFor="status" className="form-label">
                     Status:
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="status"
-                    onChange={(e) =>
-                      setForm({
-                        ...form,
-                        ...{ status: e.target.value },
-                      })
-                    }
-                  />
+                  <select
+                      id="inputState"
+                      className="form-select"
+                      onChange={(e) =>
+                        setForm({
+                          ...form,
+                          ...{
+                            status: e.target.value,
+                          },
+                        })
+                      }
+                    >
+                      <option value=""></option>
+                      <option value="Ayah kandung">Ayah Kandung</option>
+                      <option value="Ibu Kandung">Ibu Kandung</option>
+                      <option value="Saudara Kandung">saudara Kandung</option>
+                      <option value="Lainya">Lainnya</option>
+                    </select>
                 </div>
               </div>
               <div className="col-md-2">
@@ -120,23 +127,15 @@ export const AddFamilyModal = (props) => {
                   />
                 </div>
               </div>
-              <div className="col-md-1 action-modal-family">
-                <AiOutlineMinusSquare
-                  color="#17a4e0"
-                  size={30}
-                  onClick={handleShow}
-                  style={{ cursor: "pointer" }}
-                />
-              </div>
             </div>
           </Form>
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
-            Close
+            Batal
           </Button>
           <Button variant="primary" onClick={handleSubmit}>
-            Save Changes
+              Simpan
           </Button>
         </Modal.Footer>
       </Modal>
