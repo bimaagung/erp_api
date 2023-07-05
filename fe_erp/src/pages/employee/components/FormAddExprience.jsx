@@ -8,18 +8,22 @@ import {
 import { useParams } from "react-router-dom";
 import { TiDelete } from "react-icons/ti";
 import Swal from "sweetalert2";
-import { AddEducationModal } from "../../../components/modals/AddEducationModal";
+import { AddExperienceModal } from "../../../components/modals/AddExperienceModal";
 import "../styles/formAddFamily.css";
 
-const mockPendidikan = [
+const mockExperience = [
   {
-    nama: "Universita Komputer Indonesia",
-    tingkat: "S1",
-    tanggal_masuk: "2012",
+    id : 1,
+    nama: "Pt. Mencari Cinta Sejati",
+    posisi: "Manager",
+    alamat: "Jakarta selatan",
+    tipe: "kontrak",
+    tanggal_masuk: "2022",
+    tanggal_keluar: "2023",
   },
 ];
 
-const FormAddEducationLevel = () => {
+const FormAddExperience = () => {
   const { id } = useParams();
   const employee = useSelector(employeeSelector.selectData);
   const dispatch = useDispatch();
@@ -42,7 +46,7 @@ const FormAddEducationLevel = () => {
     }
   };
 
-  const handleDeleteEducation = async (educationId) => {
+  const handleDeleteExperience = async (expreinceId) => {
     try {
       Swal.fire({
         title: "Are you sure?",
@@ -71,27 +75,33 @@ const FormAddEducationLevel = () => {
     <>
       <Card style={{ width: "100%", height: "auto" }}>
         <Card.Body>
-          <div className="title-add-family">Data Pendidikan</div>
+          <div className="title-add-family">Riwayat Kerja</div>
           <hr></hr>
-          {mockPendidikan.map((o) => (
+          {mockExperience.map((o) => (
             <Table striped>
               <thead>
                 <tr>
-                  <th>Nama</th>
-                  <th>Tingkat</th>
-                  <th>Tahun</th>
+                  <th>Nama Perusahaan</th>
+                  <th>Posisi</th>
+                  <th>Alamat</th>
+                  <th>Tipe</th>
+                  <th>Tanggal Masuk</th>
+                  <th>Tanggal Keluar</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{o.nama}</td>
-                  <td>{o.tingkat}</td>
+                  <td>{o.posisi}</td>
+                  <td>{o.alamat}</td>
+                  <td>{o.tipe}</td>
+                  <td>{o.tanggal_masuk}</td>
                   <td>
-                    {o.tanggal_masuk}{" "}
+                    {o.tanggal_keluar}{" "}
                     <TiDelete
                       color="red"
                       size={30}
-                      onClick={() => handleDeleteEducation(o.id)}
+                      onClick={() => handleDeleteExperience(o.id)}
                       style={{ cursor: "pointer" }}
                     />
                   </td>
@@ -99,11 +109,11 @@ const FormAddEducationLevel = () => {
               </tbody>
             </Table>
           ))}
-          <AddEducationModal onSubmit={handleAddFamilySubmit} />
+          <AddExperienceModal onSubmit={handleAddFamilySubmit} />
         </Card.Body>
       </Card>
     </>
   );
 };
 
-export default FormAddEducationLevel;
+export default FormAddExperience;

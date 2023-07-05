@@ -4,27 +4,40 @@ import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import { SiAddthis } from "react-icons/si";
 import { AiOutlineMinusSquare } from "react-icons/ai";
-import "../modals/styles/addFamilyModal.css";
-import { useSelector } from "react-redux";
-import { familySelector } from "../../features/familySlice";
-
-export const AddFamilyModal = (props) => {
+import "../modals/styles/addEducationModal.css";
+import { DatePicker } from "rsuite";
+export const AddEducationModal = (props) => {
   const [show, setShow] = useState(false);
   const [form, setForm] = useState({
     nama: "",
-    nik: "",
-    status: "",
-    pekerjaan: "",
+    tingkat: "",
+    tanggal_masuk: "",
   });
+
+  const formateDate = (value) => {
+    const date = new Date(value);
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    const formattedDate = `${year}/${month}/${day}`;
+    return formattedDate;
+  };
+
+  const handleTanggalMasuk = (value, index) => {
+    const date = formateDate(value);
+    const updatedRows = [...rows];
+    updatedRows[index].tanggal_masuk = date;
+    setRows(updatedRows);
+  };
+
   const [rows, setRows] = useState([form]);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  const loading = useSelector(familySelector.loading);
 
   const handleAddRow = () => {
     setRows([...rows, { ...form }]);
-    setForm({ nama: "", nik: "", status: "", pekerjaan: "" });
+    setForm({ nama: "", tingkat: "", tanggal_masuk: "" });
   };
 
   const handleRemoveRow = (index) => {
@@ -43,9 +56,7 @@ export const AddFamilyModal = (props) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     props.onSubmit(rows);
-    if (!loading) {
-      handleClose();
-    }
+    handleClose();
   };
   return (
     <>
@@ -62,27 +73,12 @@ export const AddFamilyModal = (props) => {
 
       <Modal size="xl" show={show} onHide={handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Data Keluarga</Modal.Title>
+          <Modal.Title>Data Pendidikan</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
             {rows.map((row, index) => (
               <div className="row" key={index}>
-                <div className="col-md-3">
-                  <div className="mb-3">
-                    <label htmlFor={`nik${index}`} className="form-label">
-                      NIK:
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id={`nik${index}`}
-                      name="nik"
-                      value={row.nik}
-                      onChange={(e) => handleInputChange(e, index)}
-                    />
-                  </div>
-                </div>
                 <div className="col-md-4">
                   <div className="mb-3">
                     <label htmlFor={`nama${index}`} className="form-label">
@@ -98,48 +94,48 @@ export const AddFamilyModal = (props) => {
                     />
                   </div>
                 </div>
-                <div className="col-md-2">
+                <div className="col-md-4">
                   <div className="mb-3">
-                    <label htmlFor={`status${index}`} className="form-label">
-                      Status:
-                    </label>
-                    <select
-                      id={`status${index}`}
-                      className="form-select"
-                      name="status"
-                      value={row.status}
-                      onChange={(e) => handleInputChange(e, index)}
-                    >
-                      <option value=""></option>
-                      <option value="Ayah kandung">Ayah Kandung</option>
-                      <option value="Ibu Kandung">Ibu Kandung</option>
-                      <option value="Saudara Kandung">Saudara Kandung</option>
-                      <option value="Lainya">Lainnya</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="col-md-2">
-                  <div className="mb-3">
-                    <label htmlFor={`pekerjaan${index}`} className="form-label">
-                      Pekerjaan:
+                    <label htmlFor={`tingkat${index}`} className="form-label">
+                      Tingkat:
                     </label>
                     <input
                       type="text"
                       className="form-control"
-                      id={`pekerjaan${index}`}
-                      name="pekerjaan"
-                      value={row.pekerjaan}
+                      id={`tingakt${index}`}
+                      name="tingkat"
+                      value={row.tingkat}
                       onChange={(e) => handleInputChange(e, index)}
                     />
                   </div>
                 </div>
+                <div className="col-md-3">
+                  <div className="mb-3 position-relative">
+                    <label
+                      htmlFor={`tanggal_masuk${index}`}
+                      className="form-label"
+                    >
+                      Tanggal Masuk:
+                    </label>
+                    <div>
+                      <DatePicker
+                        format="yyyy-MM-dd"
+                        id={`tanggal_masuk${index}`}
+                        name="tanggal_masuk"
+                        onChange={(value) => handleTanggalMasuk(value, index)}
+                      />
+                    </div>
+                  </div>
+                </div>
                 <div className="col-md-1">
-                  <Button
-                    variant="light"
-                    onClick={() => handleRemoveRow(index)}
-                  >
-                    <AiOutlineMinusSquare />
-                  </Button>
+                  <div className="action-modal-education">
+                    <Button
+                      variant="light"
+                      onClick={() => handleRemoveRow(index)}
+                    >
+                      <AiOutlineMinusSquare />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
