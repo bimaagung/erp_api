@@ -52,6 +52,7 @@ Route::group(['prefix' => 'karyawan'], function () {
     });
     Route::controller(FamilyController::class)->group(function () {
         Route::post('/keluarga/{karyawan_id}', 'store');
+        Route::delete('/keluarga/{id}', 'destroy');
     });
     // });
 });
