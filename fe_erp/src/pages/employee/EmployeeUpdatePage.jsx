@@ -7,6 +7,7 @@ import SideBar from "../../components/layouts/Sidebar";
 import FormUpdateEmployee from "./components/FormUpdateEmployee";
 import FormAddEducationLevel from "./components/FormAddEducationLevel";
 import FormAddFamily from "./components/FormAddFamily";
+import FormAddExperience from "./components/FormAddExprience";
 
 const EmployeeUpdatePage = () => {
   const loading = useSelector(employeeSelector.loading);
@@ -47,7 +48,7 @@ const EmployeeUpdatePage = () => {
             <FormAddEducationLevel />
           </Tab>
           <Tab eventKey="karyawan-kerja" title="Riwayat Kerja">
-            <h1>Riwayat</h1>
+            <FormAddExperience />
           </Tab>
           <Tab eventKey="karyawan-keluarga" title="Data Keluarga">
             <FormAddFamily />
