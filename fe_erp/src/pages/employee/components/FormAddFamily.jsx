@@ -8,7 +8,9 @@ import {
 import { useParams } from "react-router-dom";
 import "../styles/formAddFamily.css";
 import { AddFamilyModal } from "../../../components/modals/AddFamilyModal";
-import { addFamily } from "../../../features/familySlice";
+import { addFamily, deleteFamily } from "../../../features/familySlice";
+import { TiDelete } from "react-icons/ti";
+import Swal from "sweetalert2";
 
 const FormAddFamily = () => {
   const { id } = useParams();
@@ -24,6 +26,32 @@ const FormAddFamily = () => {
       dispatch(getEmployeeByid(id));
     } catch (error) {
       console.log("Error:", error);
+    }
+  };
+
+  const handleDeleteFamily = async (familyId) => {
+    try {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, delete it!'
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          await dispatch(deleteFamily(familyId)).unwrap();
+          Swal.fire(
+            'Deleted!',
+            'Your file has been deleted.',
+            'success',
+          )
+          dispatch(getEmployeeByid(id));
+        }
+      })
+    } catch (error) {
+      console.log("error:", error);
     }
   };
   return (
@@ -51,9 +79,23 @@ const FormAddFamily = () => {
                 </div>
                 <div className="col-md-6">
                   <div className="mb-3">
-                    <label htmlFor={`nik-${o.id}`} className="form-label">
-                      NIK:
-                    </label>
+                    <div className="row">
+                      <div className="col-md-8">
+                        <label htmlFor={`nik-${o.id}`} className="form-label">
+                          NIK:
+                        </label>
+                      </div>
+                      <div className="col-md-4">
+                        <div className="delete-family-button">
+                          <TiDelete
+                            color="red"
+                            size={30}
+                            onClick={() => handleDeleteFamily(o.id)}
+                            style={{ cursor: "pointer" }}
+                          />
+                        </div>
+                      </div>
+                    </div>
                     <input
                       type="text"
                       className="form-control"
@@ -96,7 +138,7 @@ const FormAddFamily = () => {
               </div>
             </div>
           ))}
-          <AddFamilyModal onSubmit = {handleAddFamilySubmit}/>
+          <AddFamilyModal onSubmit={handleAddFamilySubmit} />
         </Card.Body>
       </Card>
     </>
