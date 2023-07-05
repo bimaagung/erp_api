@@ -19,7 +19,7 @@ class FamilyResource extends JsonResource
             'karyawan_id' => (int)$this->karyawan_id,
             'status' => $this->status,
             'nik' => (int)$this->nik,
-            'nama' => $this->jabatan,
+            'nama' => $this->nama,
             'pekerjaan' => $this->pekerjaan,
             'created_at' => (string) $this->created_at,
             'updated_at' => (string) $this->updated_at,
