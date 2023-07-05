@@ -21,8 +21,12 @@ const FormAddFamily = () => {
   }, [dispatch, id]);
 
   const handleAddFamilySubmit = async (payload) => {
+    console.log(payload)
     try {
-      await dispatch(addFamily({ id: id, params: payload })).unwrap();
+      for (let i = 0; i < payload.length; i++) {
+        await dispatch(addFamily({ id: id, params: payload[i] })).unwrap();
+
+      }
       dispatch(getEmployeeByid(id));
     } catch (error) {
       Swal.fire({
