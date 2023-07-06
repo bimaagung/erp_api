@@ -40,7 +40,7 @@ const EmployeeUpdatePage = () => {
 
   return (
     <SideBar>
-      <div>
+      <div className="main-content-alpha">
         <Tabs defaultActiveKey="karyawan-form" id="justify-tab-example" className="mb-3" justify>
           <Tab eventKey="karyawan-form" title="Informasi Umum">
             <FormUpdateEmployee onSubmit={handleUpdateEmployee} />

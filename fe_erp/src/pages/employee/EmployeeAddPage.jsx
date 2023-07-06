@@ -32,7 +32,9 @@ const EmployeeAddPage = () => {
 
   return (
     <SideBar>
+      <div className="main-content-alpha">
         <FormAddEmployee onSubmit={handleSubmit} />
+      </div>
     </SideBar>
   );
 };
