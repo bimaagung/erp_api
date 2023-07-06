@@ -80,6 +80,9 @@ const SideBar = ({ children }) => {
 
   return (
     <>
+    <div>
+      <h5 className="navbar-admin">navbar</h5>
+    </div>
       <div className="main-container">
         <motion.div
           animate={{
