@@ -51,7 +51,7 @@ const EmployeePage = () => {
               </div>
             </div>
           </div>
-          <div className="search-box-karyawan">
+          <div className="search-box-global">
             <div className="row">
               <div className="col-md-4">
                 <label htmlFor="nama-karyawan" className="form-label">

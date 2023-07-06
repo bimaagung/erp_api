@@ -20,7 +20,10 @@ const OfficeAddPage = () => {
   }
   return (
     <SideBar>
+      <div className="main-content-alpha">
      <FormAddKantorCabang onSubmit = {handleSubmit}/>
+
+      </div>
     </SideBar>
   );
 };
